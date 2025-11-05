@@ -33,6 +33,7 @@ public class Ebook {
     @JoinColumn(name = "uploaded_by")
     private User uploadedBy; // người tải lên (Admin hoặc Tutor)
 
+    @Builder.Default
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 }

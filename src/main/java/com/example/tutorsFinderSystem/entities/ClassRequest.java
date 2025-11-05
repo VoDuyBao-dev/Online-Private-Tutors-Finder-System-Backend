@@ -48,6 +48,7 @@ public class ClassRequest {
     @Column(name = "additional_notes", columnDefinition = "TEXT")
     private String additionalNotes;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private ClassRequestStatus status = ClassRequestStatus.PENDING;
@@ -57,9 +58,11 @@ public class ClassRequest {
     @Column(name = "type", length = 20)
     private ClassRequestType type; // TRIAL hoặc OFFICIAL
 
+    @Builder.Default
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Builder.Default
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 }

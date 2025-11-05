@@ -23,6 +23,7 @@ public class Subject {
     private String subjectName;
 
     // Một môn học có thể được nhiều gia sư dạy
+    @Builder.Default
     @ManyToMany(mappedBy = "subjects")
     private Set<Tutor> tutors = new HashSet<>();
 }

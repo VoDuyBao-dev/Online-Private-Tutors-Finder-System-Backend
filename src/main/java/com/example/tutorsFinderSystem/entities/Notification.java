@@ -30,11 +30,13 @@ public class Notification {
     private String title;  // tiêu đề thông báo
 
     @Column(name = "content", length = 1000)
-    private String content;  // nội dung chi tiết
+    private String content; // nội dung chi tiết
 
+    @Builder.Default
     @Column(name = "is_read", nullable = false)
     private Boolean isRead = false; // đã đọc hay chưa
 
+    @Builder.Default
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 }

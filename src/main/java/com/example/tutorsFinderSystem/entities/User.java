@@ -40,10 +40,12 @@ public class User {
     @Column(name = "avatar_image", length = 255)
     private String avatarImage;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private UserStatus status = UserStatus.ACTIVE; // ACTIVE, INACTIVE, LOCKED
 
+    @Builder.Default
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

@@ -28,6 +28,7 @@ public class Ratings {
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment; // nội dung đánh giá (có thể null)
 
+    @Builder.Default
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 }

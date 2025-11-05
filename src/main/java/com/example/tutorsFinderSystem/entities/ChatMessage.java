@@ -33,9 +33,11 @@ public class ChatMessage {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content; // nội dung tin nhắn (có thể null nếu chỉ gửi sticker)
 
+    @Builder.Default
     @Column(name = "sent_at")
     private LocalDateTime sentAt = LocalDateTime.now();
 
+    @Builder.Default
     @Column(name = "is_read")
     private Boolean isRead = false; // đã đọc hay chưa
 }

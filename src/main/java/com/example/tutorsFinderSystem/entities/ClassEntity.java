@@ -22,11 +22,13 @@ public class ClassEntity {
     @JoinColumn(name = "request_id")
     private ClassRequest classRequest;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private ClassStatus status = ClassStatus.PENDING;
     // PENDING, ONGOING, COMPLETED, CANCELLED
 
+    @Builder.Default
     @Column(name = "completed_sessions")
     private Integer completedSessions = 0;
 }

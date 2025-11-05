@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "tutors")
@@ -37,8 +38,16 @@ public class Tutor {
     @Column(name = "university", nullable = false, length = 255)
     private String university;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tutor_certificates", joinColumns = @JoinColumn(name = "tutor_id"))
+    @Column(name = "certificate", length = 255)
+    private List<String> certificates;
+
     @Column(name = "proof_file_url", nullable = false, length = 500)
     private String proofFileUrl;
+
+    @Column(name = "educational_level", nullable = false, length = 255)
+    private String educationalLevel;
 
     @Column(name = "introduction", columnDefinition = "TEXT")
     private String introduction;
@@ -46,6 +55,7 @@ public class Tutor {
     @Column(name = "price_per_hour", nullable = false)
     private Integer pricePerHour;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "verification_status", length = 20)
     private TutorStatus verificationStatus = TutorStatus.PENDING;
@@ -57,6 +67,7 @@ public class Tutor {
             joinColumns = @JoinColumn(name = "tutor_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
+    @Builder.Default
     private Set<Subject> subjects = new HashSet<>();
     
 }

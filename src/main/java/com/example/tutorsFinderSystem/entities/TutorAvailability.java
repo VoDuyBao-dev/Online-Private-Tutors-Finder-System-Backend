@@ -29,14 +29,17 @@ public class TutorAvailability {
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;   // ngày + giờ kết thúc
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private TutorAvailabilityStatus status = TutorAvailabilityStatus.AVAILABLE; 
     // AVAILABLE, BOOKED, CANCELLED
 
+    @Builder.Default
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Builder.Default
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 }
