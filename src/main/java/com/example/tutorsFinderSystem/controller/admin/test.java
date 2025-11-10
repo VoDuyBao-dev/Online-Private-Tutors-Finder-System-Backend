@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class test {
     @GetMapping("/users")
     public ApiResponse<String> getUsers() {
-
         return ApiResponse.<String>builder()
                 .code(200)
                 .message("Lấy danh sách người dùng thành công")

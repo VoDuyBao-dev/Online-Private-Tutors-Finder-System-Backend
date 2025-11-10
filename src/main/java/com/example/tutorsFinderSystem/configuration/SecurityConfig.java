@@ -7,12 +7,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired
+    private CustomJwtDecoder customJwtDecoder;
 
     // Bean PasswordEncoder
     @Bean
@@ -30,20 +37,41 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/auth/**",    // cho phép tất cả API auth (đăng ký, đăng nhập)
                     "/files/**",          // cho phép truy cập file ảnh/pdf
-                    "/error"              // tránh lỗi 401 khi gặp /error
+                    "/error",              // tránh lỗi 401 khi gặp /error
+                        "/admin/test/**"
                 ).permitAll()
                 // tất cả request khác phải đăng nhập
                 .anyRequest().authenticated()
+            )
+//                xử lý xác thực jwt
+            .oauth2ResourceServer(oauth2 -> oauth2
+                    .jwt(jwt -> jwt.decoder(customJwtDecoder))
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             )
 //                xử lý khi người dùng chưa xác thực được
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             )
 
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
             // có thể tạm thời tắt form login để test API
             .formLogin(form -> form.disable())
             .httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        config.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
