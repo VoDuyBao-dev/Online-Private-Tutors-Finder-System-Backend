@@ -1,5 +1,6 @@
-package com.example.tutorsFinderSystem.security;
+package com.example.tutorsFinderSystem.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     // Bean PasswordEncoder
     @Bean
@@ -31,6 +35,11 @@ public class SecurityConfig {
                 // tất cả request khác phải đăng nhập
                 .anyRequest().authenticated()
             )
+//                xử lý khi người dùng chưa xác thực được
+            .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            )
+
             // có thể tạm thời tắt form login để test API
             .formLogin(form -> form.disable())
             .httpBasic(httpBasic -> httpBasic.disable());
