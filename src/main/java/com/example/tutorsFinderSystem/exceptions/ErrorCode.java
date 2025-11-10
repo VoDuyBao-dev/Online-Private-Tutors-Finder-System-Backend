@@ -82,7 +82,7 @@ public enum ErrorCode {
                     
     FILE_SAVE_ERROR(2200, "Error saving file", HttpStatus.INTERNAL_SERVER_ERROR),
     URL_REQUIRE(2201, "File URL is required", HttpStatus.BAD_REQUEST),
-
+    STACK_OVERFLOW(2202, "Recursive data detected or infinite loop while processing the request.", HttpStatus.INTERNAL_SERVER_ERROR),
 
     ;
 
