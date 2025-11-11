@@ -4,6 +4,7 @@ import com.example.tutorsFinderSystem.enums.Role;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -43,12 +44,15 @@ public class User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
-    private UserStatus status = UserStatus.ACTIVE; // ACTIVE, INACTIVE, LOCKED
+    private UserStatus status = UserStatus.ACTIVE; // ACTIVE, INACTIVE, LOCKED, PENDING_ACTIVATION
 
     @Builder.Default
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    private LocalDateTime activationExpiryTime;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
     // Relationships --------------------
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
