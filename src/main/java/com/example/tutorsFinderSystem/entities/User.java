@@ -53,6 +53,9 @@ public class User {
     private LocalDateTime activationExpiryTime;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    // Dùng để xác định tài khoản có được phép đăng nhập không
+    private Boolean enabled = false;
+
     // Relationships --------------------
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
