@@ -27,6 +27,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     // Cho phép API công khai
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,6 +54,7 @@ public class SecurityConfig {
 //                xử lý khi người dùng chưa xác thực được
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .accessDeniedHandler(customAccessDeniedHandler)
             )
 
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
