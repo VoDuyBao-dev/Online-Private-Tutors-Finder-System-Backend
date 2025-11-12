@@ -7,6 +7,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.swing.Spring;
+
 @Entity
 @Table(name = "class_requests")
 @Getter

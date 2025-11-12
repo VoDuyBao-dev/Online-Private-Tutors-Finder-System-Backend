@@ -17,16 +17,15 @@ public class TutorRegisterController {
 
     private final TutorRegisterService tutorRegisterService;
 
-    @PostMapping(value = "/register",
-        consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(value = "/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> registerTutor(
             @RequestPart("data") TutorRegisterRequest request,
             @RequestPart(value = "avatarFile", required = false) MultipartFile avatarFile,
             @RequestPart(value = "proofFile", required = false) MultipartFile proofFile) {
         try {
             System.out.println("Request received:");
-        System.out.println("   Avatar file: " + (avatarFile != null ? avatarFile.getOriginalFilename() : "null"));
-        System.out.println("   Proof file: " + (proofFile != null ? proofFile.getOriginalFilename() : "null"));
+            System.out.println("   Avatar file: " + (avatarFile != null ? avatarFile.getOriginalFilename() : "null"));
+            System.out.println("   Proof file: " + (proofFile != null ? proofFile.getOriginalFilename() : "null"));
             request.setAvatarFile(avatarFile);
             request.setProofFile(proofFile);
 
