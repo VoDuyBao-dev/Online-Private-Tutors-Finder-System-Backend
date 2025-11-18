@@ -26,7 +26,7 @@ public class TutorRegisterResponse {
     private String educationalLevel;
     private String introduction;
     private Integer pricePerHour;
-    private TutorStatus verificationStatus;
+    private String verificationStatus;
     private List<String> subjects;
     
 }
