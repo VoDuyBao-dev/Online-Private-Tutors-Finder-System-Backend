@@ -15,64 +15,68 @@ public class TutorDashboardService {
 
 	private final TutorRepository tutorRepository;
 	private final ClassRequestRepository classRequestRepository;
+	private final ClassRepository classRepository;
 	private final RatingRepository ratingRepository;
-	private final TutorAvailabilityRepository tutorAvailabilityRepository;
+	private final TutorAvailabilityRepository availabilityRepository;
 	private final TutorDashboardMapper mapper;
 	private final UserService userService;
-	private final UserRepository userRepository;
 
-	public TutorDashboardResponse getDashboard(int page, int size) {
-		// Lấy thông tin của người dùng đang đăng nhập
-		User currentUser = userService.getCurrentUser();
-		Long userId = currentUser.getUserId();
-
-		System.out.println("Current User ID: "
-				+ currentUser.getUserId()
-				+ " | Type: "
-				+ currentUser.getUserId().getClass().getName());
-
-		userRepository.findById(userId)
-				.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-
-// Tìm thông tin của gia sư hiện đã đăng nhập 
-		Tutor tutor = tutorRepository.findByUserUserId(userId)
+	private Tutor getTutor() {
+		Long userId = userService.getCurrentUser().getUserId();
+		return tutorRepository.findByUserUserId(userId)
 				.orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+	}
 
-		var tutorInfo = mapper.toTutorInfo(tutor);
+	public TutorDashboardResponse.TutorInfo getTutorInfo() {
+		Tutor tutor = getTutor();
 
-// Đánh giá trung bình 
-		Double avgRating = ratingRepository.getAverageRating(tutor.getTutorId());
-		System.out.println(avgRating);
-		tutorInfo.setAverageRating(avgRating == null ? 0.0 : avgRating);
+		var info = mapper.toTutorInfo(tutor);
+		Double avg = ratingRepository.getAverageRating(tutor.getTutorId());
 
-// Thông tin lịch dạy 
-		int scheduleCount = tutorAvailabilityRepository.countSchedules(tutor.getTutorId());
-		int newRequests = classRequestRepository.countNewRequests(tutor.getTutorId());
+		info.setAverageRating(avg == null ? 0 : avg);
+		return info;
+	}
 
-// Phân trang cho danh sách lớp dạy 
+	// public TutorDashboardResponse.Statistics getStats() {
+	// Tutor tutor = getTutor();
+
+	// int scheduleCount =
+	// availabilityRepository.countSchedules(tutor.getTutorId());
+	// int newRequests =
+	// classRequestRepository.countNewRequests(tutor.getTutorId());
+	// int totalClasses = classRepository.countOngoingClasses(tutor.getTutorId());
+
+	// return new TutorDashboardResponse.Statistics(scheduleCount, newRequests,
+	// totalClasses);
+	// }
+
+	public int getWeeklyScheduleCount() {
+
+		Tutor tutor = getTutor();
+
+		return availabilityRepository.countWeeklySchedules(tutor.getTutorId());
+	}
+
+	public int getNewRequestCount() {
+		Tutor tutor = getTutor();
+		return classRequestRepository.countNewRequests(tutor.getTutorId());
+	}
+
+	public PagedResponse<TutorDashboardResponse.ClassItem> getActiveClasses(int page, int size) {
+		Tutor tutor = getTutor();
+
 		Pageable pageable = PageRequest.of(page, size);
+		Page<ClassEntity> pageData = classRepository.findOngoingClasses(tutor.getTutorId(), pageable);
 
-		Page<ClassRequest> pageData = classRequestRepository.findActiveClasses(tutor.getTutorId(), pageable);
-
-		var classItems = pageData.getContent()
-				.stream()
+		var items = pageData.getContent().stream()
 				.map(mapper::toClassItem)
 				.toList();
 
-		PagedResponse<TutorDashboardResponse.ClassItem> pagedClasses = PagedResponse.of(
-				classItems,
+		return PagedResponse.of(
+				items,
 				pageData.getNumber(),
 				pageData.getSize(),
 				pageData.getTotalElements(),
 				pageData.getTotalPages());
-
-		return TutorDashboardResponse.builder()
-				.tutorInfo(tutorInfo)
-				.stats(new TutorDashboardResponse.Statistics(
-						scheduleCount,
-						newRequests,
-						(int) pageData.getTotalElements()))
-				.activeClasses(pagedClasses)
-				.build();
 	}
 }

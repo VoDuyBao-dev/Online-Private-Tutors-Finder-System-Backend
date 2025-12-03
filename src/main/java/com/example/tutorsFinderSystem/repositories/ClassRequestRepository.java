@@ -9,15 +9,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClassRequestRepository extends JpaRepository<ClassRequest, Long> {
 
-    @Query("""
-        SELECT cr 
-        FROM ClassRequest cr
-        JOIN FETCH cr.learner l
-        JOIN FETCH cr.subject s
-        WHERE cr.tutor.tutorId = :tutorId 
-          AND cr.status = 'CONFIRMED'
-    """)
-    Page<ClassRequest> findActiveClasses(Long tutorId, Pageable pageable);
+    // @Query("""
+    //     SELECT cr 
+    //     FROM ClassRequest cr
+    //     JOIN FETCH cr.learner l
+    //     JOIN FETCH cr.subject s
+    //     WHERE cr.tutor.tutorId = :tutorId 
+    //       AND cr.status = 'CONFIRMED'
+    // """)
+    // Page<ClassRequest> findActiveClasses(Long tutorId, Pageable pageable);
 
     @Query("""
         SELECT COUNT(cr)
@@ -26,4 +26,12 @@ public interface ClassRequestRepository extends JpaRepository<ClassRequest, Long
           AND cr.status = 'PENDING'
     """)
     int countNewRequests(Long tutorId);
+
+    // @Query("""
+    //     SELECT COUNT(cr)
+    //     FROM ClassRequest cr
+    //     WHERE cr.tutor.tutorId = :tutorId
+    //       AND cr.status = 'CONFIRMED'
+    // """)
+    // int countActiveClasses(Long tutorId);
 }

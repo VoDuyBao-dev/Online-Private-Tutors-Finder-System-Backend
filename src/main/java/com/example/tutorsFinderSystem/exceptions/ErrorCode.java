@@ -74,23 +74,34 @@ public enum ErrorCode {
     // RESPONSE VALIDATION (TUTOR REGISTER RESPONSE)
     TUTOR_ID_REQUIRED(2050, "Tutor ID is missing in response", HttpStatus.INTERNAL_SERVER_ERROR),
     VERIFICATION_STATUS_REQUIRED(2051, "Verification status is missing in response", HttpStatus.INTERNAL_SERVER_ERROR),
-            
-    
-    // TUTOR REGISTER EXCEPTION 
+
+    // TUTOR REGISTER EXCEPTION
     SUBJECT_NOT_SELECTED(2100, "No subjects selected", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH(2101, "Password and confirm password do not match", HttpStatus.BAD_REQUEST),
-                    
+
     FILE_SAVE_ERROR(2200, "Error saving file", HttpStatus.INTERNAL_SERVER_ERROR),
     URL_REQUIRE(2201, "File URL is required", HttpStatus.BAD_REQUEST),
-    STACK_OVERFLOW(2202, "Recursive data detected or infinite loop while processing the request.", HttpStatus.INTERNAL_SERVER_ERROR),
-    SAVE_INVALIDATED_TOKEN_FAILED(2203, "save invalidated token failed", HttpStatus.INTERNAL_SERVER_ERROR), 
+    STACK_OVERFLOW(2202, "Recursive data detected or infinite loop while processing the request.",
+            HttpStatus.INTERNAL_SERVER_ERROR),
+    SAVE_INVALIDATED_TOKEN_FAILED(2203, "save invalidated token failed", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_FIELD(2204, "Dữ liệu không hợp lệ", HttpStatus.BAD_REQUEST),
-
 
     // TUTOR DASHBOARD
     TUTOR_NOT_FOUND(2300, "Tutor not found", HttpStatus.NOT_FOUND),
     INVALID_REQUEST(2303, "Invalid request", HttpStatus.BAD_REQUEST),
-    INTERNAL_ERROR(2304, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    INTERNAL_ERROR(2304, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    // E_bool admin
+    EBOOK_TITLE_REQUIRED(3001, "Title is required", HttpStatus.BAD_REQUEST),
+    EBOOK_TITLE_TOO_LONG(3002, "Title must be at most 255 characters", HttpStatus.BAD_REQUEST),
+
+    EBOOK_TYPE_REQUIRED(3003, "Ebook type is required", HttpStatus.BAD_REQUEST),
+
+    EBOOK_FILE_PATH_REQUIRED(3004, "File path is required", HttpStatus.BAD_REQUEST),
+    EBOOK_FILE_PATH_TOO_LONG(3005, "File path must be at most 255 characters", HttpStatus.BAD_REQUEST),
+
+    EBOOK_NOT_FOUND(3006, "Ebook not found", HttpStatus.NOT_FOUND),
+    EBOOK_FORBIDDEN(3007, "You do not have permission to modify this ebook", HttpStatus.FORBIDDEN),
 
     ;
 
