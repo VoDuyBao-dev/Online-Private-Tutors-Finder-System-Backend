@@ -41,6 +41,8 @@ public class SecurityConfig {
                     "/files/**",          // cho phép truy cập file ảnh/pdf
                     "/error"              // tránh lỗi 401 khi gặp /error
                 ).permitAll()
+                .requestMatchers("/tutors/**").hasAuthority("SCOPE_TUTOR")
+                .requestMatchers("/admin/**").hasAuthority("SCOPE_ADMIN")
                 // tất cả request khác phải đăng nhập
                 .anyRequest().authenticated()
             )

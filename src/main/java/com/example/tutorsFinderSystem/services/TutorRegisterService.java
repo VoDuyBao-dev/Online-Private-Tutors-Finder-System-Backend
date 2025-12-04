@@ -65,7 +65,7 @@ public class TutorRegisterService {
                 .phoneNumber(request.getPhoneNumber())
                 .avatarImage(avatarUrl)
                 .role(Role.TUTOR)
-                .status(UserStatus.ACTIVE)
+                .status(UserStatus.INACTIVE)
                 .build();
         userRepository.save(user);
 

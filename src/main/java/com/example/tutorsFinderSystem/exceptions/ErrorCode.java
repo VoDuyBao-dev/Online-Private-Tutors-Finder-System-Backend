@@ -74,16 +74,51 @@ public enum ErrorCode {
     // RESPONSE VALIDATION (TUTOR REGISTER RESPONSE)
     TUTOR_ID_REQUIRED(2050, "Tutor ID is missing in response", HttpStatus.INTERNAL_SERVER_ERROR),
     VERIFICATION_STATUS_REQUIRED(2051, "Verification status is missing in response", HttpStatus.INTERNAL_SERVER_ERROR),
-            
-    
-    // TUTOR REGISTER EXCEPTION 
+
+    // TUTOR REGISTER EXCEPTION
     SUBJECT_NOT_SELECTED(2100, "No subjects selected", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH(2101, "Password and confirm password do not match", HttpStatus.BAD_REQUEST),
-                    
+
     FILE_SAVE_ERROR(2200, "Error saving file", HttpStatus.INTERNAL_SERVER_ERROR),
     URL_REQUIRE(2201, "File URL is required", HttpStatus.BAD_REQUEST),
-    STACK_OVERFLOW(2202, "Recursive data detected or infinite loop while processing the request.", HttpStatus.INTERNAL_SERVER_ERROR),
+    STACK_OVERFLOW(2202, "Recursive data detected or infinite loop while processing the request.",
+            HttpStatus.INTERNAL_SERVER_ERROR),
     SAVE_INVALIDATED_TOKEN_FAILED(2203, "save invalidated token failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_FIELD(2204, "Dữ liệu không hợp lệ", HttpStatus.BAD_REQUEST),
+
+    // TUTOR DASHBOARD
+    TUTOR_NOT_FOUND(2300, "Tutor not found", HttpStatus.NOT_FOUND),
+    INVALID_REQUEST(2303, "Invalid request", HttpStatus.BAD_REQUEST),
+    INTERNAL_ERROR(2304, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    // E_bool admin
+    EBOOK_TITLE_REQUIRED(3001, "Title is required", HttpStatus.BAD_REQUEST),
+    EBOOK_TITLE_TOO_LONG(3002, "Title must be at most 255 characters", HttpStatus.BAD_REQUEST),
+
+    EBOOK_TYPE_REQUIRED(3003, "Ebook type is required", HttpStatus.BAD_REQUEST),
+
+    EBOOK_FILE_PATH_REQUIRED(3004, "File path is required", HttpStatus.BAD_REQUEST),
+    EBOOK_FILE_PATH_TOO_LONG(3005, "File path must be at most 255 characters", HttpStatus.BAD_REQUEST),
+
+    EBOOK_NOT_FOUND(3006, "Ebook not found", HttpStatus.NOT_FOUND),
+    EBOOK_FORBIDDEN(3007, "You do not have permission to modify this ebook", HttpStatus.FORBIDDEN),
+
+    // ========== VALIDATION – PROFILE ==========
+    FULL_NAME_REQUIRED(2001, "Họ và tên không được để trống", HttpStatus.BAD_REQUEST),
+    FULL_NAME_TOO_LONG(2002, "Họ và tên không được vượt quá 100 ký tự", HttpStatus.BAD_REQUEST),
+
+    PHONE_NUMBER_REQUIRED(2003, "Số điện thoại không được để trống", HttpStatus.BAD_REQUEST),
+    PHONE_NUMBER_INVALID(2004, "Số điện thoại không hợp lệ", HttpStatus.BAD_REQUEST),
+    // ========== BUSINESS – PROFILE ==========
+    USER_NOT_TUTOR(2102, "Tài khoản hiện tại không phải là gia sư", HttpStatus.FORBIDDEN),
+    TUTOR_PROFILE_NOT_FOUND(2103, "Không tìm thấy hồ sơ gia sư", HttpStatus.NOT_FOUND),
+    AVATAR_UPLOAD_FAILED(3402, "Không thể cập nhật ảnh đại diện", HttpStatus.INTERNAL_SERVER_ERROR),
+    AVATAR_INVALID_TYPE(3403, "Chỉ chấp nhận file JPG, PNG, JPEG", HttpStatus.BAD_REQUEST),
+    AVATAR_FILE_REQUIRED(3401, "File ảnh đại diện không được để trống", HttpStatus.BAD_REQUEST),
+    PROOF_FILE_UPLOAD_FAILED(3503, "Không thể lưu file bằng cấp", HttpStatus.INTERNAL_SERVER_ERROR),
+    PROOF_FILE_REQUIRED(3501, "File bằng cấp không được để trống", HttpStatus.BAD_REQUEST),
+    INVALID_PROOF_FILE_TYPE(3502, "File chỉ được phép là PDF, PNG hoặc JPG", HttpStatus.BAD_REQUEST),
+
     ;
 
     private int code;
