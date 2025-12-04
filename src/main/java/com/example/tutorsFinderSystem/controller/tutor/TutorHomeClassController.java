@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.controller.tutor;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/tutors/home/classes")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('SCOPE_TUTOR')")
 public class TutorHomeClassController {
 
    private final TutorDashboardService dashboardService;

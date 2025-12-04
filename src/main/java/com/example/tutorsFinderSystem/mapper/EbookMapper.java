@@ -24,16 +24,16 @@ public interface EbookMapper {
     List<EbookResponse> toEbookResponses(List<Ebook> ebooks);
 
     // Map từ request -> entity (create)
-    @Mapping(target = "ebookId", ignore = true)
-    @Mapping(target = "uploadedBy", ignore = true)   // set trong service
-    @Mapping(target = "createdAt", ignore = true)    // dùng default trong entity
+    // @Mapping(target = "ebookId", ignore = true)
+    // @Mapping(target = "uploadedBy", ignore = true)   // set trong service
+    // @Mapping(target = "createdAt", ignore = true)    // dùng default trong entity
     Ebook toEbook(EbookCreateRequest request);
 
     // Update entity từ request (update), bỏ qua field null
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "ebookId", ignore = true)
-    @Mapping(target = "uploadedBy", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
+    // @Mapping(target = "ebookId", ignore = true)
+    // @Mapping(target = "uploadedBy", ignore = true)
+    // @Mapping(target = "createdAt", ignore = true)
     void updateEbookFromRequest(EbookUpdateRequest request, @MappingTarget Ebook ebook);
 
     // Nếu cần map User -> thông tin upload khác, có thể khai báo thêm method ở đây.

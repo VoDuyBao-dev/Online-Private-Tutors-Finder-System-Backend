@@ -15,4 +15,10 @@ public interface RatingRepository extends JpaRepository<Ratings, Long> {
         WHERE cr.tutor.tutorId = :tutorId
     """)
     Double getAverageRating(Long tutorId);
+
+    @Query("""
+           SELECT COUNT(r) FROM Ratings r 
+           WHERE r.classEntity.classRequest.tutor.tutorId = :tutorId
+           """)
+    Long getTotalReviews(Long tutorId);
 }

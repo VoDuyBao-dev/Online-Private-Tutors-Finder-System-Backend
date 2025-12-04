@@ -41,9 +41,9 @@ public class TutorRegisterController {
     ) {
 
         try {
-            System.out.println("Avatar: " + (avatarFile != null ? avatarFile.getOriginalFilename() : "null"));
-            System.out.println("Proof: " + (proofFile != null ? proofFile.getOriginalFilename() : "null"));
-            System.out.println("Raw JSON: " + json);
+            // System.out.println("Avatar: " + (avatarFile != null ? avatarFile.getOriginalFilename() : "null"));
+            // System.out.println("Proof: " + (proofFile != null ? proofFile.getOriginalFilename() : "null"));
+            // System.out.println("Raw JSON: " + json);
 
             //  Parse JSON → Object
             TutorRegisterRequest request = objectMapper.readValue(json, TutorRegisterRequest.class);

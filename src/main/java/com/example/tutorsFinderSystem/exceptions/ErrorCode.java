@@ -103,6 +103,22 @@ public enum ErrorCode {
     EBOOK_NOT_FOUND(3006, "Ebook not found", HttpStatus.NOT_FOUND),
     EBOOK_FORBIDDEN(3007, "You do not have permission to modify this ebook", HttpStatus.FORBIDDEN),
 
+    // ========== VALIDATION – PROFILE ==========
+    FULL_NAME_REQUIRED(2001, "Họ và tên không được để trống", HttpStatus.BAD_REQUEST),
+    FULL_NAME_TOO_LONG(2002, "Họ và tên không được vượt quá 100 ký tự", HttpStatus.BAD_REQUEST),
+
+    PHONE_NUMBER_REQUIRED(2003, "Số điện thoại không được để trống", HttpStatus.BAD_REQUEST),
+    PHONE_NUMBER_INVALID(2004, "Số điện thoại không hợp lệ", HttpStatus.BAD_REQUEST),
+    // ========== BUSINESS – PROFILE ==========
+    USER_NOT_TUTOR(2102, "Tài khoản hiện tại không phải là gia sư", HttpStatus.FORBIDDEN),
+    TUTOR_PROFILE_NOT_FOUND(2103, "Không tìm thấy hồ sơ gia sư", HttpStatus.NOT_FOUND),
+    AVATAR_UPLOAD_FAILED(3402, "Không thể cập nhật ảnh đại diện", HttpStatus.INTERNAL_SERVER_ERROR),
+    AVATAR_INVALID_TYPE(3403, "Chỉ chấp nhận file JPG, PNG, JPEG", HttpStatus.BAD_REQUEST),
+    AVATAR_FILE_REQUIRED(3401, "File ảnh đại diện không được để trống", HttpStatus.BAD_REQUEST),
+    PROOF_FILE_UPLOAD_FAILED(3503, "Không thể lưu file bằng cấp", HttpStatus.INTERNAL_SERVER_ERROR),
+    PROOF_FILE_REQUIRED(3501, "File bằng cấp không được để trống", HttpStatus.BAD_REQUEST),
+    INVALID_PROOF_FILE_TYPE(3502, "File chỉ được phép là PDF, PNG hoặc JPG", HttpStatus.BAD_REQUEST),
+
     ;
 
     private int code;
