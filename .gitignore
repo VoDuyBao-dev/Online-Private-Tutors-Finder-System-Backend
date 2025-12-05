@@ -76,3 +76,7 @@ logs/
 
 # Không push file bí mật
 src/main/resources/application-secret.properties
+
+# Google Drive Credentials
+google-drive-credentials.json
+
