@@ -3,13 +3,13 @@ package com.example.tutorsFinderSystem.services;
 import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
-import com.example.tutorsFinderSystem.dto.response.AdminUpdateStatusResponse;
+import com.example.tutorsFinderSystem.dto.response.AdminTutorStatusUpdateResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorSummaryResponse;
 import com.example.tutorsFinderSystem.entities.Subject;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.entities.User;
 import com.example.tutorsFinderSystem.enums.Role;
-import com.example.tutorsFinderSystem.enums.TutorStatus;
+// import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
@@ -28,7 +28,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Comparator;
+// import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,7 +102,7 @@ public class AdminTutorService {
 
     // 3) Cập nhật trạng thái tài khoản User của tutor
     @Transactional
-    public AdminUpdateStatusResponse updateTutorStatus(Long tutorId) {
+    public AdminTutorStatusUpdateResponse updateTutorStatus(Long tutorId) {
 
         Tutor tutor = tutorRepository.findById(tutorId)
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
@@ -119,7 +119,7 @@ public class AdminTutorService {
         user.setStatus(next);
         userRepository.save(user);
 
-        return new AdminUpdateStatusResponse(tutorId, next);
+        return new AdminTutorStatusUpdateResponse(tutorId, next);
     }
 
     // Làm tròn điểm trung bình đến 1 chữ số thập phân

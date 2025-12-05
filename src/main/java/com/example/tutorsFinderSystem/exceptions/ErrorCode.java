@@ -124,6 +124,10 @@ public enum ErrorCode {
     USER_IS_NOT_TUTOR(1406, "User is not a tutor", HttpStatus.BAD_REQUEST),
     USER_STATUS_CANNOT_TOGGLE(1410, "User status cannot be toggled", HttpStatus.BAD_REQUEST),
 
+    // ========== ADMIN MANAGE LEARNERS ==========
+    LEARNER_USER_NOT_FOUND(1505, "Learner does not have a valid user", HttpStatus.NOT_FOUND),
+    USER_IS_NOT_LEARNER(1506, "User is not a learner", HttpStatus.BAD_REQUEST),
+
     ;
 
     private int code;

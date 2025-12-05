@@ -1,7 +1,6 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.Tutor;
-import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 
 import org.springframework.data.domain.Page;
@@ -52,10 +51,8 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             """)
     List<Tutor> findByUserStatus(@Param("status") UserStatus status);
 
-    // Lấy tất cả tutor có verification_status = PENDING, sắp xếp theo ngày nộp từ
-    // cũ đến mới
-    // List<Tutor> findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatus
-    // verificationStatus);
+    // Lấy tất cả tutor có verification_status = PENDING, sắp xếp theo ngày nộp từ cũ đến mới
+    // List<Tutor> findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatusverificationStatus);
     @Query("""
                 SELECT t
                 FROM Tutor t

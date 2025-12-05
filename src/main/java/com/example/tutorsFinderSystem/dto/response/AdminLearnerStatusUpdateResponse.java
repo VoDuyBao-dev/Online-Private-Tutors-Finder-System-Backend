@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AdminUpdateStatusResponse {
-    private Long tutorId;
+public class AdminLearnerStatusUpdateResponse {
+    private Long userId;
     private UserStatus newStatus;
 }

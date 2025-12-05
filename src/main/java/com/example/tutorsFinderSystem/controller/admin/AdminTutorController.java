@@ -5,7 +5,7 @@ import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorSummaryResponse;
-import com.example.tutorsFinderSystem.dto.response.AdminUpdateStatusResponse;
+import com.example.tutorsFinderSystem.dto.response.AdminTutorStatusUpdateResponse;
 import com.example.tutorsFinderSystem.services.AdminTutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+// import java.util.List;
 
 @RestController
 @RequestMapping("/admin/tutors")
@@ -59,11 +59,11 @@ public class AdminTutorController {
 
     // 3) Cập nhật trạng thái User.status của tutor
     @PatchMapping("/{tutorId}/status")
-    public ResponseEntity<ApiResponse<AdminUpdateStatusResponse>> updateTutorStatus(@PathVariable Long tutorId) {
+    public ResponseEntity<ApiResponse<AdminTutorStatusUpdateResponse>> updateTutorStatus(@PathVariable Long tutorId) {
 
-        AdminUpdateStatusResponse result = adminTutorService.updateTutorStatus(tutorId);
+        AdminTutorStatusUpdateResponse result = adminTutorService.updateTutorStatus(tutorId);
 
-        ApiResponse<AdminUpdateStatusResponse> response = ApiResponse.<AdminUpdateStatusResponse>builder()
+        ApiResponse<AdminTutorStatusUpdateResponse> response = ApiResponse.<AdminTutorStatusUpdateResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update tutor status successfully")
                 .result(result)
