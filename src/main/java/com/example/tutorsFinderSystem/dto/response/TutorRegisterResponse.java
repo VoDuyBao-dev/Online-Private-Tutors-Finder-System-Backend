@@ -1,8 +1,6 @@
 package com.example.tutorsFinderSystem.dto.response;
 
 import com.example.tutorsFinderSystem.enums.Gender;
-import com.example.tutorsFinderSystem.enums.TutorStatus;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.List;

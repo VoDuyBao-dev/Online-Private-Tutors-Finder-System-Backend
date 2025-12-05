@@ -1,11 +1,48 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.Tutor;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
+import com.example.tutorsFinderSystem.enums.TutorStatus;
+import com.example.tutorsFinderSystem.enums.UserStatus;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Optional<Tutor> findByUserUserId(Long userId);
+
     Optional<Tutor> findByUser_Email(String email);
+
+    @Query("""
+            SELECT t
+            FROM Tutor t
+            JOIN t.user u
+            WHERE u.role = com.example.tutorsFinderSystem.enums.Role.TUTOR
+            """)
+    List<Tutor> findAllTutors();
+
+    // Lấy certificates theo tutor_id (từ bảng tutor_certificates)
+    @Query(value = """
+            SELECT certificate
+            FROM tutor_certificates
+            WHERE tutor_id = :tutorId
+            """, nativeQuery = true)
+    List<String> findCertificatesByTutorId(@Param("tutorId") Long tutorId);
+
+    // (Optional) Lọc theo status user
+    @Query("""
+            SELECT t
+            FROM Tutor t
+            JOIN t.user u
+            WHERE u.role = com.example.tutorsFinderSystem.enums.Role.TUTOR
+              AND u.status = :status
+            """)
+    List<Tutor> findByUserStatus(@Param("status") UserStatus status);
+
+
+    // Lấy tất cả tutor có verification_status = PENDING, sắp xếp theo ngày nộp từ cũ đến mới
+    List<Tutor> findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatus verificationStatus);
 }

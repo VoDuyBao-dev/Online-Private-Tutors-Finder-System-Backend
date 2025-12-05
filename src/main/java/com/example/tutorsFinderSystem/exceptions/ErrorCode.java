@@ -119,6 +119,11 @@ public enum ErrorCode {
     PROOF_FILE_REQUIRED(3501, "File bằng cấp không được để trống", HttpStatus.BAD_REQUEST),
     INVALID_PROOF_FILE_TYPE(3502, "File chỉ được phép là PDF, PNG hoặc JPG", HttpStatus.BAD_REQUEST),
 
+    // ========== ADMIN MANAGE TUTORS ==========
+    TUTOR_USER_NOT_FOUND(1405, "Tutor does not have a valid user", HttpStatus.NOT_FOUND),
+    USER_IS_NOT_TUTOR(1406, "User is not a tutor", HttpStatus.BAD_REQUEST),
+    USER_STATUS_CANNOT_TOGGLE(1410, "User status cannot be toggled", HttpStatus.BAD_REQUEST),
+
     ;
 
     private int code;
