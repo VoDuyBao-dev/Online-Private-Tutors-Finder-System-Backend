@@ -22,6 +22,4 @@ public class AdminTutorSummaryResponse {
     private List<String> subjects;     // danh sách môn (subjects.subject_name)
     private Double average_rating;     // điểm trung bình đã làm tròn 1 chữ số
 
-    // Optional: mã code hiển thị (TUT001, TUT002...)
-    private String tutor_code;
 }

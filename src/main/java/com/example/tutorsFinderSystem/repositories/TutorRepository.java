@@ -4,6 +4,8 @@ import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,14 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             """)
     List<Tutor> findAllTutors();
 
+    @Query("""
+                SELECT t
+                FROM Tutor t
+                JOIN t.user u
+                WHERE u.role = com.example.tutorsFinderSystem.enums.Role.TUTOR
+            """)
+    Page<Tutor> findAllTutorsPageable(Pageable pageable);
+
     // Lấy certificates theo tutor_id (từ bảng tutor_certificates)
     @Query(value = """
             SELECT certificate
@@ -42,7 +52,23 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             """)
     List<Tutor> findByUserStatus(@Param("status") UserStatus status);
 
+    // Lấy tất cả tutor có verification_status = PENDING, sắp xếp theo ngày nộp từ
+    // cũ đến mới
+    // List<Tutor> findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatus
+    // verificationStatus);
+    @Query("""
+                SELECT t
+                FROM Tutor t
+                JOIN t.user u
+                WHERE t.verificationStatus = com.example.tutorsFinderSystem.enums.TutorStatus.PENDING
+            """)
+    Page<Tutor> findPendingTutors(Pageable pageable);
 
-    // Lấy tất cả tutor có verification_status = PENDING, sắp xếp theo ngày nộp từ cũ đến mới
-    List<Tutor> findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatus verificationStatus);
+    @Query(value = """
+                SELECT COUNT(*)
+                FROM tutors t
+                WHERE t.verification_status = 'PENDING'
+            """, nativeQuery = true)
+    long countPendingTutors();
+
 }

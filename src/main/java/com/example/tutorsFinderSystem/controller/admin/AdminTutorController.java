@@ -1,6 +1,7 @@
 package com.example.tutorsFinderSystem.controller.admin;
 
 import com.example.tutorsFinderSystem.dto.ApiResponse;
+import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorSummaryResponse;
@@ -24,10 +25,14 @@ public class AdminTutorController {
 
     // 1) Danh sách tutor
     @GetMapping
-    public ResponseEntity<ApiResponse<List<AdminTutorSummaryResponse>>> getAllTutors() {
-        List<AdminTutorSummaryResponse> result = adminTutorService.getAllTutors();
+    public ResponseEntity<ApiResponse<PageResponse<AdminTutorSummaryResponse>>> getAllTutors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
-        ApiResponse<List<AdminTutorSummaryResponse>> response = ApiResponse.<List<AdminTutorSummaryResponse>>builder()
+        PageResponse<AdminTutorSummaryResponse> result = adminTutorService.getAllTutors(page, size);
+
+        ApiResponse<PageResponse<AdminTutorSummaryResponse>> response = ApiResponse
+                .<PageResponse<AdminTutorSummaryResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Get tutor list successfully")
                 .result(result)
@@ -69,10 +74,14 @@ public class AdminTutorController {
 
     // 4) Danh sách tutor đang chờ duyệt
     @GetMapping("/pending")
-    public ResponseEntity<ApiResponse<List<AdminTutorPendingResponse>>> getPendingTutors() {
-        List<AdminTutorPendingResponse> result = adminTutorService.getPendingTutorApplications();
+    public ResponseEntity<ApiResponse<PageResponse<AdminTutorPendingResponse>>> getPendingTutors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
-        ApiResponse<List<AdminTutorPendingResponse>> response = ApiResponse.<List<AdminTutorPendingResponse>>builder()
+        PageResponse<AdminTutorPendingResponse> result = adminTutorService.getPendingTutorApplications(page, size);
+
+        ApiResponse<PageResponse<AdminTutorPendingResponse>> response = ApiResponse
+                .<PageResponse<AdminTutorPendingResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Get pending tutor applications successfully")
                 .result(result)

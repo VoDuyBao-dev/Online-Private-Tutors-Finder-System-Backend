@@ -20,5 +20,4 @@ public class AdminTutorPendingResponse {
 
     // Thông tin bổ sung cho UI
     private List<String> subjects;  // subjects.subject_name
-    private String pending_code;    // PEND001, PEND002, ...
 }

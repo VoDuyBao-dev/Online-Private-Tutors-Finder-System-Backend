@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.services;
 
+import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminUpdateStatusResponse;
@@ -18,7 +19,12 @@ import com.example.tutorsFinderSystem.repositories.TutorRepository;
 import com.example.tutorsFinderSystem.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -37,22 +43,33 @@ public class AdminTutorService {
 
     // 1) Danh sách tutor cho admin
     @Transactional
-    public List<AdminTutorSummaryResponse> getAllTutors() {
-        List<Tutor> tutors = tutorRepository.findAllTutors();
+    public PageResponse<AdminTutorSummaryResponse> getAllTutors(int page, int size) {
 
-        return tutors.stream()
+        Pageable pageable = PageRequest.of(page, size, Sort.by("user.updatedAt").descending());
+
+        Page<Tutor> tutorPage = tutorRepository.findAllTutorsPageable(pageable);
+
+        List<AdminTutorSummaryResponse> items = tutorPage.getContent().stream()
                 .map(tutor -> {
                     Double avg = ratingRepository.getAverageRating(tutor.getTutorId());
                     Double rounded = roundOneDecimal(avg);
 
                     List<String> subjects = tutor.getSubjects().stream()
                             .map(Subject::getSubjectName)
-                            .sorted(Comparator.naturalOrder())
-                            .collect(Collectors.toList());
+                            .sorted()
+                            .toList();
 
                     return adminTutorMapper.toSummaryResponse(tutor, subjects, rounded);
                 })
-                .collect(Collectors.toList());
+                .toList();
+
+        return PageResponse.<AdminTutorSummaryResponse>builder()
+                .items(items)
+                .page(page)
+                .size(size)
+                .totalItems(tutorPage.getTotalElements())
+                .totalPages(tutorPage.getTotalPages())
+                .build();
     }
 
     // 2) Chi tiết tutor
@@ -115,20 +132,31 @@ public class AdminTutorService {
 
     // Lấy danh sách tutor đang chờ duyệt
     @Transactional
-    public List<AdminTutorPendingResponse> getPendingTutorApplications() {
-        List<Tutor> pendingTutors = tutorRepository
-                .findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatus.PENDING);
+    public PageResponse<AdminTutorPendingResponse> getPendingTutorApplications(int page, int size) {
 
-        return pendingTutors.stream()
+        Pageable pageable = PageRequest.of(page, size, Sort.by("user.createdAt").ascending());
+
+        Page<Tutor> tutorPage = tutorRepository.findPendingTutors(pageable);
+
+        List<AdminTutorPendingResponse> items = tutorPage.getContent().stream()
                 .map(tutor -> {
-                    // Lấy tên môn từ quan hệ Tutor -> subjects
+
                     List<String> subjects = tutor.getSubjects().stream()
                             .map(Subject::getSubjectName)
-                            .sorted(Comparator.naturalOrder())
-                            .collect(Collectors.toList());
+                            .sorted()
+                            .toList();
 
                     return adminTutorMapper.toPendingResponse(tutor, subjects);
                 })
-                .collect(Collectors.toList());
+                .toList();
+
+        return PageResponse.<AdminTutorPendingResponse>builder()
+                .items(items)
+                .page(page)
+                .size(size)
+                .totalItems(tutorPage.getTotalElements())
+                .totalPages(tutorPage.getTotalPages())
+                .build();
     }
+
 }
