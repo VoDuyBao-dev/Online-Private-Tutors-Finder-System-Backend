@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.services;
 
+import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.request.EbookCreateRequest;
 import com.example.tutorsFinderSystem.dto.request.EbookUpdateRequest;
 import com.example.tutorsFinderSystem.dto.response.EbookResponse;
@@ -11,6 +12,11 @@ import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.EbookMapper;
 import com.example.tutorsFinderSystem.repositories.EbookRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,25 +75,35 @@ public class EbookService {
         return ebookMapper.toEbookResponse(ebook);
     }
 
-    
     @Transactional(readOnly = true)
-    public List<EbookResponse> getAllEbooks(EbookType type, String keyword) {
+    public PageResponse<EbookResponse> getAllEbooks(EbookType type, String keyword, int page, int size) {
 
-        List<Ebook> ebooks;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Ebook> ebookPage;
 
         boolean hasType = type != null;
         boolean hasKeyword = keyword != null && !keyword.isBlank();
 
         if (hasType && hasKeyword) {
-            ebooks = ebookRepository.findByTypeAndTitleContainingIgnoreCase(type, keyword.trim());
+            ebookPage = ebookRepository.findByTypeAndTitleContainingIgnoreCase(type, keyword.trim(), pageable);
         } else if (hasType) {
-            ebooks = ebookRepository.findByType(type);
+            ebookPage = ebookRepository.findByType(type, pageable);
         } else if (hasKeyword) {
-            ebooks = ebookRepository.findByTitleContainingIgnoreCase(keyword.trim());
+            ebookPage = ebookRepository.findByTitleContainingIgnoreCase(keyword.trim(), pageable);
         } else {
-            ebooks = ebookRepository.findAll();
+            ebookPage = ebookRepository.findAll(pageable);
         }
 
-        return ebookMapper.toEbookResponses(ebooks);
+        List<EbookResponse> items = ebookMapper.toEbookResponses(ebookPage.getContent());
+
+        return PageResponse.<EbookResponse>builder()
+                .items(items)
+                .page(page)
+                .size(size)
+                .totalItems(ebookPage.getTotalElements())
+                .totalPages(ebookPage.getTotalPages())
+                .build();
     }
+
 }
