@@ -19,6 +19,6 @@ public class EbookUpdateRequest {
 
     private EbookType type;
 
-    @Size(max = 255, message = "EBOOK_FILE_PATH_TOO_LONG")
-    private String filePath;
+    // @Size(max = 255, message = "EBOOK_FILE_PATH_TOO_LONG")
+    // private String filePath;
 }

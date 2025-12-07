@@ -99,6 +99,7 @@ public class GoogleDriveService {
         try {
             drive.files()
                     .delete(fileId)
+                    .setSupportsAllDrives(true) // CỰC KỲ QUAN TRỌNG
                     .execute();
         } catch (Exception e) {
             throw new IOException("Failed to delete file from Google Drive: " + e.getMessage(), e);
