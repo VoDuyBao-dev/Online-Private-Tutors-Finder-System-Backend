@@ -152,7 +152,7 @@ public class TutorProfileService {
         tutor.setUniversity(req.getUniversity());
         tutor.setIntroduction(req.getIntroduction());
         tutor.setPricePerHour(req.getPricePerHour());
-        tutor.setProofFileUrl(fileUrl);
+        // tutor.setProofFileUrl(fileUrl);
         // tutor.setCertificates(req.getCertificates());
 
         tutorRepository.save(tutor);

@@ -43,9 +43,6 @@ public class TutorRegisterRequest {
     @Size(max = 100, message = "UNIVERSITY_TOO_LONG")
     private String university;
 
-    @NotEmpty(message = "CERTIFICATES_REQUIRED")
-    private List<@NotBlank(message = "CERTIFICATE_NAME_REQUIRED") String> certificates;
-
     @NotBlank(message = "INTRODUCTION_REQUIRED")
     private String introduction;
 
@@ -54,17 +51,15 @@ public class TutorRegisterRequest {
     @Max(value = 1000000, message = "PRICE_TOO_HIGH")
     private Integer pricePerHour;
 
-
     @NotEmpty(message = "SUBJECTS_REQUIRED")
     private List<@NotNull(message = "SUBJECT_ID_REQUIRED") Long> subjectIds;
 
-
     @NotNull(message = "PROOF_URL_REQUIRED")
-    private MultipartFile avatarFile;    // ảnh đại diện (.jpg, .png, ...)
+    private MultipartFile avatarFile; // ảnh đại diện (.jpg, .png, ...)
 
-    @NotNull(message = "PROOF_URL_REQUIRED")
-    private MultipartFile proofFile;     // file PDF chứng minh (bằng cấp, giấy phép,...)
+    private List<MultipartFile> certificateFiles;
+    private List<String> certificateNames;
 
-    @NotBlank(message = "EDUCATIONAL_LEVEL_REQUIRED")   
+    @NotBlank(message = "EDUCATIONAL_LEVEL_REQUIRED")
     private String educationalLevel;
 }

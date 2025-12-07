@@ -17,5 +17,5 @@ public class TutorPersonalInfoResponse {
     private String phoneNumber;
     private String address;
     private Gender gender;
-    private String avatarImage;
+    private String avatarUrl;
 }
