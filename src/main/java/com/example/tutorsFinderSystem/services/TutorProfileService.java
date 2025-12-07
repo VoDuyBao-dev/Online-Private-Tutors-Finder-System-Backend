@@ -213,7 +213,7 @@ public class TutorProfileService {
             throw new AppException(ErrorCode.AVATAR_INVALID_TYPE);
         }
 
-        // UPLOAD GOOGLE DRIVE — GIỐNG RegisterService
+        // UPLOAD GOOGLE DRIVE 
         String avatarUrl;
         try {
             avatarUrl = googleDriveService.upload(avatarFile, "avatars");

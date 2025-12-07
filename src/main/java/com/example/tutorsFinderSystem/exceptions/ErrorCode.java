@@ -98,8 +98,8 @@ public enum ErrorCode {
 
     EBOOK_TYPE_REQUIRED(3003, "Ebook type is required", HttpStatus.BAD_REQUEST),
 
-    EBOOK_FILE_PATH_REQUIRED(3004, "File path is required", HttpStatus.BAD_REQUEST),
-    EBOOK_FILE_PATH_TOO_LONG(3005, "File path must be at most 255 characters", HttpStatus.BAD_REQUEST),
+    EBOOK_FILE_REQUIRED(3004, "File is required", HttpStatus.BAD_REQUEST),
+    // EBOOK_FILE_PATH_TOO_LONG(3005, "File path must be at most 255 characters", HttpStatus.BAD_REQUEST),
 
     EBOOK_NOT_FOUND(3006, "Ebook not found", HttpStatus.NOT_FOUND),
     EBOOK_FORBIDDEN(3007, "You do not have permission to modify this ebook", HttpStatus.FORBIDDEN),

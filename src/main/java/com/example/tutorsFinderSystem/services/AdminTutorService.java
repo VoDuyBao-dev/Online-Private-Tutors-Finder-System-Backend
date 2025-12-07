@@ -1,20 +1,25 @@
 package com.example.tutorsFinderSystem.services;
 
 import com.example.tutorsFinderSystem.dto.PageResponse;
+import com.example.tutorsFinderSystem.dto.response.AdminDetailPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorStatusUpdateResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorSummaryResponse;
 import com.example.tutorsFinderSystem.entities.Subject;
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.entities.TutorCertificateFile;
 import com.example.tutorsFinderSystem.entities.User;
+import com.example.tutorsFinderSystem.enums.CertificateStatus;
 import com.example.tutorsFinderSystem.enums.Role;
+import com.example.tutorsFinderSystem.enums.TutorStatus;
 // import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.AdminTutorMapper;
 import com.example.tutorsFinderSystem.repositories.RatingRepository;
+import com.example.tutorsFinderSystem.repositories.TutorCertificateFileRepository;
 import com.example.tutorsFinderSystem.repositories.TutorRepository;
 import com.example.tutorsFinderSystem.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -39,6 +44,7 @@ public class AdminTutorService {
     private final TutorRepository tutorRepository;
     private final UserRepository userRepository;
     private final RatingRepository ratingRepository;
+    private final TutorCertificateFileRepository tutorCertificateFileRepository;
     private final AdminTutorMapper adminTutorMapper;
 
     // 1) Danh sách tutor cho admin
@@ -95,7 +101,8 @@ public class AdminTutorService {
                 .sorted()
                 .collect(Collectors.toList());
 
-        // List<String> certificates = tutorRepository.findCertificatesByTutorId(tutorId);
+        // List<String> certificates =
+        // tutorRepository.findCertificatesByTutorId(tutorId);
 
         return adminTutorMapper.toDetailResponse(tutor, subjects, rounded);
     }
@@ -157,6 +164,85 @@ public class AdminTutorService {
                 .totalItems(tutorPage.getTotalElements())
                 .totalPages(tutorPage.getTotalPages())
                 .build();
+    }
+
+    @Transactional
+    public AdminDetailPendingResponse getTutorPendingDetail(Long tutorId) {
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+
+        User user = tutor.getUser();
+        if (user == null) {
+            throw new AppException(ErrorCode.TUTOR_USER_NOT_FOUND);
+        }
+
+        if (user.getRole() != Role.TUTOR) {
+            throw new AppException(ErrorCode.USER_IS_NOT_TUTOR);
+        }
+
+        List<String> subjects = tutor.getSubjects().stream()
+                .map(Subject::getSubjectName)
+                .sorted()
+                .collect(Collectors.toList());
+
+        // List<String> certificates =
+        // tutorRepository.findCertificatesByTutorId(tutorId);
+
+        return adminTutorMapper.toDetailPendingResponse(tutor, subjects);
+    }
+
+    @Transactional
+    public void approveTutor(Long tutorId) {
+
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+
+        User user = tutor.getUser();
+
+        // ============================
+        // 1) Cập nhật trạng thái TUTOR
+        // ============================
+        tutor.setVerificationStatus(TutorStatus.APPROVED);
+
+        // ============================
+        // 2) Cập nhật trạng thái USER
+        // ============================
+        user.setStatus(UserStatus.ACTIVE);
+        user.setEnabled(true);
+
+        // ============================
+        // 3) Cập nhật CERTIFICATE FILES
+        // ============================
+        List<TutorCertificateFile> files = tutorCertificateFileRepository
+                .findAllByCertificate_Tutor_TutorId(tutorId);
+
+        // Không có file → bỏ qua phần này
+        if (!files.isEmpty()) {
+
+            // Tìm file mới nhất để set isActive = true
+            TutorCertificateFile newestFile = files.stream()
+                    .sorted((f1, f2) -> f2.getUploadedAt().compareTo(f1.getUploadedAt()))
+                    .findFirst()
+                    .get();
+
+            for (TutorCertificateFile file : files) {
+                file.setStatus(CertificateStatus.APPROVED);
+
+                if (file.getFileId().equals(newestFile.getFileId())) {
+                    file.setIsActive(true);
+                } else {
+                    file.setIsActive(false);
+                }
+            }
+
+            tutorCertificateFileRepository.saveAll(files);
+        }
+
+        // ============================
+        // 4) LƯU TUTOR & USER
+        // ============================
+        userRepository.save(user);
+        tutorRepository.save(tutor);
     }
 
 }
