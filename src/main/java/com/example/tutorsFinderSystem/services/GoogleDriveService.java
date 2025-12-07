@@ -3,52 +3,117 @@ package com.example.tutorsFinderSystem.services;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-// import java.io.InputStream;
 import java.util.Collections;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class GoogleDriveService {
 
-    @Autowired
-    private Drive googleDrive;
+    private final Drive drive;
 
-    // Upload file và trả về File ID của Google Drive
-    public String uploadFile(MultipartFile file, String folderId) throws IOException {
-        if (file.isEmpty()) {
-            throw new IOException("File is empty");
-        }
+    @Value("${drive.folder.avatars}")
+    private String avatarsFolder;
 
-        File fileMetadata = new File();
-        fileMetadata.setName(file.getOriginalFilename());
-        
-        // Nếu muốn lưu vào một thư mục cụ thể trên Drive, hãy truyền folderId vào
-        // Nếu không, bỏ qua dòng setParents để lưu ở thư mục gốc (Root)
-        if (folderId != null && !folderId.isEmpty()) {
-            fileMetadata.setParents(Collections.singletonList(folderId));
-        }
+    @Value("${drive.folder.certificates}")
+    private String certificatesFolder;
 
-        InputStreamContent mediaContent = new InputStreamContent(
-                file.getContentType(),
-                file.getInputStream()
-        );
+    @Value("${drive.folder.ebooks}")
+    private String ebooksFolder;
 
-        File uploadedFile = googleDrive.files().create(fileMetadata, mediaContent)
-                .setFields("id") // Chỉ cần trả về ID
-                .execute();
+    @Value("${drive.folder.stickers}")
+    private String stickersFolder;
 
-        return uploadedFile.getId();
+    private Map<String, String> folderMap() {
+        return Map.of(
+                "avatars", avatarsFolder,
+                "certificates", certificatesFolder,
+                "ebooks", ebooksFolder,
+                "stickers", stickersFolder);
     }
 
-    // Lấy nội dung file (byte array) để hiển thị ra UI
-    public byte[] getFileContent(String fileId) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        googleDrive.files().get(fileId).executeMediaAndDownloadTo(outputStream);
-        return outputStream.toByteArray();
+    // ---------------------------
+    // 1) UPLOAD FILE
+    // ---------------------------
+    public String upload(MultipartFile file, String folderKey) throws IOException {
+        try {
+            String folderId = folderMap().get(folderKey);
+            if (folderId == null) {
+                throw new IOException("Invalid folder key: " + folderKey);
+            }
+
+            String contentType = file.getContentType();
+            if (contentType == null || contentType.isBlank()) {
+                contentType = "application/octet-stream";
+            }
+
+            File fileMeta = new File();
+            fileMeta.setName(file.getOriginalFilename());
+            fileMeta.setParents(Collections.singletonList(folderId));
+
+            InputStreamContent mediaContent = new InputStreamContent(contentType, file.getInputStream());
+            mediaContent.setLength(file.getSize()); // quan trọng
+
+            File uploaded = drive.files()
+                    .create(fileMeta, mediaContent)
+                    .setFields("id")
+                    .setSupportsAllDrives(true)
+                    .execute();
+
+            return "https://drive.google.com/uc?id=" + uploaded.getId();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Failed to upload file to Google Drive: " + e.getMessage(), e);
+        }
+    }
+
+    // ---------------------------
+    // 2) DOWNLOAD FILE (tải về)
+    // ---------------------------
+    public byte[] download(String fileId) throws IOException {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            drive.files()
+                    .get(fileId)
+                    .executeMediaAndDownloadTo(outputStream);
+
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new IOException("Failed to download file from Google Drive: " + e.getMessage(), e);
+        }
+    }
+
+    // ---------------------------
+    // 3) DELETE FILE (xóa)
+    // ---------------------------
+    public void delete(String fileId) throws IOException {
+        try {
+            drive.files()
+                    .delete(fileId)
+                    .execute();
+        } catch (Exception e) {
+            throw new IOException("Failed to delete file from Google Drive: " + e.getMessage(), e);
+        }
+    }
+
+    // (Optional) lấy info file nếu cần
+    public File getFileInfo(String fileId) throws IOException {
+        try {
+            return drive.files()
+                    .get(fileId)
+                    .setFields("id, name, size, mimeType, webViewLink")
+                    .execute();
+        } catch (Exception e) {
+            throw new IOException("Failed to get file info from Google Drive: " + e.getMessage(), e);
+        }
     }
 }

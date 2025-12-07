@@ -5,6 +5,7 @@ import com.example.tutorsFinderSystem.enums.TutorStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -38,13 +39,8 @@ public class Tutor {
     @Column(name = "university", nullable = false, length = 255)
     private String university;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "tutor_certificates", joinColumns = @JoinColumn(name = "tutor_id"))
-    @Column(name = "certificate", length = 255)
-    private List<String> certificates;
-
-    @Column(name = "proof_file_url", nullable = false, length = 500)
-    private String proofFileUrl;
+    // @Column(name = "proof_file_url", nullable = false, length = 500)
+    // private String proofFileUrl;
 
     @Column(name = "educational_level", nullable = false, length = 255)
     private String educationalLevel;
@@ -62,12 +58,12 @@ public class Tutor {
 
     // Một gia sư có thể dạy nhiều môn học
     @ManyToMany
-    @JoinTable(
-            name = "tutor_subjects",
-            joinColumns = @JoinColumn(name = "tutor_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id")
-    )
+    @JoinTable(name = "tutor_subjects", joinColumns = @JoinColumn(name = "tutor_id"), inverseJoinColumns = @JoinColumn(name = "subject_id"))
     @Builder.Default
     private Set<Subject> subjects = new HashSet<>();
-    
+
+    @Builder.Default
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TutorCertificate> certificates = new ArrayList<>();
+
 }

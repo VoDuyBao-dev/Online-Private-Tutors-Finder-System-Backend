@@ -63,41 +63,41 @@ INSERT INTO subjects (subject_name) VALUES
 ('Tiếng Đức');
 
 
-
-INSERT INTO tutors (user_id, gender, address, university, proof_file_url, educational_level, introduction, price_per_hour, verification_status)
+INSERT INTO tutors (user_id, gender, address, university, educational_level, introduction, price_per_hour, verification_status)
 VALUES
-(2, 'FEMALE', 'Hà Nội', 'ĐH Sư phạm Hà Nội', 'proof1.pdf', 'Đại học', 'Kinh nghiệm 3 năm dạy Toán', 150000, 'APPROVED'),
-(3, 'MALE', 'TP.HCM', 'ĐH Bách Khoa', 'proof2.pdf', 'Đại học', 'Dạy Lý chuyên cấp 3', 180000, 'APPROVED'),
-(4, 'FEMALE', 'Đà Nẵng', 'ĐH Sư phạm Đà Nẵng', 'proof3.pdf', 'Đại học', 'Dạy Hóa cơ bản', 160000, 'PENDING'),
-(8, 'FEMALE', 'Cần Thơ', 'ĐH Cần Thơ', 'proof4.pdf', 'Cao học', 'Dạy tiếng Anh giao tiếp', 200000, 'APPROVED'),
-(9, 'MALE', 'Huế', 'ĐH Khoa học Huế', 'proof5.pdf', 'Đại học', 'Gia sư luyện thi TOEIC', 220000, 'APPROVED');
+(2, 'FEMALE', 'Hà Nội', 'ĐH Sư phạm Hà Nội', 'Đại học', 'Kinh nghiệm 3 năm dạy Toán', 150000, 'APPROVED'),
+(3, 'MALE', 'TP.HCM', 'ĐH Bách Khoa', 'Đại học', 'Dạy Lý chuyên cấp 3', 180000, 'APPROVED'),
+(4, 'FEMALE', 'Đà Nẵng', 'ĐH Sư phạm Đà Nẵng', 'Đại học', 'Dạy Hóa cơ bản', 160000, 'PENDING'),
+(8, 'FEMALE', 'Cần Thơ', 'ĐH Cần Thơ', 'Cao học', 'Dạy tiếng Anh giao tiếp', 200000, 'APPROVED'),
+(9, 'MALE', 'Huế', 'ĐH Khoa học Huế', 'Đại học', 'Gia sư luyện thi TOEIC', 220000, 'APPROVED');
 
 
-INSERT INTO tutor_certificates (tutor_id, certificate) VALUES
--- Tutor 1: Trần Thị B
-(1, 'Chứng chỉ Sư phạm Toán học'),
-(1, 'IELTS 6.5 Academic'),
-(1, 'Giấy chứng nhận “Dạy kèm Toán THCS nâng cao”'),
+INSERT INTO tutor_certificates (tutor_id, certificate_name, file_url) VALUES
+-- Tutor 1
+(1, 'Chứng chỉ Sư phạm Toán học', 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV1'),
+(1, 'IELTS 6.5 Academic', 'https://drive.google.com/uc?id=1XyZaBCdE234FgHiJkLmNoP'),
+(1, 'Giấy chứng nhận “Dạy kèm Toán THCS nâng cao”', 'https://drive.google.com/uc?id=1QrStUvWxYZaBcDeFgHiJ23'),
 
--- Tutor 2: Lê Văn C
-(2, 'Chứng chỉ Sư phạm Vật Lý'),
-(2, 'Giải Nhì Học sinh giỏi Vật Lý cấp tỉnh'),
-(2, 'Chứng chỉ Bồi dưỡng phương pháp dạy học STEM'),
+-- Tutor 2
+(2, 'Chứng chỉ Sư phạm Vật Lý', 'https://drive.google.com/uc?id=1MnOpQrStUvWxYzABcDeFg2'),
+(2, 'Giải Nhì Học sinh giỏi Vật Lý cấp tỉnh', 'https://drive.google.com/uc?id=1BcDeFgHiJKLmNoPqRsTuV3'),
+(2, 'Chứng chỉ Bồi dưỡng phương pháp dạy học STEM', 'https://drive.google.com/uc?id=1HiJKLmNoPqRsTuVwXyZaB4'),
 
--- Tutor 3: Phạm Thị D
-(3, 'IELTS 7.5 Academic'),
-(3, 'TESOL Certificate - Teaching English to Speakers of Other Languages'),
-(3, 'Chứng chỉ Sư phạm tiếng Anh'),
+-- Tutor 3
+(3, 'IELTS 7.5 Academic', 'https://drive.google.com/uc?id=1ZaBcDeFgHiJKLmNoPqRsT5'),
+(3, 'TESOL Certificate - Teaching English to Speakers of Other Languages', 'https://drive.google.com/uc?id=1TuVwXyZaBcDeFgHiJKLmN6'),
+(3, 'Chứng chỉ Sư phạm tiếng Anh', 'https://drive.google.com/uc?id=1LmNoPqRsTuVwXyZaBcDeF7'),
 
--- Tutor 4: Vũ Thị H
-(4, 'Chứng chỉ Sư phạm Hóa học'),
-(4, 'Chứng chỉ Ứng dụng CNTT cơ bản'),
-(4, 'Giấy chứng nhận Dạy kèm Hóa THPT nâng cao'),
+-- Tutor 4
+(4, 'Chứng chỉ Sư phạm Hóa học', 'https://drive.google.com/uc?id=1FgHiJKLmNoPqRsTuVwXyZ8'),
+(4, 'Chứng chỉ Ứng dụng CNTT cơ bản', 'https://drive.google.com/uc?id=1YzAbCdEfGhJKLmNoPqRsT9'),
+(4, 'Giấy chứng nhận Dạy kèm Hóa THPT nâng cao', 'https://drive.google.com/uc?id=1WxYzAbCdEfGhJKLmNoPqR0'),
 
--- Tutor 5: Nguyễn Minh I
-(5, 'MOS Microsoft Office Specialist'),
-(5, 'Chứng chỉ Ứng dụng CNTT nâng cao'),
-(5, 'Chứng chỉ Lập trình cơ bản – Bộ GD&ĐT');
+-- Tutor 5
+(5, 'MOS Microsoft Office Specialist', 'https://drive.google.com/uc?id=1HiLMnOpQrStUvWxYzAbCd11'),
+(5, 'Chứng chỉ Ứng dụng CNTT nâng cao', 'https://drive.google.com/uc?id=1QrStUvWxYzAbCdEfGhJKL12'),
+(5, 'Chứng chỉ Lập trình cơ bản – Bộ GD&ĐT', 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV13');
+
 
 INSERT INTO tutor_subjects (tutor_id, subject_id)
 VALUES
@@ -417,4 +417,265 @@ VALUES
 
 
 
+-- === 1. Thêm 20 users (10 tutor, 10 learner) ===
+INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, status, created_at, updated_at)
+VALUES
+  (12, 'Nguyễn Gia Tutor 1', 'tutor6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0906000001', 'ACTIVE', '2025-12-01 09:00:00', '2025-12-01 09:15:00'),
+  (13, 'Trần Minh Tutor 2', 'tutor7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907000002', 'ACTIVE', '2025-12-02 09:00:00', '2025-12-02 09:15:00'),
+  (14, 'Lê Hoài Tutor 3', 'tutor8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908000003', 'ACTIVE', '2025-12-03 09:00:00', '2025-12-03 09:15:00'),
+  (15, 'Phạm Hải Tutor 4', 'tutor9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0909000004', 'ACTIVE', '2025-12-04 09:00:00', '2025-12-04 09:15:00'),
+  (16, 'Võ Thái Tutor 5', 'tutor10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901000005', 'ACTIVE', '2025-12-05 09:00:00', '2025-12-05 09:15:00'),
+  (17, 'Đỗ Quang Tutor 6', 'tutor11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901100006', 'ACTIVE', '2025-12-06 09:00:00', '2025-12-06 09:15:00'),
+  (18, 'Hoàng Yến Tutor 7', 'tutor12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901200007', 'ACTIVE', '2025-12-07 09:00:00', '2025-12-07 09:15:00'),
+  (19, 'Bùi Phúc Tutor 8', 'tutor13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901300008', 'ACTIVE', '2025-12-08 09:00:00', '2025-12-08 09:15:00'),
+  (20, 'Đinh Trang Tutor 9', 'tutor14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901400009', 'ACTIVE', '2025-12-09 09:00:00', '2025-12-09 09:15:00'),
+  (21, 'Cao Nhã Tutor 10', 'tutor15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901500010', 'ACTIVE', '2025-12-10 09:00:00', '2025-12-10 09:15:00'),
+  (22, 'Lê Học Learner 1', 'learner6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0916000001', 'ACTIVE', '2025-12-06 10:00:00', '2025-12-06 10:10:00'),
+  (23, 'Nguyễn Học Learner 2', 'learner7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917000002', 'ACTIVE', '2025-12-07 10:00:00', '2025-12-07 10:10:00'),
+  (24, 'Trần Học Learner 3', 'learner8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0918000003', 'ACTIVE', '2025-12-08 10:00:00', '2025-12-08 10:10:00'),
+  (25, 'Phạm Học Learner 4', 'learner9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0919000004', 'ACTIVE', '2025-12-09 10:00:00', '2025-12-09 10:10:00'),
+  (26, 'Huỳnh Học Learner 5', 'learner10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911000005', 'ACTIVE', '2025-12-10 10:00:00', '2025-12-10 10:10:00'),
+  (27, 'Vũ Học Learner 6', 'learner11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911100006', 'ACTIVE', '2025-12-11 10:00:00', '2025-12-11 10:10:00'),
+  (28, 'Đoàn Học Learner 7', 'learner12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911200007', 'ACTIVE', '2025-12-12 10:00:00', '2025-12-12 10:10:00'),
+  (29, 'Lâm Học Learner 8', 'learner13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911300008', 'ACTIVE', '2025-12-13 10:00:00', '2025-12-13 10:10:00'),
+  (30, 'Đặng Học Learner 9', 'learner14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911400009', 'ACTIVE', '2025-12-14 10:00:00', '2025-12-14 10:10:00'),
+  (31, 'Ngô Học Learner 10', 'learner15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911500010', 'ACTIVE', '2025-12-15 10:00:00', '2025-12-15 10:10:00');
+
+-- === 2. Thêm 10 tutors mới (tutor_id 6–15) ===
+INSERT INTO tutors (tutor_id, address, educational_level, gender, introduction, price_per_hour, university, verification_status, user_id)
+VALUES
+  (6, 'TP.HCM', 'Đại học', 'FEMALE', 'Kinh nghiệm 2 năm dạy Toán THCS', 150000,  'ĐH Sư phạm TP.HCM', 'APPROVED', 12),
+  (7, 'Hà Nội', 'Cao học', 'MALE', 'Gia sư Lý, luyện thi vào 10', 170000, 'ĐH Sư phạm Hà Nội', 'APPROVED', 13),
+  (8, 'Đà Nẵng', 'Đại học', 'FEMALE', 'Dạy Hóa cơ bản và nâng cao', 160000, 'ĐH Bách Khoa Đà Nẵng', 'APPROVED', 14),
+  (9, 'Cần Thơ', 'Đại học', 'MALE', 'Dạy tiếng Anh giao tiếp cho sinh viên', 200000, 'ĐH Cần Thơ', 'APPROVED', 15),
+  (10, 'Huế', 'Đại học', 'FEMALE', 'Gia sư Ngữ văn, luyện thi THPT', 155000, 'ĐH Sư phạm Huế', 'APPROVED', 16),
+  (11, 'Hải Phòng', 'Đại học', 'MALE', 'Dạy Tin học cơ bản và nâng cao', 180000, 'ĐH Hàng Hải', 'APPROVED', 17),
+  (12, 'Biên Hòa', 'Đại học', 'FEMALE', 'Gia sư Toán cấp 2 và 3', 190000, 'ĐH Lạc Hồng', 'APPROVED', 18),
+  (13, 'Nha Trang', 'Đại học', 'MALE', 'Dạy Sinh học, kinh nghiệm 4 năm', 175000, 'ĐH Nha Trang', 'APPROVED', 19),
+  (14, 'Vũng Tàu', 'Đại học', 'FEMALE', 'Dạy tiếng Anh giao tiếp và IELTS', 210000, 'ĐH Bà Rịa – Vũng Tàu', 'APPROVED', 20),
+  (15, 'Buôn Ma Thuột', 'Cao học', 'MALE', 'Dạy Lý và Hóa cho học sinh THPT', 185000, 'ĐH Tây Nguyên', 'APPROVED', 21);
+
+-- === 3. Thêm 10 learners mới (learner_id 6–15) ===
+INSERT INTO learner (learner_id, address, address_detail, description, full_name, gender, grade, school, user_id)
+VALUES
+  (6, 'Hà Nội', 'Số 1 Trần Duy Hưng', 'Cần học Toán và Lý cơ bản', 'Learner 6', 'MALE', 'Lớp 7', 'THCS Nguyễn Trãi', 22),
+  (7, 'TP.HCM', '25 Lê Lợi', 'Cần cải thiện Tiếng Anh giao tiếp', 'Learner 7', 'FEMALE', 'Lớp 8', 'THCS Lê Quý Đôn', 23),
+  (8, 'Đà Nẵng', '10 Phan Chu Trinh', 'Ôn thi vào 10 môn Toán', 'Learner 8', 'MALE', 'Lớp 9', 'THCS Hòa Khánh', 24),
+  (9, 'Huế', '5 Nguyễn Huệ', 'Cần học thêm Hóa học', 'Learner 9', 'FEMALE', 'Lớp 10', 'THPT Quốc Học', 25),
+  (10, 'Cần Thơ', '20 3/2', 'Luyện thi đại học khối A', 'Learner 10', 'MALE', 'Lớp 11', 'THPT Châu Văn Liêm', 26),
+  (11, 'Hải Phòng', '15 Trần Phú', 'Cần củng cố kiến thức cơ bản', 'Learner 11', 'FEMALE', 'Lớp 6', 'THCS Ngô Quyền', 27),
+  (12, 'Nha Trang', '8 Trần Hưng Đạo', 'Luyện thi IELTS 6.5', 'Learner 12', 'MALE', 'Lớp 12', 'THPT Lê Quý Đôn', 28),
+  (13, 'Biên Hòa', '12 Đồng Khởi', 'Cần học tốt Tiếng Việt và Toán', 'Learner 13', 'FEMALE', 'Lớp 5', 'Tiểu học Tân Mai', 29),
+  (14, 'Vũng Tàu', '7 Lý Thường Kiệt', 'Cần làm quen với Tiếng Anh', 'Learner 14', 'MALE', 'Lớp 4', 'Tiểu học Lê Lợi', 30),
+  (15, 'Buôn Ma Thuột', '18 Hai Bà Trưng', 'Cần luyện viết chữ đẹp', 'Learner 15', 'FEMALE', 'Lớp 3', 'Tiểu học Nguyễn Du', 31);
+
+-- === 4. Môn dạy cho 10 tutors mới ===
+INSERT INTO tutor_subjects (tutor_id, subject_id)
+VALUES
+  (6, 1),
+  (6, 9),
+  (7, 2),
+  (7, 18),
+  (8, 3),
+  (8, 4),
+  (9, 9),
+  (9, 27),
+  (10, 1),
+  (10, 18),
+  (10, 28),
+  (11, 2),
+  (11, 3),
+  (12, 4),
+  (12, 9),
+  (13, 1),
+  (13, 27),
+  (14, 28),
+  (14, 29),
+  (15, 18),
+  (15, 9);
+
+-- === 5. Chứng chỉ cho 10 tutors mới ===
+INSERT INTO tutor_certificates (certificate_id, certificate_name, file_url, tutor_id)
+VALUES
+  (100, 'Chứng chỉ sư phạm cơ bản 6', 'https://drive.google.com/uc?id=cert_sp_06_1', 6),
+  (101, 'Chứng chỉ chuyên môn nâng cao 6', 'https://drive.google.com/uc?id=cert_cm_06_2', 6),
+  (102, 'Chứng chỉ sư phạm cơ bản 7', 'https://drive.google.com/uc?id=cert_sp_07_1', 7),
+  (103, 'Chứng chỉ chuyên môn nâng cao 7', 'https://drive.google.com/uc?id=cert_cm_07_2', 7),
+  (104, 'Chứng chỉ sư phạm cơ bản 8', 'https://drive.google.com/uc?id=cert_sp_08_1', 8),
+  (105, 'Chứng chỉ chuyên môn nâng cao 8', 'https://drive.google.com/uc?id=cert_cm_08_2', 8),
+  (106, 'Chứng chỉ sư phạm cơ bản 9', 'https://drive.google.com/uc?id=cert_sp_09_1', 9),
+  (107, 'Chứng chỉ chuyên môn nâng cao 9', 'https://drive.google.com/uc?id=cert_cm_09_2', 9),
+  (108, 'Chứng chỉ sư phạm cơ bản 10', 'https://drive.google.com/uc?id=cert_sp_10_1', 10),
+  (109, 'Chứng chỉ chuyên môn nâng cao 10', 'https://drive.google.com/uc?id=cert_cm_10_2', 10),
+  (110, 'Chứng chỉ sư phạm cơ bản 11', 'https://drive.google.com/uc?id=cert_sp_11_1', 11),
+  (111, 'Chứng chỉ chuyên môn nâng cao 11', 'https://drive.google.com/uc?id=cert_cm_11_2', 11),
+  (112, 'Chứng chỉ sư phạm cơ bản 12', 'https://drive.google.com/uc?id=cert_sp_12_1', 12),
+  (113, 'Chứng chỉ chuyên môn nâng cao 12', 'https://drive.google.com/uc?id=cert_cm_12_2', 12),
+  (114, 'Chứng chỉ sư phạm cơ bản 13', 'https://drive.google.com/uc?id=cert_sp_13_1', 13),
+  (115, 'Chứng chỉ chuyên môn nâng cao 13', 'https://drive.google.com/uc?id=cert_cm_13_2', 13),
+  (116, 'Chứng chỉ sư phạm cơ bản 14', 'https://drive.google.com/uc?id=cert_sp_14_1', 14),
+  (117, 'Chứng chỉ chuyên môn nâng cao 14', 'https://drive.google.com/uc?id=cert_cm_14_2', 14),
+  (118, 'Chứng chỉ sư phạm cơ bản 15', 'https://drive.google.com/uc?id=cert_sp_15_1', 15),
+  (119, 'Chứng chỉ chuyên môn nâng cao 15', 'https://drive.google.com/uc?id=cert_cm_15_2', 15);
+
+-- === 6. Lịch trống chi tiết (tutor_availability) cho 10 tutors mới ===
+INSERT INTO tutor_availability (tutor_id, created_at, start_time, end_time, status, updated_at)
+VALUES
+  (6, '2025-12-01 08:00:00', '2025-12-01 17:00:00', '2025-12-01 18:30:00', 'AVAILABLE', '2025-12-01 08:05:00'),
+  (6, '2025-12-02 08:00:00', '2025-12-02 18:00:00', '2025-12-02 19:30:00', 'BOOKED', '2025-12-02 08:05:00'),
+  (6, '2025-12-03 08:00:00', '2025-12-03 19:00:00', '2025-12-03 20:30:00', 'AVAILABLE', '2025-12-03 08:05:00'),
+  (7, '2025-12-03 08:00:00', '2025-12-03 17:00:00', '2025-12-03 18:30:00', 'AVAILABLE', '2025-12-03 08:05:00'),
+  (7, '2025-12-04 08:00:00', '2025-12-04 18:00:00', '2025-12-04 19:30:00', 'BOOKED', '2025-12-04 08:05:00'),
+  (7, '2025-12-05 08:00:00', '2025-12-05 19:00:00', '2025-12-05 20:30:00', 'AVAILABLE', '2025-12-05 08:05:00'),
+  (8, '2025-12-05 08:00:00', '2025-12-05 17:00:00', '2025-12-05 18:30:00', 'AVAILABLE', '2025-12-05 08:05:00'),
+  (8, '2025-12-06 08:00:00', '2025-12-06 18:00:00', '2025-12-06 19:30:00', 'BOOKED', '2025-12-06 08:05:00'),
+  (8, '2025-12-07 08:00:00', '2025-12-07 19:00:00', '2025-12-07 20:30:00', 'AVAILABLE', '2025-12-07 08:05:00'),
+  (9, '2025-12-07 08:00:00', '2025-12-07 17:00:00', '2025-12-07 18:30:00', 'AVAILABLE', '2025-12-07 08:05:00'),
+  (9, '2025-12-08 08:00:00', '2025-12-08 18:00:00', '2025-12-08 19:30:00', 'BOOKED', '2025-12-08 08:05:00'),
+  (9, '2025-12-09 08:00:00', '2025-12-09 19:00:00', '2025-12-09 20:30:00', 'AVAILABLE', '2025-12-09 08:05:00'),
+  (10, '2025-12-09 08:00:00', '2025-12-09 17:00:00', '2025-12-09 18:30:00', 'AVAILABLE', '2025-12-09 08:05:00'),
+  (10, '2025-12-10 08:00:00', '2025-12-10 18:00:00', '2025-12-10 19:30:00', 'BOOKED', '2025-12-10 08:05:00'),
+  (10, '2025-12-11 08:00:00', '2025-12-11 19:00:00', '2025-12-11 20:30:00', 'AVAILABLE', '2025-12-11 08:05:00'),
+  (11, '2025-12-11 08:00:00', '2025-12-11 17:00:00', '2025-12-11 18:30:00', 'AVAILABLE', '2025-12-11 08:05:00'),
+  (11, '2025-12-12 08:00:00', '2025-12-12 18:00:00', '2025-12-12 19:30:00', 'BOOKED', '2025-12-12 08:05:00'),
+  (11, '2025-12-13 08:00:00', '2025-12-13 19:00:00', '2025-12-13 20:30:00', 'AVAILABLE', '2025-12-13 08:05:00'),
+  (12, '2025-12-13 08:00:00', '2025-12-13 17:00:00', '2025-12-13 18:30:00', 'AVAILABLE', '2025-12-13 08:05:00'),
+  (12, '2025-12-14 08:00:00', '2025-12-14 18:00:00', '2025-12-14 19:30:00', 'BOOKED', '2025-12-14 08:05:00'),
+  (12, '2025-12-15 08:00:00', '2025-12-15 19:00:00', '2025-12-15 20:30:00', 'AVAILABLE', '2025-12-15 08:05:00'),
+  (13, '2025-12-15 08:00:00', '2025-12-15 17:00:00', '2025-12-15 18:30:00', 'AVAILABLE', '2025-12-15 08:05:00'),
+  (13, '2025-12-16 08:00:00', '2025-12-16 18:00:00', '2025-12-16 19:30:00', 'BOOKED', '2025-12-16 08:05:00'),
+  (13, '2025-12-17 08:00:00', '2025-12-17 19:00:00', '2025-12-17 20:30:00', 'AVAILABLE', '2025-12-17 08:05:00'),
+  (14, '2025-12-17 08:00:00', '2025-12-17 17:00:00', '2025-12-17 18:30:00', 'AVAILABLE', '2025-12-17 08:05:00'),
+  (14, '2025-12-18 08:00:00', '2025-12-18 18:00:00', '2025-12-18 19:30:00', 'BOOKED', '2025-12-18 08:05:00'),
+  (14, '2025-12-19 08:00:00', '2025-12-19 19:00:00', '2025-12-19 20:30:00', 'AVAILABLE', '2025-12-19 08:05:00'),
+  (15, '2025-12-19 08:00:00', '2025-12-19 17:00:00', '2025-12-19 18:30:00', 'AVAILABLE', '2025-12-19 08:05:00'),
+  (15, '2025-12-20 08:00:00', '2025-12-20 18:00:00', '2025-12-20 19:30:00', 'BOOKED', '2025-12-20 08:05:00'),
+  (15, '2025-12-01 08:00:00', '2025-12-01 19:00:00', '2025-12-01 20:30:00', 'AVAILABLE', '2025-12-01 08:05:00');
+
+-- === 7. Mẫu lịch lặp lại (tutor_recurring_pattern) cho một số tutors mới ===
+INSERT INTO tutor_recurring_pattern (tutor_id, repeat_type, days_of_week, days_of_month, start_time, end_time, repeat_start, repeat_end)
+VALUES
+  (6, 'WEEKLY', '["Monday","Wednesday"]', NULL, '18:00:00', '20:00:00', '2025-12-01', '2025-12-20'),
+  (7, 'WEEKLY', '["Tuesday","Thursday"]', NULL, '19:00:00', '21:00:00', '2025-12-02', '2025-12-19'),
+  (8, 'MONTHLY', NULL, '[5,10,15]', '17:00:00', '19:00:00', '2025-12-01', '2025-12-20'),
+  (9, 'WEEKLY', '["Friday"]', NULL, '08:00:00', '10:00:00', '2025-12-05', '2025-12-19'),
+  (10, 'MONTHLY', NULL, '[3,13]', '09:00:00', '11:00:00', '2025-12-03', '2025-12-20');
+
+-- === 8. Yêu cầu lớp học (class_requests) giữa learners & tutors mới ===
+INSERT INTO class_requests (request_id, additional_notes, created_at, end_date, sessions_per_week, start_date, status, total_sessions, type, updated_at, learner_id, subject, tutor_id)
+VALUES
+  (100, 'Yêu cầu học thêm môn với request 100', '2025-12-02 07:30:00', '2025-12-12', 2, '2025-12-02', 'CONFIRMED', 6, 'OFFICIAL', '2025-12-02 07:45:00', 6, 1, 6),
+  (101, 'Yêu cầu học thêm môn với request 101', '2025-12-03 07:30:00', '2025-12-13', 3, '2025-12-03', 'PENDING', 7, 'TRIAL', '2025-12-03 07:45:00', 7, 2, 7),
+  (102, 'Yêu cầu học thêm môn với request 102', '2025-12-04 07:30:00', '2025-12-14', 4, '2025-12-04', 'CONFIRMED', 8, 'OFFICIAL', '2025-12-04 07:45:00', 8, 3, 8),
+  (103, 'Yêu cầu học thêm môn với request 103', '2025-12-05 07:30:00', '2025-12-15', 2, '2025-12-05', 'PENDING', 9, 'TRIAL', '2025-12-05 07:45:00', 9, 4, 9),
+  (104, 'Yêu cầu học thêm môn với request 104', '2025-12-06 07:30:00', '2025-12-16', 3, '2025-12-06', 'CONFIRMED', 10, 'OFFICIAL', '2025-12-06 07:45:00', 10, 9, 10),
+  (105, 'Yêu cầu học thêm môn với request 105', '2025-12-07 07:30:00', '2025-12-17', 4, '2025-12-07', 'PENDING', 11, 'TRIAL', '2025-12-07 07:45:00', 11, 18, 11),
+  (106, 'Yêu cầu học thêm môn với request 106', '2025-12-08 07:30:00', '2025-12-18', 2, '2025-12-08', 'CONFIRMED', 12, 'OFFICIAL', '2025-12-08 07:45:00', 12, 27, 12),
+  (107, 'Yêu cầu học thêm môn với request 107', '2025-12-09 07:30:00', '2025-12-19', 3, '2025-12-09', 'PENDING', 13, 'TRIAL', '2025-12-09 07:45:00', 13, 28, 13),
+  (108, 'Yêu cầu học thêm môn với request 108', '2025-12-10 07:30:00', '2025-12-20', 4, '2025-12-10', 'CONFIRMED', 14, 'OFFICIAL', '2025-12-10 07:45:00', 14, 29, 14),
+  (109, 'Yêu cầu học thêm môn với request 109', '2025-12-11 07:30:00', '2025-12-20', 2, '2025-12-11', 'PENDING', 15, 'TRIAL', '2025-12-11 07:45:00', 15, 1, 15);
+
+-- === 9. Thời khóa biểu lớp (calendar_class) cho các request mới ===
+INSERT INTO calendar_class (calendar_class_id, created_at, day_of_week, end_time, start_time, updated_at, request_id)
+VALUES
+  (1000, '2025-12-01 06:00:00', 'MONDAY', '17:00:00', '18:30:00', '2025-12-01 06:10:00', 100),
+  (1001, '2025-12-02 06:00:00', 'TUESDAY', '18:00:00', '19:30:00', '2025-12-02 06:10:00', 100),
+  (1002, '2025-12-02 06:00:00', 'TUESDAY', '17:00:00', '18:30:00', '2025-12-02 06:10:00', 101),
+  (1003, '2025-12-03 06:00:00', 'WEDNESDAY', '18:00:00', '19:30:00', '2025-12-03 06:10:00', 101),
+  (1004, '2025-12-03 06:00:00', 'WEDNESDAY', '17:00:00', '18:30:00', '2025-12-03 06:10:00', 102),
+  (1005, '2025-12-04 06:00:00', 'THURSDAY', '18:00:00', '19:30:00', '2025-12-04 06:10:00', 102),
+  (1006, '2025-12-04 06:00:00', 'THURSDAY', '17:00:00', '18:30:00', '2025-12-04 06:10:00', 103),
+  (1007, '2025-12-05 06:00:00', 'FRIDAY', '18:00:00', '19:30:00', '2025-12-05 06:10:00', 103),
+  (1008, '2025-12-05 06:00:00', 'FRIDAY', '17:00:00', '18:30:00', '2025-12-05 06:10:00', 104),
+  (1009, '2025-12-06 06:00:00', 'SATURDAY', '18:00:00', '19:30:00', '2025-12-06 06:10:00', 104),
+  (1010, '2025-12-06 06:00:00', 'SATURDAY', '17:00:00', '18:30:00', '2025-12-06 06:10:00', 105),
+  (1011, '2025-12-07 06:00:00', 'SUNDAY', '18:00:00', '19:30:00', '2025-12-07 06:10:00', 105),
+  (1012, '2025-12-07 06:00:00', 'SUNDAY', '17:00:00', '18:30:00', '2025-12-07 06:10:00', 106),
+  (1013, '2025-12-08 06:00:00', 'MONDAY', '18:00:00', '19:30:00', '2025-12-08 06:10:00', 106),
+  (1014, '2025-12-08 06:00:00', 'MONDAY', '17:00:00', '18:30:00', '2025-12-08 06:10:00', 107),
+  (1015, '2025-12-09 06:00:00', 'TUESDAY', '18:00:00', '19:30:00', '2025-12-09 06:10:00', 107),
+  (1016, '2025-12-09 06:00:00', 'TUESDAY', '17:00:00', '18:30:00', '2025-12-09 06:10:00', 108),
+  (1017, '2025-12-10 06:00:00', 'WEDNESDAY', '18:00:00', '19:30:00', '2025-12-10 06:10:00', 108),
+  (1018, '2025-12-10 06:00:00', 'WEDNESDAY', '17:00:00', '18:30:00', '2025-12-10 06:10:00', 109),
+  (1019, '2025-12-11 06:00:00', 'THURSDAY', '18:00:00', '19:30:00', '2025-12-11 06:10:00', 109);
+
+-- === 10. Bản ghi classes cho các request mới ===
+INSERT INTO classes (class_id, completed_sessions, status, request_id)
+VALUES
+  (100, 1, 'ONGOING', 100),
+  (101, 0, 'PENDING', 101),
+  (102, 3, 'COMPLETED', 102),
+  (103, 0, 'CANCELLED', 103),
+  (104, 5, 'ONGOING', 104),
+  (105, 0, 'PENDING', 105),
+  (106, 7, 'COMPLETED', 106),
+  (107, 0, 'CANCELLED', 107),
+  (108, 9, 'ONGOING', 108),
+  (109, 0, 'PENDING', 109);
+
+-- === 11. Đánh giá (ratings) cho một số lớp mới ===
+INSERT INTO ratings (rating_id, comment, created_at, score, class_id)
+VALUES
+  (100, 'Gia sư dạy dễ hiểu, đúng giờ.', '2025-12-06 20:30:00', 4.5, 100),
+  (101, 'Buổi học diễn ra tốt, học viên tiến bộ.', '2025-12-07 20:30:00', 4.8, 101),
+  (102, 'Cần thêm bài tập về nhà, nhưng nhìn chung ổn.', '2025-12-08 20:30:00', 4.0, 102),
+  (103, 'Rất nhiệt tình và hỗ trợ ngoài giờ.', '2025-12-09 20:30:00', 5.0, 103),
+  (104, 'Bài giảng sinh động, nhiều ví dụ thực tế.', '2025-12-10 20:30:00', 4.7, 104);
+
+-- === 12. Thông báo (notifications) cho 20 users mới ===
+INSERT INTO notifications (notification_id, content, created_at, is_read, title, type, user_id)
+VALUES
+  (1000, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 12.', '2025-12-04 12:00:00', 0, 'Thông báo cho user 12', 'SYSTEM', 12),
+  (1001, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 13.', '2025-12-05 12:00:00', 1, 'Thông báo cho user 13', 'CLASS_UPDATE', 13),
+  (1002, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 14.', '2025-12-06 12:00:00', 0, 'Thông báo cho user 14', 'MESSAGE', 14),
+  (1003, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 15.', '2025-12-07 12:00:00', 1, 'Thông báo cho user 15', 'RATING', 15),
+  (1004, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 16.', '2025-12-08 12:00:00', 0, 'Thông báo cho user 16', 'REMINDER', 16),
+  (1005, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 17.', '2025-12-09 12:00:00', 1, 'Thông báo cho user 17', 'SYSTEM', 17),
+  (1006, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 18.', '2025-12-10 12:00:00', 0, 'Thông báo cho user 18', 'CLASS_UPDATE', 18),
+  (1007, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 19.', '2025-12-11 12:00:00', 1, 'Thông báo cho user 19', 'MESSAGE', 19),
+  (1008, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 20.', '2025-12-12 12:00:00', 0, 'Thông báo cho user 20', 'RATING', 20),
+  (1009, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 21.', '2025-12-13 12:00:00', 1, 'Thông báo cho user 21', 'REMINDER', 21),
+  (1010, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 22.', '2025-12-05 12:00:00', 0, 'Thông báo cho user 22', 'SYSTEM', 22),
+  (1011, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 23.', '2025-12-06 12:00:00', 1, 'Thông báo cho user 23', 'CLASS_UPDATE', 23),
+  (1012, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 24.', '2025-12-07 12:00:00', 0, 'Thông báo cho user 24', 'MESSAGE', 24),
+  (1013, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 25.', '2025-12-08 12:00:00', 1, 'Thông báo cho user 25', 'RATING', 25),
+  (1014, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 26.', '2025-12-09 12:00:00', 0, 'Thông báo cho user 26', 'REMINDER', 26),
+  (1015, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 27.', '2025-12-10 12:00:00', 1, 'Thông báo cho user 27', 'SYSTEM', 27),
+  (1016, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 28.', '2025-12-11 12:00:00', 0, 'Thông báo cho user 28', 'CLASS_UPDATE', 28),
+  (1017, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 29.', '2025-12-12 12:00:00', 1, 'Thông báo cho user 29', 'MESSAGE', 29),
+  (1018, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 30.', '2025-12-13 12:00:00', 0, 'Thông báo cho user 30', 'RATING', 30),
+  (1019, 'Đây là thông báo hệ thống liên quan đến tài khoản user_id = 31.', '2025-12-03 12:00:00', 1, 'Thông báo cho user 31', 'REMINDER', 31);
+
+-- === 13. Tin nhắn (chat_messages) giữa tutors & learners mới ===
+INSERT INTO chat_messages (message_id, content, is_read, sent_at, receiver_id, sender_id, sticker_id)
+VALUES
+  (1000, 'Chào thầy/cô, em muốn hỏi về lịch học ạ.', 0, '2025-12-03 19:00:00', 12, 22, NULL),
+  (1001, NULL, 1, '2025-12-03 19:10:00', 22, 12, 1),
+  (1002, 'Buổi tối thứ 3 cô còn trống không ạ?', 0, '2025-12-04 19:00:00', 13, 23, NULL),
+  (1003, NULL, 1, '2025-12-04 19:10:00', 23, 13, 2),
+  (1004, 'Thầy cho em thêm bài tập được không ạ?', 0, '2025-12-05 19:00:00', 14, 24, NULL),
+  (1005, NULL, 1, '2025-12-05 19:10:00', 24, 14, 3),
+  (1006, 'Em cảm ơn thầy vì buổi học hôm trước.', 0, '2025-12-06 19:00:00', 15, 25, NULL),
+  (1007, NULL, 1, '2025-12-06 19:10:00', 25, 15, 4),
+  (1008, 'Tuần này mình có thể học thêm 1 buổi không ạ?', 0, '2025-12-07 19:00:00', 16, 26, NULL),
+  (1009, NULL, 1, '2025-12-07 19:10:00', 26, 16, 5),
+  (1010, 'Em bận thi nên xin dời lịch ạ.', 0, '2025-12-08 19:00:00', 17, 27, NULL),
+  (1011, NULL, 1, '2025-12-08 19:10:00', 27, 17, 1),
+  (1012, 'Thầy/cô cho em xin tài liệu ôn tập với ạ.', 0, '2025-12-09 19:00:00', 18, 28, NULL),
+  (1013, NULL, 1, '2025-12-09 19:10:00', 28, 18, 2),
+  (1014, 'Bài kiểm tra của em được 9 điểm rồi ạ.', 0, '2025-12-10 19:00:00', 19, 29, NULL),
+  (1015, NULL, 1, '2025-12-10 19:10:00', 29, 19, 3),
+  (1016, 'Em muốn đăng ký thêm môn Tiếng Anh.', 0, '2025-12-11 19:00:00', 20, 30, NULL),
+  (1017, NULL, 1, '2025-12-11 19:10:00', 30, 20, 4),
+  (1018, 'Cô góp ý giúp em về phát âm được không ạ?', 0, '2025-12-12 19:00:00', 21, 31, NULL),
+  (1019, NULL, 1, '2025-12-12 19:10:00', 31, 21, 5);
+
+-- === 14. Ebooks mới do tutors mới upload ===
+INSERT INTO ebooks (title, type, file_path, uploaded_by, created_at)
+VALUES
+  ('Chuyên đề Toán THCS nâng cao', 'TAI_LIEU', 'ebooks/custom_1.pdf', 12, '2025-12-05 16:00:00'),
+  ('Bài tập Vật lí luyện thi', 'TAI_LIEU', 'ebooks/custom_2.pdf', 13, '2025-12-06 16:00:00'),
+  ('Hóa học cơ bản cho THPT', 'SACH_GIAO_KHOA', 'ebooks/custom_3.pdf', 14, '2025-12-07 16:00:00'),
+  ('Tiếng Anh giao tiếp hàng ngày', 'TAI_LIEU', 'ebooks/custom_4.pdf', 15, '2025-12-08 16:00:00'),
+  ('Tài liệu luyện thi IELTS 6.5+', 'DE_THI_THAM_KHAO', 'ebooks/custom_5.pdf', 16, '2025-12-09 16:00:00');
 

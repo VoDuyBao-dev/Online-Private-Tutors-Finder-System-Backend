@@ -78,6 +78,7 @@ public enum ErrorCode {
     // TUTOR REGISTER EXCEPTION
     SUBJECT_NOT_SELECTED(2100, "No subjects selected", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH(2101, "Password and confirm password do not match", HttpStatus.BAD_REQUEST),
+    FILE_UPLOAD_FAILED(2102, "File upload failed", HttpStatus.INTERNAL_SERVER_ERROR),
 
     FILE_SAVE_ERROR(2200, "Error saving file", HttpStatus.INTERNAL_SERVER_ERROR),
     URL_REQUIRE(2201, "File URL is required", HttpStatus.BAD_REQUEST),
@@ -127,6 +128,8 @@ public enum ErrorCode {
     // ========== ADMIN MANAGE LEARNERS ==========
     LEARNER_USER_NOT_FOUND(1505, "Learner does not have a valid user", HttpStatus.NOT_FOUND),
     USER_IS_NOT_LEARNER(1506, "User is not a learner", HttpStatus.BAD_REQUEST),
+
+
 
     ;
 

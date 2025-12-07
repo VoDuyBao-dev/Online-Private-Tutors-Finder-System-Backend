@@ -20,7 +20,6 @@ public class TutorRegisterResponse {
     private String university;
     private List<String> certificates;
     private String avatarUrl;
-    private String proofFileUrl;
     private String educationalLevel;
     private String introduction;
     private Integer pricePerHour;

@@ -39,7 +39,7 @@ public interface AdminTutorMapper {
     @Mapping(target = "educational_level", source = "tutor.educationalLevel")
     @Mapping(target = "introduction", source = "tutor.introduction")
     @Mapping(target = "price_per_hour", source = "tutor.pricePerHour")
-    @Mapping(target = "proof_file_url", source = "tutor.proofFileUrl")
+//     @Mapping(target = "proof_file_url", source = "tutor.proofFileUrl")
     @Mapping(target = "verification_status", source = "tutor.verificationStatus")
     @Mapping(target = "subjects", source = "subjectNames")
     @Mapping(target = "certificates", source = "certificates")
