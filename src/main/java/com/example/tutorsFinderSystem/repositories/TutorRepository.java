@@ -34,12 +34,12 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Page<Tutor> findAllTutorsPageable(Pageable pageable);
 
     // Lấy certificates theo tutor_id (từ bảng tutor_certificates)
-    @Query(value = """
-            SELECT certificate
-            FROM tutor_certificates
-            WHERE tutor_id = :tutorId
-            """, nativeQuery = true)
-    List<String> findCertificatesByTutorId(@Param("tutorId") Long tutorId);
+//     @Query(value = """
+//             SELECT certificate
+//             FROM tutor_certificates
+//             WHERE tutor_id = :tutorId
+//             """, nativeQuery = true)
+//     List<String> findCertificatesByTutorId(@Param("tutorId") Long tutorId);
 
     // (Optional) Lọc theo status user
     @Query("""

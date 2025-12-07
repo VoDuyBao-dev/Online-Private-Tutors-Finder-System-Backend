@@ -29,7 +29,7 @@ public class AdminTutorDetailResponse {
     private String educational_level;
     private String introduction;
     private Integer price_per_hour;
-    private String proof_file_url;
+    // private String proof_file_url;
     private String verification_status; // enum VerificationStatus trong entity Tutor (APPROVED/PENDING/REJECTED)
 
     // Thông tin phụ

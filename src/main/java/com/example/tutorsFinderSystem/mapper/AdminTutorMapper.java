@@ -4,15 +4,20 @@ import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorSummaryResponse;
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.entities.TutorCertificate;
+import com.example.tutorsFinderSystem.entities.TutorCertificateFile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface AdminTutorMapper {
 
-    // Map summary: Tutor + danh sách môn + rating
+    // ============================================
+    // 1. SUMMARY RESPONSE (dashboard list)
+    // ============================================
     @Mapping(target = "user_id", source = "tutor.user.userId")
     @Mapping(target = "tutor_id", source = "tutor.tutorId")
     @Mapping(target = "full_name", source = "tutor.user.fullName")
@@ -20,12 +25,15 @@ public interface AdminTutorMapper {
     @Mapping(target = "updated_at", source = "tutor.user.updatedAt")
     @Mapping(target = "subjects", source = "subjectNames")
     @Mapping(target = "average_rating", source = "averageRating")
-    // @Mapping(target = "tutor_code", expression = "java(buildTutorCode(tutor.getTutorId()))")
-    AdminTutorSummaryResponse toSummaryResponse(Tutor tutor,
+    AdminTutorSummaryResponse toSummaryResponse(
+            Tutor tutor,
             List<String> subjectNames,
-            Double averageRating);
+            Double averageRating
+    );
 
-    // Map chi tiết
+    // ============================================
+    // 2. DETAIL RESPONSE (Admin xem chi tiết hồ sơ)
+    // ============================================
     @Mapping(target = "user_id", source = "tutor.user.userId")
     @Mapping(target = "tutor_id", source = "tutor.tutorId")
     @Mapping(target = "full_name", source = "tutor.user.fullName")
@@ -39,16 +47,24 @@ public interface AdminTutorMapper {
     @Mapping(target = "educational_level", source = "tutor.educationalLevel")
     @Mapping(target = "introduction", source = "tutor.introduction")
     @Mapping(target = "price_per_hour", source = "tutor.pricePerHour")
-//     @Mapping(target = "proof_file_url", source = "tutor.proofFileUrl")
+
     @Mapping(target = "verification_status", source = "tutor.verificationStatus")
     @Mapping(target = "subjects", source = "subjectNames")
-    @Mapping(target = "certificates", source = "certificates")
-    @Mapping(target = "average_rating", source = "averageRating")
-    AdminTutorDetailResponse toDetailResponse(Tutor tutor,
-            List<String> subjectNames,
-            List<String> certificates,
-            Double averageRating);
 
+    // Certificates – LẤY FILE ĐÃ DUYỆT
+    @Mapping(target = "certificates", expression = "java(mapApprovedCertificates(tutor))")
+
+    // Ratings
+    @Mapping(target = "average_rating", source = "averageRating")
+    AdminTutorDetailResponse toDetailResponse(
+            Tutor tutor,
+            List<String> subjectNames,
+            Double averageRating
+    );
+
+    // ============================================
+    // 3. PENDING RESPONSE (admin xét duyệt hồ sơ mới)
+    // ============================================
     @Mapping(target = "tutor_id", source = "tutor.tutorId")
     @Mapping(target = "user_id", source = "tutor.user.userId")
     @Mapping(target = "full_name", source = "tutor.user.fullName")
@@ -57,20 +73,43 @@ public interface AdminTutorMapper {
     @Mapping(target = "educational_level", source = "tutor.educationalLevel")
     @Mapping(target = "created_at", source = "tutor.user.createdAt")
     @Mapping(target = "subjects", source = "subjectNames")
-    // @Mapping(target = "pending_code", expression = "java(buildPendingCode(tutor.getTutorId()))")
-    AdminTutorPendingResponse toPendingResponse(Tutor tutor,
-            List<String> subjectNames);
 
-    // Default method dùng trong expression
-    // default String buildTutorCode(Long tutorId) {
-    //     if (tutorId == null)
-    //         return null;
-    //     return String.format("TUT%03d", tutorId);
-    // }
+    // Lấy danh sách FILE CHỜ DUYỆT
+    @Mapping(target = "pending_certificates", expression = "java(mapPendingCertificates(tutor))")
+    AdminTutorPendingResponse toPendingResponse(
+            Tutor tutor,
+            List<String> subjectNames
+    );
 
-    // default String buildPendingCode(Long tutorId) {
-    //     if (tutorId == null)
-    //         return null;
-    //     return String.format("PEND%03d", tutorId);
-    // }
+
+    // ===================================================
+    // DEFAULT METHODS – LẤY 3 LOẠI FILE
+    // ===================================================
+
+    // 1. LẤY FILE PENDING
+    default List<String> mapPendingCertificates(Tutor tutor) {
+        return tutor.getCertificates().stream()
+                .flatMap(cert -> cert.getFiles().stream()
+                        .filter(f -> f.getStatus().name().equals("PENDING"))
+                        .map(TutorCertificateFile::getFileUrl)
+                ).collect(Collectors.toList());
+    }
+
+    // 2. LẤY FILE APPROVED
+    default List<String> mapApprovedCertificates(Tutor tutor) {
+        return tutor.getCertificates().stream()
+                .flatMap(cert -> cert.getFiles().stream()
+                        .filter(f -> f.getStatus().name().equals("APPROVED"))
+                        .map(TutorCertificateFile::getFileUrl)
+                ).collect(Collectors.toList());
+    }
+
+    // 3. LẤY FILE REJECTED
+    default List<String> mapRejectedCertificates(Tutor tutor) {
+        return tutor.getCertificates().stream()
+                .flatMap(cert -> cert.getFiles().stream()
+                        .filter(f -> f.getStatus().name().equals("REJECTED"))
+                        .map(TutorCertificateFile::getFileUrl)
+                ).collect(Collectors.toList());
+    }
 }

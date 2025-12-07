@@ -95,9 +95,9 @@ public class AdminTutorService {
                 .sorted()
                 .collect(Collectors.toList());
 
-        List<String> certificates = tutorRepository.findCertificatesByTutorId(tutorId);
+        // List<String> certificates = tutorRepository.findCertificatesByTutorId(tutorId);
 
-        return adminTutorMapper.toDetailResponse(tutor, subjects, certificates, rounded);
+        return adminTutorMapper.toDetailResponse(tutor, subjects, rounded);
     }
 
     // 3) Cập nhật trạng thái tài khoản User của tutor
