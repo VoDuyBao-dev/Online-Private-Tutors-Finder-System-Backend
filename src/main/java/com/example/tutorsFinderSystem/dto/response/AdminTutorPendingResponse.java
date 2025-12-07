@@ -18,6 +18,6 @@ public class AdminTutorPendingResponse {
     private String educational_level; // tutors.educational_level
     private LocalDateTime created_at; // users.created_at (ngày nộp)
 
-    // Thông tin bổ sung cho UI
+    private List<String> pending_certificates;
     private List<String> subjects;  // subjects.subject_name
 }
