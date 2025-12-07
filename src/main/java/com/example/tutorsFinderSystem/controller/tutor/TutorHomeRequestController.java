@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tutorsFinderSystem.dto.ApiResponse;
+import com.example.tutorsFinderSystem.security.RequireApprovedTutor;
 import com.example.tutorsFinderSystem.services.TutorDashboardService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/tutors/home/requests")
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('SCOPE_TUTOR')")
+@RequireApprovedTutor
 public class TutorHomeRequestController {
 
     private final TutorDashboardService dashboardService;

@@ -10,6 +10,7 @@ import com.example.tutorsFinderSystem.dto.response.TutorRatingsSummaryResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorSubjectsResponse;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
+import com.example.tutorsFinderSystem.security.RequireApprovedTutor;
 import com.example.tutorsFinderSystem.dto.request.TutorEducationUpdateRequest;
 import com.example.tutorsFinderSystem.services.TutorProfileService;
 import jakarta.validation.Valid;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -29,6 +29,7 @@ import jakarta.validation.Validator;
 @RequestMapping("/tutors/profile")
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('SCOPE_TUTOR')")
+@RequireApprovedTutor
 public class TutorProfileController {
 
     private final TutorProfileService tutorProfileService;
@@ -66,35 +67,21 @@ public class TutorProfileController {
 
     @PutMapping(value = "/education", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<TutorEducationResponse> updateEducation(
-            @RequestParam("data") String json, // TEXT (JSON)
-            @RequestPart("proofFile") MultipartFile proofFile // FILE
-    ) {
+            @RequestParam("data") String json,
+            @RequestPart("proofFile") MultipartFile proofFile) {
         try {
-            // Parse JSON → DTO
             TutorEducationUpdateRequest request = objectMapper.readValue(json, TutorEducationUpdateRequest.class);
-
-            // gán file vào DTO
             request.setProofFile(proofFile);
-
-            // VALIDATION 
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
-            var violations = validator.validate(request);
-
-            if (!violations.isEmpty()) {
-                throw new AppException(ErrorCode.INVALID_FIELD);
-            }
 
             var result = tutorProfileService.updateEducation(request);
 
             return ApiResponse.<TutorEducationResponse>builder()
                     .code(200)
-                    .message("Cập nhật học vấn thành công")
+                    .message("Gửi yêu cầu cập nhật hồ sơ học vấn thành công. Vui lòng chờ admin duyệt.")
                     .result(result)
                     .build();
 
         } catch (Exception e) {
-            e.printStackTrace();
             return ApiResponse.<TutorEducationResponse>builder()
                     .code(500)
                     .message(e.getMessage())

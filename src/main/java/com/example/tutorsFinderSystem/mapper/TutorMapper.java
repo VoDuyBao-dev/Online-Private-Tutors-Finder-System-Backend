@@ -4,6 +4,7 @@ import com.example.tutorsFinderSystem.dto.response.TutorRegisterResponse;
 import com.example.tutorsFinderSystem.entities.Subject;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.entities.TutorCertificate;
+import com.example.tutorsFinderSystem.entities.TutorCertificateFile;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,32 +24,74 @@ public interface TutorMapper {
     @Mapping(target = "phoneNumber", source = "user.phoneNumber")
     @Mapping(target = "avatarUrl", source = "user.avatarImage")
 
-    // subjects (Set<Subject> → List<String>)
-    @Mapping(target = "subjects", source = "subjects")
+    // SUBJECTS
+    @Mapping(target = "subjects", expression = "java(mapSubjects(tutor.getSubjects()))")
 
-    // certificates (List<TutorCertificate> → List<String>)
-    @Mapping(target = "certificates", source = "certificates")
+    // CERTIFICATES → Pending files only
+    @Mapping(target = "certificates", expression = "java(getPendingFiles(tutor.getCertificates()))")
 
-    // verificationStatus enum → String
+    // STATUS
     @Mapping(
             target = "verificationStatus",
             expression = "java(tutor.getVerificationStatus() != null ? tutor.getVerificationStatus().name() : null)"
     )
     TutorRegisterResponse toTutorResponse(Tutor tutor);
 
-    // Map subjects → subject names
+
+    // ----------------------
+    // SUBJECTS MAPPING
+    // ----------------------
     default List<String> mapSubjects(Set<Subject> subjects) {
         if (subjects == null || subjects.isEmpty()) return List.of();
+
         return subjects.stream()
                 .map(Subject::getSubjectName)
                 .collect(Collectors.toList());
     }
 
-    // Map certificates → certificate names
-    default List<String> mapCertificates(List<TutorCertificate> certificates) {
+
+    // ----------------------
+    // PENDING FILES
+    // ----------------------
+    default List<String> getPendingFiles(List<TutorCertificate> certificates) {
         if (certificates == null || certificates.isEmpty()) return List.of();
+
         return certificates.stream()
-                .map(TutorCertificate::getFileUrl)
-                .collect(Collectors.toList());
+                .flatMap(cert ->
+                        cert.getFiles().stream()
+                                .filter(f -> f.getStatus().name().equals("PENDING"))
+                                .map(TutorCertificateFile::getFileUrl)
+                )
+                .toList();
+    }
+
+    // ----------------------
+    // APPROVED FILES
+    // ----------------------
+    default List<String> getApprovedFiles(List<TutorCertificate> certificates) {
+        if (certificates == null || certificates.isEmpty()) return List.of();
+
+        return certificates.stream()
+                .flatMap(cert ->
+                        cert.getFiles().stream()
+                                .filter(f -> f.getStatus().name().equals("APPROVED"))
+                                .map(TutorCertificateFile::getFileUrl)
+                )
+                .toList();
+    }
+
+    // ----------------------
+    // REJECTED FILES
+    // ----------------------
+    default List<String> getRejectedFiles(List<TutorCertificate> certificates) {
+        if (certificates == null || certificates.isEmpty()) return List.of();
+
+        return certificates.stream()
+                .flatMap(cert ->
+                        cert.getFiles().stream()
+                                .filter(f -> f.getStatus().name().equals("REJECTED"))
+                                .map(TutorCertificateFile::getFileUrl)
+                )
+                .toList();
     }
 }

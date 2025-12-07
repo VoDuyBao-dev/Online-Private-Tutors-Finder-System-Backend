@@ -129,7 +129,8 @@ public enum ErrorCode {
     LEARNER_USER_NOT_FOUND(1505, "Learner does not have a valid user", HttpStatus.NOT_FOUND),
     USER_IS_NOT_LEARNER(1506, "User is not a learner", HttpStatus.BAD_REQUEST),
 
-
+    ACCESS_DENIED(1507, "Access denied", HttpStatus.FORBIDDEN),
+    TUTOR_NOT_APPROVED(1508, "Tutor is not approved", HttpStatus.FORBIDDEN),
 
     ;
 
