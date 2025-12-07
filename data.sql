@@ -71,32 +71,63 @@ VALUES
 (8, 'FEMALE', 'Cần Thơ', 'ĐH Cần Thơ', 'Cao học', 'Dạy tiếng Anh giao tiếp', 200000, 'APPROVED'),
 (9, 'MALE', 'Huế', 'ĐH Khoa học Huế', 'Đại học', 'Gia sư luyện thi TOEIC', 220000, 'APPROVED');
 
-
-INSERT INTO tutor_certificates (tutor_id, certificate_name, file_url) VALUES
+-- ===== CERTIFICATES FOR TUTOR 1 - 5 =====
+INSERT INTO tutor_certificates (certificate_id, tutor_id, certificate_name, approved)
+VALUES
 -- Tutor 1
-(1, 'Chứng chỉ Sư phạm Toán học', 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV1'),
-(1, 'IELTS 6.5 Academic', 'https://drive.google.com/uc?id=1XyZaBCdE234FgHiJkLmNoP'),
-(1, 'Giấy chứng nhận “Dạy kèm Toán THCS nâng cao”', 'https://drive.google.com/uc?id=1QrStUvWxYZaBcDeFgHiJ23'),
+(1, 1, 'Chứng chỉ Sư phạm Toán học', TRUE),
+(2, 1, 'IELTS 6.5 Academic', TRUE),
+(3, 1, 'Giấy chứng nhận “Dạy kèm Toán THCS nâng cao”', TRUE),
 
 -- Tutor 2
-(2, 'Chứng chỉ Sư phạm Vật Lý', 'https://drive.google.com/uc?id=1MnOpQrStUvWxYzABcDeFg2'),
-(2, 'Giải Nhì Học sinh giỏi Vật Lý cấp tỉnh', 'https://drive.google.com/uc?id=1BcDeFgHiJKLmNoPqRsTuV3'),
-(2, 'Chứng chỉ Bồi dưỡng phương pháp dạy học STEM', 'https://drive.google.com/uc?id=1HiJKLmNoPqRsTuVwXyZaB4'),
+(4, 2, 'Chứng chỉ Sư phạm Vật Lý', TRUE),
+(5, 2, 'Giải Nhì Học sinh giỏi Vật Lý cấp tỉnh', TRUE),
+(6, 2, 'Chứng chỉ Bồi dưỡng phương pháp dạy học STEM', TRUE),
 
 -- Tutor 3
-(3, 'IELTS 7.5 Academic', 'https://drive.google.com/uc?id=1ZaBcDeFgHiJKLmNoPqRsT5'),
-(3, 'TESOL Certificate - Teaching English to Speakers of Other Languages', 'https://drive.google.com/uc?id=1TuVwXyZaBcDeFgHiJKLmN6'),
-(3, 'Chứng chỉ Sư phạm tiếng Anh', 'https://drive.google.com/uc?id=1LmNoPqRsTuVwXyZaBcDeF7'),
+(7, 3, 'IELTS 7.5 Academic', TRUE),
+(8, 3, 'TESOL Certificate', TRUE),
+(9, 3, 'Chứng chỉ Sư phạm tiếng Anh', TRUE),
 
 -- Tutor 4
-(4, 'Chứng chỉ Sư phạm Hóa học', 'https://drive.google.com/uc?id=1FgHiJKLmNoPqRsTuVwXyZ8'),
-(4, 'Chứng chỉ Ứng dụng CNTT cơ bản', 'https://drive.google.com/uc?id=1YzAbCdEfGhJKLmNoPqRsT9'),
-(4, 'Giấy chứng nhận Dạy kèm Hóa THPT nâng cao', 'https://drive.google.com/uc?id=1WxYzAbCdEfGhJKLmNoPqR0'),
+(10, 4, 'Chứng chỉ Sư phạm Hóa học', TRUE),
+(11, 4, 'Chứng chỉ Ứng dụng CNTT cơ bản', TRUE),
+(12, 4, 'Giấy chứng nhận Dạy kèm Hóa THPT nâng cao', TRUE),
 
 -- Tutor 5
-(5, 'MOS Microsoft Office Specialist', 'https://drive.google.com/uc?id=1HiLMnOpQrStUvWxYzAbCd11'),
-(5, 'Chứng chỉ Ứng dụng CNTT nâng cao', 'https://drive.google.com/uc?id=1QrStUvWxYzAbCdEfGhJKL12'),
-(5, 'Chứng chỉ Lập trình cơ bản – Bộ GD&ĐT', 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV13');
+(13, 5, 'MOS Microsoft Office Specialist', TRUE),
+(14, 5, 'Chứng chỉ Ứng dụng CNTT nâng cao', TRUE),
+(15, 5, 'Chứng chỉ Lập trình cơ bản – Bộ GD&ĐT', TRUE);
+
+INSERT INTO tutor_certificate_files 
+(file_id, certificate_id, file_url, status, is_active, uploaded_at)
+VALUES
+-- Tutor 1
+(1, 1, 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV1', 'APPROVED', TRUE, NOW()),
+(2, 2, 'https://drive.google.com/uc?id=1XyZaBCdE234FgHiJkLmNoP', 'APPROVED', TRUE, NOW()),
+(3, 3, 'https://drive.google.com/uc?id=1QrStUvWxYZaBcDeFgHiJ23', 'APPROVED', TRUE, NOW()),
+
+-- Tutor 2
+(4, 4, 'https://drive.google.com/uc?id=1MnOpQrStUvWxYzABcDeFg2', 'APPROVED', TRUE, NOW()),
+(5, 5, 'https://drive.google.com/uc?id=1BcDeFgHiJKLmNoPqRsTuV3', 'APPROVED', TRUE, NOW()),
+(6, 6, 'https://drive.google.com/uc?id=1HiJKLmNoPqRsTuVwXyZaB4', 'APPROVED', TRUE, NOW()),
+
+-- Tutor 3
+(7, 7, 'https://drive.google.com/uc?id=1ZaBcDeFgHiJKLmNoPqRsT5', 'APPROVED', TRUE, NOW()),
+(8, 8, 'https://drive.google.com/uc?id=1TuVwXyZaBcDeFgHiJKLmN6', 'APPROVED', TRUE, NOW()),
+(9, 9, 'https://drive.google.com/uc?id=1LmNoPqRsTuVwXyZaBcDeF7', 'APPROVED', TRUE, NOW()),
+
+-- Tutor 4
+(10, 10, 'https://drive.google.com/uc?id=1FgHiJKLmNoPqRsTuVwXyZ8', 'APPROVED', TRUE, NOW()),
+(11, 11, 'https://drive.google.com/uc?id=1YzAbCdEfGhJKLmNoPqRsT9', 'APPROVED', TRUE, NOW()),
+(12, 12, 'https://drive.google.com/uc?id=1WxYzAbCdEfGhJKLmNoPqR0', 'APPROVED', TRUE, NOW()),
+
+-- Tutor 5
+(13, 13, 'https://drive.google.com/uc?id=1HiLMnOpQrStUvWxYzAbCd11', 'APPROVED', TRUE, NOW()),
+(14, 14, 'https://drive.google.com/uc?id=1QrStUvWxYzAbCdEfGhJKL12', 'APPROVED', TRUE, NOW()),
+(15, 15, 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV13', 'APPROVED', TRUE, NOW());
+
+
 
 
 INSERT INTO tutor_subjects (tutor_id, subject_id)
@@ -495,28 +526,59 @@ VALUES
   (15, 9);
 
 -- === 5. Chứng chỉ cho 10 tutors mới ===
-INSERT INTO tutor_certificates (certificate_id, certificate_name, file_url, tutor_id)
+INSERT INTO tutor_certificates (certificate_id, tutor_id, certificate_name, approved)
 VALUES
-  (100, 'Chứng chỉ sư phạm cơ bản 6', 'https://drive.google.com/uc?id=cert_sp_06_1', 6),
-  (101, 'Chứng chỉ chuyên môn nâng cao 6', 'https://drive.google.com/uc?id=cert_cm_06_2', 6),
-  (102, 'Chứng chỉ sư phạm cơ bản 7', 'https://drive.google.com/uc?id=cert_sp_07_1', 7),
-  (103, 'Chứng chỉ chuyên môn nâng cao 7', 'https://drive.google.com/uc?id=cert_cm_07_2', 7),
-  (104, 'Chứng chỉ sư phạm cơ bản 8', 'https://drive.google.com/uc?id=cert_sp_08_1', 8),
-  (105, 'Chứng chỉ chuyên môn nâng cao 8', 'https://drive.google.com/uc?id=cert_cm_08_2', 8),
-  (106, 'Chứng chỉ sư phạm cơ bản 9', 'https://drive.google.com/uc?id=cert_sp_09_1', 9),
-  (107, 'Chứng chỉ chuyên môn nâng cao 9', 'https://drive.google.com/uc?id=cert_cm_09_2', 9),
-  (108, 'Chứng chỉ sư phạm cơ bản 10', 'https://drive.google.com/uc?id=cert_sp_10_1', 10),
-  (109, 'Chứng chỉ chuyên môn nâng cao 10', 'https://drive.google.com/uc?id=cert_cm_10_2', 10),
-  (110, 'Chứng chỉ sư phạm cơ bản 11', 'https://drive.google.com/uc?id=cert_sp_11_1', 11),
-  (111, 'Chứng chỉ chuyên môn nâng cao 11', 'https://drive.google.com/uc?id=cert_cm_11_2', 11),
-  (112, 'Chứng chỉ sư phạm cơ bản 12', 'https://drive.google.com/uc?id=cert_sp_12_1', 12),
-  (113, 'Chứng chỉ chuyên môn nâng cao 12', 'https://drive.google.com/uc?id=cert_cm_12_2', 12),
-  (114, 'Chứng chỉ sư phạm cơ bản 13', 'https://drive.google.com/uc?id=cert_sp_13_1', 13),
-  (115, 'Chứng chỉ chuyên môn nâng cao 13', 'https://drive.google.com/uc?id=cert_cm_13_2', 13),
-  (116, 'Chứng chỉ sư phạm cơ bản 14', 'https://drive.google.com/uc?id=cert_sp_14_1', 14),
-  (117, 'Chứng chỉ chuyên môn nâng cao 14', 'https://drive.google.com/uc?id=cert_cm_14_2', 14),
-  (118, 'Chứng chỉ sư phạm cơ bản 15', 'https://drive.google.com/uc?id=cert_sp_15_1', 15),
-  (119, 'Chứng chỉ chuyên môn nâng cao 15', 'https://drive.google.com/uc?id=cert_cm_15_2', 15);
+(100, 6, 'Chứng chỉ sư phạm cơ bản 6', TRUE),
+(101, 6, 'Chứng chỉ chuyên môn nâng cao 6', TRUE),
+(102, 7, 'Chứng chỉ sư phạm cơ bản 7', TRUE),
+(103, 7, 'Chứng chỉ chuyên môn nâng cao 7', TRUE),
+(104, 8, 'Chứng chỉ sư phạm cơ bản 8', TRUE),
+(105, 8, 'Chứng chỉ chuyên môn nâng cao 8', TRUE),
+(106, 9, 'Chứng chỉ sư phạm cơ bản 9', TRUE),
+(107, 9, 'Chứng chỉ chuyên môn nâng cao 9', TRUE),
+(108, 10, 'Chứng chỉ sư phạm cơ bản 10', TRUE),
+(109, 10, 'Chứng chỉ chuyên môn nâng cao 10', TRUE),
+(110, 11, 'Chứng chỉ sư phạm cơ bản 11', TRUE),
+(111, 11, 'Chứng chỉ chuyên môn nâng cao 11', TRUE),
+(112, 12, 'Chứng chỉ sư phạm cơ bản 12', TRUE),
+(113, 12, 'Chứng chỉ chuyên môn nâng cao 12', TRUE),
+(114, 13, 'Chứng chỉ sư phạm cơ bản 13', TRUE),
+(115, 13, 'Chứng chỉ chuyên môn nâng cao 13', TRUE),
+(116, 14, 'Chứng chỉ sư phạm cơ bản 14', TRUE),
+(117, 14, 'Chứng chỉ chuyên môn nâng cao 14', TRUE),
+(118, 15, 'Chứng chỉ sư phạm cơ bản 15', TRUE),
+(119, 15, 'Chứng chỉ chuyên môn nâng cao 15', TRUE);
+
+INSERT INTO tutor_certificate_files (file_id, certificate_id, file_url, status, is_active, uploaded_at)
+VALUES
+(200, 100, 'https://drive.google.com/uc?id=cert_sp_06_1', 'APPROVED', TRUE, NOW()),
+(201, 101, 'https://drive.google.com/uc?id=cert_cm_06_2', 'APPROVED', TRUE, NOW()),
+(202, 102, 'https://drive.google.com/uc?id=cert_sp_07_1', 'APPROVED', TRUE, NOW()),
+(203, 103, 'https://drive.google.com/uc?id=cert_cm_07_2', 'APPROVED', TRUE, NOW()),
+(204, 104, 'https://drive.google.com/uc?id=cert_sp_08_1', 'APPROVED', TRUE, NOW()),
+(205, 105, 'https://drive.google.com/uc?id=cert_cm_08_2', 'APPROVED', TRUE, NOW()),
+(206, 106, 'https://drive.google.com/uc?id=cert_sp_09_1', 'APPROVED', TRUE, NOW()),
+(207, 107, 'https://drive.google.com/uc?id=cert_cm_09_2', 'APPROVED', TRUE, NOW()),
+
+(208, 108, 'https://drive.google.com/uc?id=cert_sp_10_1', 'APPROVED', TRUE, NOW()),
+(209, 109, 'https://drive.google.com/uc?id=cert_cm_10_2', 'APPROVED', TRUE, NOW()),
+
+(210, 110, 'https://drive.google.com/uc?id=cert_sp_11_1', 'APPROVED', TRUE, NOW()),
+(211, 111, 'https://drive.google.com/uc?id=cert_cm_11_2', 'APPROVED', TRUE, NOW()),
+
+(212, 112, 'https://drive.google.com/uc?id=cert_sp_12_1', 'APPROVED', TRUE, NOW()),
+(213, 113, 'https://drive.google.com/uc?id=cert_cm_12_2', 'APPROVED', TRUE, NOW()),
+
+(214, 114, 'https://drive.google.com/uc?id=cert_sp_13_1', 'APPROVED', TRUE, NOW()),
+(215, 115, 'https://drive.google.com/uc?id=cert_cm_13_2', 'APPROVED', TRUE, NOW()),
+
+(216, 116, 'https://drive.google.com/uc?id=cert_sp_14_1', 'APPROVED', TRUE, NOW()),
+(217, 117, 'https://drive.google.com/uc?id=cert_cm_14_2', 'APPROVED', TRUE, NOW()),
+
+(218, 118, 'https://drive.google.com/uc?id=cert_sp_15_1', 'APPROVED', TRUE, NOW()),
+(219, 119, 'https://drive.google.com/uc?id=cert_cm_15_2', 'APPROVED', TRUE, NOW());
+
+
 
 -- === 6. Lịch trống chi tiết (tutor_availability) cho 10 tutors mới ===
 INSERT INTO tutor_availability (tutor_id, created_at, start_time, end_time, status, updated_at)

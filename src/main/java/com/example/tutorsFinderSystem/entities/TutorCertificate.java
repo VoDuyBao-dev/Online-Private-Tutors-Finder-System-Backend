@@ -1,5 +1,8 @@
 package com.example.tutorsFinderSystem.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,8 +19,10 @@ public class TutorCertificate {
     @Column(name = "certificate_name", nullable = false)
     private String certificateName;
 
-    @Column(name = "file_url", nullable = false)
-    private String fileUrl;
+    private Boolean approved = false;  // True khi admin duyệt ít nhất một file
+
+    @OneToMany(mappedBy = "certificate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TutorCertificateFile> files = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
