@@ -43,6 +43,7 @@ public class AuthenticationService {
     PasswordEncoder passwordEncoder;
     InvalidatedTokenRepository invalidatedTokenRepository;
     TokenValidator tokenValidator;
+    UserService userService;
 
     @NonFinal
     @Value("${jwt.secret}")
@@ -55,6 +56,13 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         User user = userRepository.findByEmail(authenticationRequest.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        try{
+            userService.validateUserStatus(user);
+        }catch (AppException e){
+            throw new AppException(e.getErrorCode());
+        }
+
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPasswordHash());
 
         if(!authenticated) {
@@ -73,8 +81,6 @@ public class AuthenticationService {
                 .token(token)
                 .authenticated(true)
                 .build();
-
-
 
     }
 

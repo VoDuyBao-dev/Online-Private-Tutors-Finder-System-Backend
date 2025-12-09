@@ -132,6 +132,12 @@ public enum ErrorCode {
     ACCESS_DENIED(1507, "Access denied", HttpStatus.FORBIDDEN),
     TUTOR_NOT_APPROVED(1508, "Tutor is not approved", HttpStatus.FORBIDDEN),
 
+//    ACCOUNT
+    ACCOUNT_NOT_ACTIVATED(4001, "account not activated", HttpStatus.BAD_REQUEST),
+    ACCOUNT_DISABLED(4002, "account disabled", HttpStatus.BAD_REQUEST),
+    ACCOUNT_LOCKED(4003, "account locked", HttpStatus.BAD_REQUEST),
+    ACCOUNT_INACTIVE(4004, "account inactive", HttpStatus.BAD_REQUEST),
+    UNKNOWN_USER_STATUS(4005, "unknown user status", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private int code;

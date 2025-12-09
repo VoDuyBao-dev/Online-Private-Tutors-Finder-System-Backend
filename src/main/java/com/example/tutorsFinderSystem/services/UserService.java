@@ -77,6 +77,33 @@ public class UserService {
 
     }
 
+//    Check user đã kích hoạt tài khoản chưa và các trạng thái khác...
+    public void validateUserStatus(User user) {
+        switch (user.getStatus()) {
+
+            case PENDING ->
+                    throw new AppException(ErrorCode.ACCOUNT_NOT_ACTIVATED);
+
+            case LOCKED ->
+                    throw new AppException(ErrorCode.ACCOUNT_LOCKED);
+
+            case INACTIVE ->
+                    throw new AppException(ErrorCode.ACCOUNT_INACTIVE);
+
+            case ACTIVE -> {
+
+            }
+
+            default ->
+                    throw new AppException(ErrorCode.UNKNOWN_USER_STATUS);
+
+        }
+
+        if (Boolean.FALSE.equals(user.getEnabled())) {
+            throw new AppException(ErrorCode.ACCOUNT_DISABLED);
+        }
+    }
+
 //    // kích hoạt tài khoản
 //    public void activateUser(String username) {
 //        User user = userRepository.findByUsername(username)
