@@ -1,6 +1,9 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.ClassRequest;
+import com.example.tutorsFinderSystem.enums.ClassRequestStatus;
+import com.example.tutorsFinderSystem.enums.ClassRequestType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.domain.*;
@@ -34,4 +37,27 @@ public interface ClassRequestRepository extends JpaRepository<ClassRequest, Long
     //       AND cr.status = 'CONFIRMED'
     // """)
     // int countActiveClasses(Long tutorId);
+
+    Page<ClassRequest> findByTutor_TutorId(Long tutorId, Pageable pageable);
+
+    Page<ClassRequest> findByTutor_TutorIdAndStatus(
+            Long tutorId,
+            ClassRequestStatus status,
+            Pageable pageable
+    );
+
+    Page<ClassRequest> findByTutor_TutorIdAndType(
+            Long tutorId,
+            ClassRequestType type,
+            Pageable pageable
+    );
+
+    Page<ClassRequest> findByTutor_TutorIdAndStatusAndType(
+            Long tutorId,
+            ClassRequestStatus status,
+            ClassRequestType type,
+            Pageable pageable
+    );
+
+
 }

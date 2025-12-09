@@ -18,9 +18,33 @@ public interface TutorDashboardMapper {
     @Mapping(source = "user.fullName", target = "fullName")
     @Mapping(source = "user.email", target = "email")
     @Mapping(source = "user.phoneNumber", target = "phoneNumber")
-    @Mapping(source = "user.avatarImage", target = "avatarUrl")
+    // @Mapping(source = "user.avatarImage", target = "avatarUrl")
+    @Mapping(target = "avatarUrl", expression = "java(buildAvatarUrl(tutor))")
     @Mapping(source = "subjects", target = "subjects")
     TutorDashboardResponse.TutorInfo toTutorInfo(Tutor tutor);
+
+    default String buildAvatarUrl(Tutor tutor) {
+        if (tutor == null || tutor.getUser() == null)
+            return null;
+
+        String fileIdOrUrl = tutor.getUser().getAvatarImage();
+        if (fileIdOrUrl == null || fileIdOrUrl.isBlank())
+            return null;
+
+        // DB lưu fileId
+        if (!fileIdOrUrl.contains("http")) {
+            return "http://localhost:8080/tutorsFinder/drive/view/" + fileIdOrUrl;
+        }
+
+        // DB lưu URL Google Drive
+        if (fileIdOrUrl.contains("id=")) {
+            String fileId = fileIdOrUrl.substring(fileIdOrUrl.indexOf("id=") + 3);
+            return "http://localhost:8080/tutorsFinder/drive/view/" + fileId;
+        }
+
+        // Nếu đã là URL backend thì trả nguyên
+        return fileIdOrUrl;
+    }
 
     @Mapping(source = "classId", target = "classId")
     @Mapping(source = "classRequest.learner.fullName", target = "learnerName")
@@ -33,13 +57,16 @@ public interface TutorDashboardMapper {
 
     // map subjects
     default java.util.List<String> mapSubjects(java.util.Set<Subject> subjects) {
-        if (subjects == null) return java.util.List.of();
+        if (subjects == null)
+            return java.util.List.of();
         return subjects.stream()
                 .map(Subject::getSubjectName)
                 .toList();
     }
+
     default List<String> mapCertificates(List<TutorCertificate> certificates) {
-        if (certificates == null || certificates.isEmpty()) return List.of();
+        if (certificates == null || certificates.isEmpty())
+            return List.of();
         return certificates.stream()
                 .map(TutorCertificate::getCertificateName)
                 .collect(Collectors.toList());

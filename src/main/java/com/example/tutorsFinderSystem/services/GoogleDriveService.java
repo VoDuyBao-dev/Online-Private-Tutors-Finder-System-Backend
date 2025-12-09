@@ -117,4 +117,21 @@ public class GoogleDriveService {
             throw new IOException("Failed to get file info from Google Drive: " + e.getMessage(), e);
         }
     }
+
+    public byte[] getFileBytes(String fileId) {
+        try {
+            // Gọi Google Drive API để lấy nội dung file
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            drive.files()
+                    .get(fileId)
+                    .executeMediaAndDownloadTo(outputStream);
+
+            return outputStream.toByteArray();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Không đọc được file từ Google Drive: " + fileId, e);
+        }
+    }
+
 }
