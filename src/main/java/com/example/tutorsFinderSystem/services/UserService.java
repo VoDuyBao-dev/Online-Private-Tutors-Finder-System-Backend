@@ -105,21 +105,21 @@ public class UserService {
     }
 
 //    // kích hoạt tài khoản
-//    public void activateUser(String username) {
-//        User user = userRepository.findByUsername(username)
-//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-//
-//        log.info("user in activateUser{}", user);
-//
-//        user.setEnabled(true);
-//        user.setStatus(AccountStatus.ACTIVE);
-//        try {
-//            userRepository.save(user);
-//        } catch (Exception e) {
-//            throw new AppException(ErrorCode.UPDATE_USER_FAILED, e);
-//        }
-//
-//    }
+    public void activateUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        log.info("user in activateUser{}", user);
+
+        user.setEnabled(true);
+        user.setStatus(UserStatus.ACTIVE);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.UPDATE_USER_FAILED, e);
+        }
+
+    }
 
     // Kiểm tra email người dùng đang đăng nhập. 
     public User getCurrentUser() {

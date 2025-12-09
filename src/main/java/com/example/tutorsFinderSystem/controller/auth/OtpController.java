@@ -23,19 +23,11 @@ public class OtpController {
     OtpService otpService;
     UserService userService;
 
-    @PostMapping("/sendOtp")
-    public ApiResponse<Void> sendOtp(@RequestBody OtpRequest otpRequest) {
-        otpService.generateAndSendOtp(otpRequest.getEmail());
-        return ApiResponse.<Void>builder()
-                .code(200)
-                .message("gui otp thanh cong")
-                .build();
-    }
-
     //    xác thực otp
     @PostMapping("/verifyOtp")
     public ApiResponse<OtpResponse> verifyOTP(@RequestBody OtpRequest otpRequest) {
         OtpResponse otpResponse = otpService.verifyOtp(otpRequest.getEmail(), otpRequest.getOtpCode());
+        userService.activateUser(otpRequest.getEmail());
         return ApiResponse.<OtpResponse>builder()
                 .code(200)
                 .message("xac thuc otp thanh cong")

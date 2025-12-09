@@ -48,7 +48,7 @@ public class AuthController {
 //    TOÀN BỘ HÀM Ở CLASS NÀY ĐỀU LÀ TEST API CÓ THỂ GIỮ CODE VÀ TRIỂN KHAI CHI TIẾT HOẶC XÓA ĐI CŨNG ĐƯỢC
 //    Đây là test đăng nhập rồi trả token chứ chưa có triển khai rõ ràng nha Lan
     @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+    public ApiResponse<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .code(200)
