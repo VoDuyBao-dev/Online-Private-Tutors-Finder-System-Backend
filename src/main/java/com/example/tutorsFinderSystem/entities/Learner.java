@@ -39,7 +39,7 @@ public class Learner {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "address", nullable = false, length = 255)
+    @Column(name = "address", length = 255)
     private String address; // Thành phố / Quận / Phường
 
     @Column(name = "address_detail", length = 255)

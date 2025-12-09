@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -31,9 +32,11 @@ public class User {
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, length = 20)
-    private Role role; // ADMIN, TUTOR, PARENT
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles; // ADMIN, TUTOR, PARENT
 
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
@@ -63,5 +66,12 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Learner learnerProfile; // Học viên/Phụ huynh (nếu là role = PARENT)
+
+    @PrePersist
+    public void onCreate() {
+        if (this.activationExpiryTime == null) {
+            this.activationExpiryTime = LocalDateTime.now().plusMinutes(3);
+        }
+    }
 
 }

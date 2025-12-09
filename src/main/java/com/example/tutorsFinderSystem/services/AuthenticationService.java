@@ -166,10 +166,11 @@ public class AuthenticationService {
     }
 
     private String buildScopeClaim(User user) {
-        if (user.getRole() != null) {
-            return user.getRole().name(); // Trả về "ADMIN", "TUTOR" hoặc "PARENT"
+        StringJoiner scopeBuilder = new StringJoiner(" ");
+        if(!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(scopeBuilder::add);
         }
-        return "";
+        return scopeBuilder.toString();
     }
 
 }

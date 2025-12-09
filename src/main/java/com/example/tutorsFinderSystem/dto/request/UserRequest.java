@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +20,6 @@ public class UserRequest {
     private String email;
     private String phone;
     private String address;
-    private Role role;
+    private Set<String> roles;
 
 }

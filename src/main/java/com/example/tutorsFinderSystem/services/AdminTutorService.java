@@ -47,7 +47,7 @@ public class AdminTutorService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("user.updatedAt").descending());
 
-        Page<Tutor> tutorPage = tutorRepository.findAllTutorsPageable(pageable);
+        Page<Tutor> tutorPage = tutorRepository.findAllTutorsPageable(Role.TUTOR,pageable);
 
         List<AdminTutorSummaryResponse> items = tutorPage.getContent().stream()
                 .map(tutor -> {
@@ -83,7 +83,7 @@ public class AdminTutorService {
             throw new AppException(ErrorCode.TUTOR_USER_NOT_FOUND);
         }
 
-        if (user.getRole() != Role.TUTOR) {
+        if (!user.getRoles().contains(Role.TUTOR)) {
             throw new AppException(ErrorCode.USER_IS_NOT_TUTOR);
         }
 

@@ -1,6 +1,7 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.enums.Role;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 
 import org.springframework.data.domain.Page;
@@ -21,17 +22,17 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             SELECT t
             FROM Tutor t
             JOIN t.user u
-            WHERE u.role = com.example.tutorsFinderSystem.enums.Role.TUTOR
+            WHERE :role MEMBER OF u.roles
             """)
-    List<Tutor> findAllTutors();
+    List<Tutor> findAllTutors(@Param("role") Role role);
 
     @Query("""
                 SELECT t
                 FROM Tutor t
                 JOIN t.user u
-                WHERE u.role = com.example.tutorsFinderSystem.enums.Role.TUTOR
+                WHERE :role MEMBER OF u.roles
             """)
-    Page<Tutor> findAllTutorsPageable(Pageable pageable);
+    Page<Tutor> findAllTutorsPageable(@Param("role") Role role,Pageable pageable);
 
     // Lấy certificates theo tutor_id (từ bảng tutor_certificates)
     @Query(value = """
@@ -46,10 +47,10 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             SELECT t
             FROM Tutor t
             JOIN t.user u
-            WHERE u.role = com.example.tutorsFinderSystem.enums.Role.TUTOR
+            WHERE :role MEMBER OF u.roles
               AND u.status = :status
             """)
-    List<Tutor> findByUserStatus(@Param("status") UserStatus status);
+    List<Tutor> findByUserStatus(@Param("role") Role role,@Param("status") UserStatus status);
 
     // Lấy tất cả tutor có verification_status = PENDING, sắp xếp theo ngày nộp từ cũ đến mới
     // List<Tutor> findByVerificationStatusOrderByUserCreatedAtAsc(TutorStatusverificationStatus);

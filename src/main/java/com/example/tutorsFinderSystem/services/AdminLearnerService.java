@@ -28,7 +28,7 @@ public class AdminLearnerService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("user.createdAt").descending());
 
-        Page<Learner> learnerPage = learnerRepository.findAllLearnerPageable(pageable);
+        Page<Learner> learnerPage = learnerRepository.findAllLearnerPageable(Role.LEARNER,pageable);
 
         var items = learnerPage.getContent().stream()
                 .map(adminLearnerMapper::toSummary)
@@ -54,7 +54,7 @@ public class AdminLearnerService {
             throw new AppException(ErrorCode.TUTOR_USER_NOT_FOUND);
         }
 
-        if (user.getRole() != Role.LEARNER)
+        if (!user.getRoles().contains(Role.LEARNER))
             throw new AppException(ErrorCode.USER_IS_NOT_LEARNER);
 
         return adminLearnerMapper.toDetail(learner);
@@ -72,7 +72,7 @@ public class AdminLearnerService {
             throw new AppException(ErrorCode.TUTOR_USER_NOT_FOUND);
         }
 
-        if (user.getRole() != Role.LEARNER)
+        if (!user.getRoles().contains(Role.LEARNER))
             throw new AppException(ErrorCode.USER_IS_NOT_LEARNER);
 
         UserStatus current = user.getStatus();
@@ -87,9 +87,9 @@ public class AdminLearnerService {
     @Transactional
     public AdminLearnerStatsResponse getLearnerStats() {
 
-        long total = learnerRepository.countAllLearners();
-        long active = learnerRepository.countActiveLearners();
-        long inactive = learnerRepository.countInactiveLearners();
+        long total = learnerRepository.countAllLearners(Role.LEARNER);
+        long active = learnerRepository.countActiveLearners(Role.LEARNER);
+        long inactive = learnerRepository.countInactiveLearners(Role.LEARNER);
 
         return AdminLearnerStatsResponse.builder()
                 .total(total)

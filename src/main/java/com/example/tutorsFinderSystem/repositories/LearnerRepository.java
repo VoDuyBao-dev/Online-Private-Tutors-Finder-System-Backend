@@ -1,42 +1,48 @@
 package com.example.tutorsFinderSystem.repositories;
 
+import com.example.tutorsFinderSystem.enums.Role;
+import com.example.tutorsFinderSystem.enums.UserStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.example.tutorsFinderSystem.entities.Learner;
+import org.springframework.data.repository.query.Param;
 
 public interface LearnerRepository extends JpaRepository<Learner, Long> {
     @Query("""
-                SELECT t
-                FROM Learner t
-                JOIN t.user u
-                WHERE u.role = com.example.tutorsFinderSystem.enums.Role.LEARNER
-            """)
-    Page<Learner> findAllLearnerPageable(Pageable pageable);
+                SELECT l
+                FROM Learner l
+                JOIN l.user u
+                WHERE :role MEMBER OF u.roles
+""")
+    Page<Learner> findAllLearnerPageable(@Param("role") Role role, Pageable pageable);
 
     @Query("""
-                SELECT COUNT(u)
-                FROM User u
-                WHERE u.role = com.example.tutorsFinderSystem.enums.Role.LEARNER
+               SELECT COUNT(l)
+                FROM Learner l
+                JOIN l.user u
+                WHERE :role MEMBER OF u.roles
             """)
-    long countAllLearners();
+    long countAllLearners(@Param("role") Role role);
 
     @Query("""
-                SELECT COUNT(u)
-                FROM User u
-                WHERE u.role = com.example.tutorsFinderSystem.enums.Role.LEARNER
-                  AND u.status = com.example.tutorsFinderSystem.enums.UserStatus.ACTIVE
+                SELECT COUNT(l)
+               FROM Learner l
+               JOIN l.user u
+               WHERE :role MEMBER OF u.roles
+                 AND u.status = com.example.tutorsFinderSystem.enums.UserStatus.ACTIVE
             """)
-    long countActiveLearners();
+    long countActiveLearners(@Param("role") Role role);
 
     @Query("""
-                SELECT COUNT(u)
-                FROM User u
-                WHERE u.role = com.example.tutorsFinderSystem.enums.Role.LEARNER
-                  AND u.status = com.example.tutorsFinderSystem.enums.UserStatus.INACTIVE
+            SELECT COUNT(l)
+            FROM Learner l
+            JOIN l.user u
+            WHERE :role MEMBER OF u.roles
+            AND u.status = com.example.tutorsFinderSystem.enums.UserStatus.INACTIVE
             """)
-    long countInactiveLearners();
+    long countInactiveLearners(@Param("role") Role role);
 
 }

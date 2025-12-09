@@ -48,12 +48,9 @@ public class OtpService {
             throw new AppException(ErrorCode.OTP_SAVE_FAILED, e);
         }
 
-        try {
-            emailService.sendOtpEmail(email, otp);
 
-        }catch (Exception e){
-            throw new AppException(ErrorCode.EMAIL_SEND_FAILED, e);
-        }
+        emailService.sendOtpEmail(email, otp);
+
 
     }
 
