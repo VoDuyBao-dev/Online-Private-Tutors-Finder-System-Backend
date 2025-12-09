@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.services;
 
+import com.example.tutorsFinderSystem.dto.request.ForgotPasswordRequest;
 import com.example.tutorsFinderSystem.dto.request.LearnerRequest;
 import com.example.tutorsFinderSystem.dto.response.LearnerResponse;
 import com.example.tutorsFinderSystem.dto.response.UserResponse;
@@ -109,7 +110,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        log.info("user in activateUser{}", user);
+
 
         user.setEnabled(true);
         user.setStatus(UserStatus.ACTIVE);
@@ -119,6 +120,32 @@ public class UserService {
             throw new AppException(ErrorCode.UPDATE_USER_FAILED, e);
         }
 
+    }
+
+//    reset password
+    public void resetPassword(ForgotPasswordRequest forgotPasswordRequest) {
+
+        if (!forgotPasswordRequest.getPassword().equals(forgotPasswordRequest.getConfirmPassword())) {
+            throw new AppException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
+        }
+
+        User user = userRepository.findByEmail(forgotPasswordRequest.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        user.setPasswordHash(passwordEncoder.encode(forgotPasswordRequest.getPassword()));
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.UPDATE_USER_FAILED, e);
+        }
+
+    }
+
+//    check user có tồn tại k
+    public void checkUserExist(String email) {
+        if (!userRepository.existsByEmail(email)) {
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        }
     }
 
     // Kiểm tra email người dùng đang đăng nhập. 

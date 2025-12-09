@@ -82,7 +82,7 @@ public enum ErrorCode {
 
     FILE_SAVE_ERROR(2200, "Error saving file", HttpStatus.INTERNAL_SERVER_ERROR),
     URL_REQUIRE(2201, "File URL is required", HttpStatus.BAD_REQUEST),
-    STACK_OVERFLOW(2202, "Recursive data detected or infinite loop while processing the request.",
+    STACK_OVERFLOW(2202, "Internal server error",
             HttpStatus.INTERNAL_SERVER_ERROR),
     SAVE_INVALIDATED_TOKEN_FAILED(2203, "save invalidated token failed", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_FIELD(2204, "Dữ liệu không hợp lệ", HttpStatus.BAD_REQUEST),
@@ -138,6 +138,9 @@ public enum ErrorCode {
     ACCOUNT_LOCKED(4003, "account locked", HttpStatus.BAD_REQUEST),
     ACCOUNT_INACTIVE(4004, "account inactive", HttpStatus.BAD_REQUEST),
     UNKNOWN_USER_STATUS(4005, "unknown user status", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_OTP_TYPE(4006, "Invalid OTP type", HttpStatus.BAD_REQUEST),
+    OTP_TYPE_REQUIRED(4007, "OTP type required", HttpStatus.BAD_REQUEST),
+    OTP_CODE_REQUIRED(4008, "OTP code required", HttpStatus.BAD_REQUEST),
     ;
 
     private int code;

@@ -45,8 +45,27 @@ public class AuthController {
 
     }
 
-//    TOÀN BỘ HÀM Ở CLASS NÀY ĐỀU LÀ TEST API CÓ THỂ GIỮ CODE VÀ TRIỂN KHAI CHI TIẾT HOẶC XÓA ĐI CŨNG ĐƯỢC
-//    Đây là test đăng nhập rồi trả token chứ chưa có triển khai rõ ràng nha Lan
+//    forgot password
+    @PostMapping("/forgot-password")
+    public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        userService.checkUserExist(request.getEmail());
+        otpService.generateAndSendOtp(request.getEmail());
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Đã gửi mã OTP đến email của bạn.")
+                .build();
+    }
+
+//    new password
+    @PostMapping("/reset-password")
+    public ApiResponse<Void> resetPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+       userService.resetPassword(request);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Đổi mật khẩu thành công.")
+                .build();
+    }
+
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);

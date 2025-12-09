@@ -19,12 +19,11 @@ public class UserRequest {
             regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "EMAIL_INVALID"
     )
+    @NotBlank(message = "EMAIL_REQUIRED")
     private String email;
-    @NotBlank(message = "PASSWORD_REQUIRED")
-    @Size(min = 6, max = 30, message = "PASSWORD_TOO_SHORT")
-    private String passwordHash;
+    private String password;
+    private String confirmPassword;
     private String fullname;
-
     private String phone;
     private String address;
     private Set<String> roles;
