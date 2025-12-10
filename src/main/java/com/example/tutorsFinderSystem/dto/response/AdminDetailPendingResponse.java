@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.example.tutorsFinderSystem.enums.Gender;
 import com.example.tutorsFinderSystem.enums.UserStatus;
+import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.CertificateDTO;
 import lombok.*;
 import java.util.List;
 
@@ -34,5 +35,5 @@ public class AdminDetailPendingResponse {
 
     // Thông tin phụ
     private List<String> subjects;      // tên môn
-    private List<String> certificates;  // từ bảng tutor_certificates.certificate
+    private List<CertificateDTO> certificates;  // từ bảng tutor_certificates.certificate
 }

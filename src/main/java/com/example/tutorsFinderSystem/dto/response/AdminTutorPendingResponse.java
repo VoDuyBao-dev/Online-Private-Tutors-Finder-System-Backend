@@ -1,7 +1,10 @@
 package com.example.tutorsFinderSystem.dto.response;
 
 import java.time.LocalDateTime;
+import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.CertificateDTO;
 import java.util.List;
+
+
 import lombok.*;
 
 @Getter
@@ -18,6 +21,7 @@ public class AdminTutorPendingResponse {
     private String educational_level; // tutors.educational_level
     private LocalDateTime created_at; // users.created_at (ngày nộp)
 
-    private List<String> pending_certificates;
+    private List<CertificateDTO> pending_certificates;
+
     private List<String> subjects;  // subjects.subject_name
 }
