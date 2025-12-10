@@ -2,9 +2,9 @@ package com.example.tutorsFinderSystem.dto.response;
 
 import java.time.LocalDateTime;
 
-import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.CertificateDTO;
 import com.example.tutorsFinderSystem.enums.Gender;
 import com.example.tutorsFinderSystem.enums.UserStatus;
+import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.CertificateDTO;
 import lombok.*;
 import java.util.List;
 
@@ -14,13 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AdminTutorDetailResponse {
+public class AdminDetailPendingResponse {
     private Long user_id;
     private String full_name;
     private String email;
     private String phone_number;
     private UserStatus status;
-    private LocalDateTime updated_at; // ngày tham gia
+    private LocalDateTime create_at; // ngày tham gia
 
     // Thông tin từ tutors
     private Long tutor_id;
@@ -35,8 +35,5 @@ public class AdminTutorDetailResponse {
 
     // Thông tin phụ
     private List<String> subjects;      // tên môn
-    private Double average_rating;
-
-    private List<CertificateDTO> certificates;
-
+    private List<CertificateDTO> certificates;  // từ bảng tutor_certificates.certificate
 }

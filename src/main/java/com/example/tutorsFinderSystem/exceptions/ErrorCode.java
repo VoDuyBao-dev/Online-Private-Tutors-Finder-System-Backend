@@ -98,8 +98,9 @@ public enum ErrorCode {
 
     EBOOK_TYPE_REQUIRED(3003, "Ebook type is required", HttpStatus.BAD_REQUEST),
 
-    EBOOK_FILE_PATH_REQUIRED(3004, "File path is required", HttpStatus.BAD_REQUEST),
-    EBOOK_FILE_PATH_TOO_LONG(3005, "File path must be at most 255 characters", HttpStatus.BAD_REQUEST),
+    EBOOK_FILE_REQUIRED(3004, "File is required", HttpStatus.BAD_REQUEST),
+    // EBOOK_FILE_PATH_TOO_LONG(3005, "File path must be at most 255 characters",
+    // HttpStatus.BAD_REQUEST),
 
     EBOOK_NOT_FOUND(3006, "Ebook not found", HttpStatus.NOT_FOUND),
     EBOOK_FORBIDDEN(3007, "You do not have permission to modify this ebook", HttpStatus.FORBIDDEN),
@@ -131,6 +132,11 @@ public enum ErrorCode {
 
     ACCESS_DENIED(1507, "Access denied", HttpStatus.FORBIDDEN),
     TUTOR_NOT_APPROVED(1508, "Tutor is not approved", HttpStatus.FORBIDDEN),
+
+    // ==========Tutor CLASS REQUESTS ==========
+    CLASS_REQUEST_NOT_FOUND(4009, "Class request not found", HttpStatus.NOT_FOUND),
+    INVALID_REQUEST_STATUS(4010, "Invalid request status for this operation", HttpStatus.BAD_REQUEST),
+    CLASS_NOT_FOUND(4011, "Class not found", HttpStatus.NOT_FOUND),
 
 //    ACCOUNT
     ACCOUNT_NOT_ACTIVATED(4001, "account not activated", HttpStatus.BAD_REQUEST),

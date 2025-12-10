@@ -12,15 +12,12 @@ import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.EbookMapper;
 import com.example.tutorsFinderSystem.repositories.EbookRepository;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,43 +26,92 @@ public class EbookService {
 
     private final EbookRepository ebookRepository;
     private final EbookMapper ebookMapper;
-    private final UserService userService; // dùng để lấy User hiện tại
+    private final UserService userService;
+    private final GoogleDriveService googleDriveService;
 
-    public EbookResponse createEbook(EbookCreateRequest request) {
+    // ========================================================
+    // CREATE EBOOK (JSON + FILE → Google Drive)
+    // ========================================================
+    public EbookResponse createEbook(EbookCreateRequest request, MultipartFile ebookFile) {
 
-        User currentUser = userService.getCurrentUser();
+        if (ebookFile == null || ebookFile.isEmpty()) {
+            throw new AppException(ErrorCode.EBOOK_FILE_REQUIRED);
+        }
+
+        User uploader = userService.getCurrentUser();
 
         Ebook ebook = ebookMapper.toEbook(request);
-        ebook.setUploadedBy(currentUser);
+        ebook.setUploadedBy(uploader);
+
+        try {
+            String driveUrl = googleDriveService.upload(ebookFile, "ebooks");
+            ebook.setFilePath(driveUrl);
+        } catch (IOException e) {
+            throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+        }
 
         Ebook saved = ebookRepository.save(ebook);
-
         return ebookMapper.toEbookResponse(saved);
     }
 
-    public EbookResponse updateEbook(Long ebookId, EbookUpdateRequest request) {
+    // ========================================================
+    // UPDATE EBOOK (metadata + optional new file)
+    // ========================================================
+    public EbookResponse updateEbook(Long ebookId, EbookUpdateRequest request, MultipartFile ebookFile) {
 
         Ebook ebook = ebookRepository.findById(ebookId)
                 .orElseThrow(() -> new AppException(ErrorCode.EBOOK_NOT_FOUND));
 
-        // Nếu cần check quyền admin thì check ở đây
-        // User current = userService.getCurrentUser();
-
+        // Update metadata trước
         ebookMapper.updateEbookFromRequest(request, ebook);
 
-        Ebook updated = ebookRepository.save(ebook);
+        // Nếu có upload file mới → upload Drive và xoá file cũ
+        if (ebookFile != null && !ebookFile.isEmpty()) {
 
+            // Lấy id file cũ
+            String oldUrl = ebook.getFilePath();
+            String oldId = extractDriveId(oldUrl);
+
+            try {
+                String newUrl = googleDriveService.upload(ebookFile, "ebooks");
+                ebook.setFilePath(newUrl);
+
+                // Xoá file cũ
+                if (oldId != null) {
+                    googleDriveService.delete(oldId);
+                }
+
+            } catch (IOException e) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+        }
+
+        Ebook updated = ebookRepository.save(ebook);
         return ebookMapper.toEbookResponse(updated);
     }
 
+    // ========================================================
+    // DELETE EBOOK (xoá cả file Drive)
+    // ========================================================
     public void deleteEbook(Long ebookId) {
 
         Ebook ebook = ebookRepository.findById(ebookId)
                 .orElseThrow(() -> new AppException(ErrorCode.EBOOK_NOT_FOUND));
 
+        String fileId = extractDriveId(ebook.getFilePath());
+
+        if (fileId != null) {
+            try {
+                googleDriveService.delete(fileId);
+            } catch (IOException ignored) {}
+        }
+
         ebookRepository.delete(ebook);
     }
 
+    // ========================================================
+    // GET EBOOK
+    // ========================================================
     @Transactional(readOnly = true)
     public EbookResponse getEbookById(Long ebookId) {
 
@@ -75,11 +121,13 @@ public class EbookService {
         return ebookMapper.toEbookResponse(ebook);
     }
 
+    // ========================================================
+    // LIST EBOOK (filter + paging)
+    // ========================================================
     @Transactional(readOnly = true)
     public PageResponse<EbookResponse> getAllEbooks(EbookType type, String keyword, int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-
         Page<Ebook> ebookPage;
 
         boolean hasType = type != null;
@@ -95,15 +143,23 @@ public class EbookService {
             ebookPage = ebookRepository.findAll(pageable);
         }
 
-        List<EbookResponse> items = ebookMapper.toEbookResponses(ebookPage.getContent());
-
         return PageResponse.<EbookResponse>builder()
-                .items(items)
+                .items(ebookMapper.toEbookResponses(ebookPage.getContent()))
                 .page(page)
                 .size(size)
                 .totalItems(ebookPage.getTotalElements())
                 .totalPages(ebookPage.getTotalPages())
                 .build();
+    }
+
+    // ========================================================
+    // HELPER – Tách fileId từ Google Drive URL
+    // ========================================================
+    private String extractDriveId(String url) {
+        if (url == null) return null;
+        if (!url.contains("id=")) return null;
+
+        return url.substring(url.indexOf("id=") + 3);
     }
 
 }

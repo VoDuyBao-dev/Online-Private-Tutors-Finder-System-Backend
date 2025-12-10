@@ -1,6 +1,5 @@
 package com.example.tutorsFinderSystem.dto.response;
 
-import com.example.tutorsFinderSystem.enums.EbookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

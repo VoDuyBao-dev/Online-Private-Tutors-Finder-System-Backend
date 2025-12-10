@@ -8,13 +8,10 @@ import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorPersonalInfoResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorRatingsSummaryResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorSubjectsResponse;
-import com.example.tutorsFinderSystem.exceptions.AppException;
-import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.security.RequireApprovedTutor;
 import com.example.tutorsFinderSystem.dto.request.TutorEducationUpdateRequest;
 import com.example.tutorsFinderSystem.services.TutorProfileService;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidatorFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 
 @RestController
 @RequestMapping("/tutors/profile")

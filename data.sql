@@ -1,19 +1,19 @@
 -- USE tutors_finder_system;
 
 -- mật khẩu 12345678 
-INSERT INTO users (full_name, email, password_hash, role, phone_number, status, updated_at)
+INSERT INTO users (full_name, email, password_hash, role, phone_number, status, updated_at, avatar_image)
 VALUES
-('Nguyễn Văn Admin', 'admin1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'ADMIN', '0901111222', 'Active', NOW()),
-('Trần Thị B', 'tutor1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0903333444', 'Active', NOW()),
-('Lê Văn C', 'tutor2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0905555666', 'Active', NOW()),
-('Phạm Thị D', 'tutor3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907777888', 'inActive', NOW()),
-('Ngô Minh E', 'parent1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911111222', 'Active', NOW()),
-('Trần Anh F', 'parent2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0913333444', 'Active', NOW()),
-('Hoàng Văn G', 'parent3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0915555666', 'Active', NOW()),
-('Vũ Thị H', 'tutor4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908888999','Active', NOW()),
-('Nguyễn Minh I', 'tutor5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0902222333', 'Active', NOW()),
-('Lâm Thị K', 'parent4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917777888', 'Active', NOW()),
-('Lâm Văn H', 'parent5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917777999', 'Active', NOW());
+('Nguyễn Văn Admin', 'admin1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'ADMIN', '0901111222', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Trần Thị B', 'tutor1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0903333444', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Lê Văn C', 'tutor2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0905555666', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Phạm Thị D', 'tutor3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907777888', 'inActive', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Ngô Minh E', 'parent1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911111222', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Trần Anh F', 'parent2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0913333444', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Hoàng Văn G', 'parent3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0915555666', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Vũ Thị H', 'tutor4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908888999','Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Nguyễn Minh I', 'tutor5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0902222333', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Lâm Thị K', 'parent4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917777888', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+('Lâm Văn H', 'parent5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917777999', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp");
 
 
 INSERT INTO subjects (subject_name) VALUES
@@ -103,29 +103,29 @@ INSERT INTO tutor_certificate_files
 (file_id, certificate_id, file_url, status, is_active, uploaded_at)
 VALUES
 -- Tutor 1
-(1, 1, 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV1', 'APPROVED', TRUE, NOW()),
-(2, 2, 'https://drive.google.com/uc?id=1XyZaBCdE234FgHiJkLmNoP', 'APPROVED', TRUE, NOW()),
-(3, 3, 'https://drive.google.com/uc?id=1QrStUvWxYZaBcDeFgHiJ23', 'APPROVED', TRUE, NOW()),
+(1, 1, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(2, 2, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(3, 3, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
 -- Tutor 2
-(4, 4, 'https://drive.google.com/uc?id=1MnOpQrStUvWxYzABcDeFg2', 'APPROVED', TRUE, NOW()),
-(5, 5, 'https://drive.google.com/uc?id=1BcDeFgHiJKLmNoPqRsTuV3', 'APPROVED', TRUE, NOW()),
-(6, 6, 'https://drive.google.com/uc?id=1HiJKLmNoPqRsTuVwXyZaB4', 'APPROVED', TRUE, NOW()),
+(4, 4, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(5, 5, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(6, 6, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
 -- Tutor 3
-(7, 7, 'https://drive.google.com/uc?id=1ZaBcDeFgHiJKLmNoPqRsT5', 'APPROVED', TRUE, NOW()),
-(8, 8, 'https://drive.google.com/uc?id=1TuVwXyZaBcDeFgHiJKLmN6', 'APPROVED', TRUE, NOW()),
-(9, 9, 'https://drive.google.com/uc?id=1LmNoPqRsTuVwXyZaBcDeF7', 'APPROVED', TRUE, NOW()),
+(7, 7, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(8, 8, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(9, 9, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
 -- Tutor 4
-(10, 10, 'https://drive.google.com/uc?id=1FgHiJKLmNoPqRsTuVwXyZ8', 'APPROVED', TRUE, NOW()),
-(11, 11, 'https://drive.google.com/uc?id=1YzAbCdEfGhJKLmNoPqRsT9', 'APPROVED', TRUE, NOW()),
-(12, 12, 'https://drive.google.com/uc?id=1WxYzAbCdEfGhJKLmNoPqR0', 'APPROVED', TRUE, NOW()),
+(10, 10, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(11, 11, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(12, 12, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
 -- Tutor 5
-(13, 13, 'https://drive.google.com/uc?id=1HiLMnOpQrStUvWxYzAbCd11', 'APPROVED', TRUE, NOW()),
-(14, 14, 'https://drive.google.com/uc?id=1QrStUvWxYzAbCdEfGhJKL12', 'APPROVED', TRUE, NOW()),
-(15, 15, 'https://drive.google.com/uc?id=1AbCdEfGhJKLmNoPqRsTuV13', 'APPROVED', TRUE, NOW());
+(13, 13, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(14, 14, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(15, 15, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW());
 
 
 
@@ -304,18 +304,18 @@ VALUES
 
 INSERT INTO ebooks (title, type, file_path, uploaded_by, created_at)
 VALUES
-('Toán nâng cao lớp 7', 'SACH_GIAO_KHOA', 'ebooks/toan7.pdf', 2, NOW()),
-('Vật lý cơ bản', 'TAI_LIEU', 'ebooks/ly10.pdf', 2, NOW()),
-('Hóa học thực hành', 'TAI_LIEU', 'ebooks/hoa.pdf', 2, NOW()),
-('Tiếng Anh giao tiếp', 'TAI_LIEU', 'ebooks/english.pdf', 2, NOW()),
-('Ôn thi IELTS 7.0', 'DE_THI_THAM_KHAO', 'ebooks/ielts.pdf', 2, NOW()),
-('Luyện thi TOEIC 700+', 'DE_THI_THAM_KHAO', 'ebooks/toeic.pdf', 2, NOW()),
-('Tin học cơ bản', 'SACH_GIAO_KHOA', 'ebooks/tin.pdf', 2, NOW()),
-('Kỹ năng học tập hiệu quả', 'TAI_LIEU', 'ebooks/skill.pdf', 2, NOW()),
-('Bài tập Hóa nâng cao', 'TAI_LIEU', 'ebooks/hoa2.pdf', 2, NOW()),
-('Bộ đề thi THPT Quốc gia', 'DE_THI_THAM_KHAO', 'ebooks/thpt.pdf', 3, NOW()),
-('Toán chuyên nâng cao', 'TAI_LIEU', 'ebooks/toanchuyen.pdf', 2, NOW()),
-('Lý nâng cao 12', 'TAI_LIEU', 'ebooks/ly12nangcao.pdf', 3, NOW());
+('Toán nâng cao lớp 7', 'SACH_GIAO_KHOA', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Vật lý cơ bản', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Hóa học thực hành', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Tiếng Anh giao tiếp', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Ôn thi IELTS 7.0', 'DE_THI_THAM_KHAO', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Luyện thi TOEIC 700+', 'DE_THI_THAM_KHAO', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Tin học cơ bản', 'SACH_GIAO_KHOA', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Kỹ năng học tập hiệu quả', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Bài tập Hóa nâng cao', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Bộ đề thi THPT Quốc gia', 'DE_THI_THAM_KHAO', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 3, NOW()),
+('Toán chuyên nâng cao', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 2, NOW()),
+('Lý nâng cao 12', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 3, NOW());
 
 
 
@@ -449,28 +449,28 @@ VALUES
 
 
 -- === 1. Thêm 20 users (10 tutor, 10 learner) ===
-INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, status, created_at, updated_at)
+INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, status, created_at, updated_at, avatar_image)
 VALUES
-  (12, 'Nguyễn Gia Tutor 1', 'tutor6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0906000001', 'ACTIVE', '2025-12-01 09:00:00', '2025-12-01 09:15:00'),
-  (13, 'Trần Minh Tutor 2', 'tutor7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907000002', 'ACTIVE', '2025-12-02 09:00:00', '2025-12-02 09:15:00'),
-  (14, 'Lê Hoài Tutor 3', 'tutor8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908000003', 'ACTIVE', '2025-12-03 09:00:00', '2025-12-03 09:15:00'),
-  (15, 'Phạm Hải Tutor 4', 'tutor9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0909000004', 'ACTIVE', '2025-12-04 09:00:00', '2025-12-04 09:15:00'),
-  (16, 'Võ Thái Tutor 5', 'tutor10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901000005', 'ACTIVE', '2025-12-05 09:00:00', '2025-12-05 09:15:00'),
-  (17, 'Đỗ Quang Tutor 6', 'tutor11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901100006', 'ACTIVE', '2025-12-06 09:00:00', '2025-12-06 09:15:00'),
-  (18, 'Hoàng Yến Tutor 7', 'tutor12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901200007', 'ACTIVE', '2025-12-07 09:00:00', '2025-12-07 09:15:00'),
-  (19, 'Bùi Phúc Tutor 8', 'tutor13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901300008', 'ACTIVE', '2025-12-08 09:00:00', '2025-12-08 09:15:00'),
-  (20, 'Đinh Trang Tutor 9', 'tutor14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901400009', 'ACTIVE', '2025-12-09 09:00:00', '2025-12-09 09:15:00'),
-  (21, 'Cao Nhã Tutor 10', 'tutor15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901500010', 'ACTIVE', '2025-12-10 09:00:00', '2025-12-10 09:15:00'),
-  (22, 'Lê Học Learner 1', 'learner6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0916000001', 'ACTIVE', '2025-12-06 10:00:00', '2025-12-06 10:10:00'),
-  (23, 'Nguyễn Học Learner 2', 'learner7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917000002', 'ACTIVE', '2025-12-07 10:00:00', '2025-12-07 10:10:00'),
-  (24, 'Trần Học Learner 3', 'learner8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0918000003', 'ACTIVE', '2025-12-08 10:00:00', '2025-12-08 10:10:00'),
-  (25, 'Phạm Học Learner 4', 'learner9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0919000004', 'ACTIVE', '2025-12-09 10:00:00', '2025-12-09 10:10:00'),
-  (26, 'Huỳnh Học Learner 5', 'learner10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911000005', 'ACTIVE', '2025-12-10 10:00:00', '2025-12-10 10:10:00'),
-  (27, 'Vũ Học Learner 6', 'learner11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911100006', 'ACTIVE', '2025-12-11 10:00:00', '2025-12-11 10:10:00'),
-  (28, 'Đoàn Học Learner 7', 'learner12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911200007', 'ACTIVE', '2025-12-12 10:00:00', '2025-12-12 10:10:00'),
-  (29, 'Lâm Học Learner 8', 'learner13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911300008', 'ACTIVE', '2025-12-13 10:00:00', '2025-12-13 10:10:00'),
-  (30, 'Đặng Học Learner 9', 'learner14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911400009', 'ACTIVE', '2025-12-14 10:00:00', '2025-12-14 10:10:00'),
-  (31, 'Ngô Học Learner 10', 'learner15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911500010', 'ACTIVE', '2025-12-15 10:00:00', '2025-12-15 10:10:00');
+  (12, 'Nguyễn Gia Tutor 1', 'tutor6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0906000001', 'ACTIVE', '2025-12-01 09:00:00', '2025-12-01 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (13, 'Trần Minh Tutor 2', 'tutor7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907000002', 'ACTIVE', '2025-12-02 09:00:00', '2025-12-02 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (14, 'Lê Hoài Tutor 3', 'tutor8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908000003', 'ACTIVE', '2025-12-03 09:00:00', '2025-12-03 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (15, 'Phạm Hải Tutor 4', 'tutor9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0909000004', 'ACTIVE', '2025-12-04 09:00:00', '2025-12-04 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (16, 'Võ Thái Tutor 5', 'tutor10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901000005', 'ACTIVE', '2025-12-05 09:00:00', '2025-12-05 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (17, 'Đỗ Quang Tutor 6', 'tutor11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901100006', 'ACTIVE', '2025-12-06 09:00:00', '2025-12-06 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (18, 'Hoàng Yến Tutor 7', 'tutor12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901200007', 'ACTIVE', '2025-12-07 09:00:00', '2025-12-07 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (19, 'Bùi Phúc Tutor 8', 'tutor13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901300008', 'ACTIVE', '2025-12-08 09:00:00', '2025-12-08 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (20, 'Đinh Trang Tutor 9', 'tutor14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901400009', 'ACTIVE', '2025-12-09 09:00:00', '2025-12-09 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (21, 'Cao Nhã Tutor 10', 'tutor15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901500010', 'ACTIVE', '2025-12-10 09:00:00', '2025-12-10 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (22, 'Lê Học Learner 1', 'learner6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0916000001', 'ACTIVE', '2025-12-06 10:00:00', '2025-12-06 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (23, 'Nguyễn Học Learner 2', 'learner7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917000002', 'ACTIVE', '2025-12-07 10:00:00', '2025-12-07 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (24, 'Trần Học Learner 3', 'learner8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0918000003', 'ACTIVE', '2025-12-08 10:00:00', '2025-12-08 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (25, 'Phạm Học Learner 4', 'learner9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0919000004', 'ACTIVE', '2025-12-09 10:00:00', '2025-12-09 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (26, 'Huỳnh Học Learner 5', 'learner10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911000005', 'ACTIVE', '2025-12-10 10:00:00', '2025-12-10 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (27, 'Vũ Học Learner 6', 'learner11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911100006', 'ACTIVE', '2025-12-11 10:00:00', '2025-12-11 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (28, 'Đoàn Học Learner 7', 'learner12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911200007', 'ACTIVE', '2025-12-12 10:00:00', '2025-12-12 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (29, 'Lâm Học Learner 8', 'learner13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911300008', 'ACTIVE', '2025-12-13 10:00:00', '2025-12-13 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (30, 'Đặng Học Learner 9', 'learner14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911400009', 'ACTIVE', '2025-12-14 10:00:00', '2025-12-14 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (31, 'Ngô Học Learner 10', 'learner15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911500010', 'ACTIVE', '2025-12-15 10:00:00', '2025-12-15 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp");
 
 -- === 2. Thêm 10 tutors mới (tutor_id 6–15) ===
 INSERT INTO tutors (tutor_id, address, educational_level, gender, introduction, price_per_hour, university, verification_status, user_id)
@@ -551,32 +551,30 @@ VALUES
 
 INSERT INTO tutor_certificate_files (file_id, certificate_id, file_url, status, is_active, uploaded_at)
 VALUES
-(200, 100, 'https://drive.google.com/uc?id=cert_sp_06_1', 'APPROVED', TRUE, NOW()),
-(201, 101, 'https://drive.google.com/uc?id=cert_cm_06_2', 'APPROVED', TRUE, NOW()),
-(202, 102, 'https://drive.google.com/uc?id=cert_sp_07_1', 'APPROVED', TRUE, NOW()),
-(203, 103, 'https://drive.google.com/uc?id=cert_cm_07_2', 'APPROVED', TRUE, NOW()),
-(204, 104, 'https://drive.google.com/uc?id=cert_sp_08_1', 'APPROVED', TRUE, NOW()),
-(205, 105, 'https://drive.google.com/uc?id=cert_cm_08_2', 'APPROVED', TRUE, NOW()),
-(206, 106, 'https://drive.google.com/uc?id=cert_sp_09_1', 'APPROVED', TRUE, NOW()),
-(207, 107, 'https://drive.google.com/uc?id=cert_cm_09_2', 'APPROVED', TRUE, NOW()),
+(200, 100, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(201, 101, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(202, 102, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(203, 103, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(204, 104, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(205, 105, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(206, 106, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(207, 107, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
-(208, 108, 'https://drive.google.com/uc?id=cert_sp_10_1', 'APPROVED', TRUE, NOW()),
-(209, 109, 'https://drive.google.com/uc?id=cert_cm_10_2', 'APPROVED', TRUE, NOW()),
+(208, 108, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(209, 109, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
-(210, 110, 'https://drive.google.com/uc?id=cert_sp_11_1', 'APPROVED', TRUE, NOW()),
-(211, 111, 'https://drive.google.com/uc?id=cert_cm_11_2', 'APPROVED', TRUE, NOW()),
+(210, 110, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(212, 112, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(213, 113, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
-(212, 112, 'https://drive.google.com/uc?id=cert_sp_12_1', 'APPROVED', TRUE, NOW()),
-(213, 113, 'https://drive.google.com/uc?id=cert_cm_12_2', 'APPROVED', TRUE, NOW()),
+(214, 114, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(215, 115, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
-(214, 114, 'https://drive.google.com/uc?id=cert_sp_13_1', 'APPROVED', TRUE, NOW()),
-(215, 115, 'https://drive.google.com/uc?id=cert_cm_13_2', 'APPROVED', TRUE, NOW()),
+(216, 116, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(217, 117, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
-(216, 116, 'https://drive.google.com/uc?id=cert_sp_14_1', 'APPROVED', TRUE, NOW()),
-(217, 117, 'https://drive.google.com/uc?id=cert_cm_14_2', 'APPROVED', TRUE, NOW()),
-
-(218, 118, 'https://drive.google.com/uc?id=cert_sp_15_1', 'APPROVED', TRUE, NOW()),
-(219, 119, 'https://drive.google.com/uc?id=cert_cm_15_2', 'APPROVED', TRUE, NOW());
+(218, 118, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(219, 119, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW());
 
 
 
@@ -735,9 +733,9 @@ VALUES
 -- === 14. Ebooks mới do tutors mới upload ===
 INSERT INTO ebooks (title, type, file_path, uploaded_by, created_at)
 VALUES
-  ('Chuyên đề Toán THCS nâng cao', 'TAI_LIEU', 'ebooks/custom_1.pdf', 12, '2025-12-05 16:00:00'),
-  ('Bài tập Vật lí luyện thi', 'TAI_LIEU', 'ebooks/custom_2.pdf', 13, '2025-12-06 16:00:00'),
-  ('Hóa học cơ bản cho THPT', 'SACH_GIAO_KHOA', 'ebooks/custom_3.pdf', 14, '2025-12-07 16:00:00'),
-  ('Tiếng Anh giao tiếp hàng ngày', 'TAI_LIEU', 'ebooks/custom_4.pdf', 15, '2025-12-08 16:00:00'),
-  ('Tài liệu luyện thi IELTS 6.5+', 'DE_THI_THAM_KHAO', 'ebooks/custom_5.pdf', 16, '2025-12-09 16:00:00');
+  ('Chuyên đề Toán THCS nâng cao', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 12, '2025-12-05 16:00:00'),
+  ('Bài tập Vật lí luyện thi', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 13, '2025-12-06 16:00:00'),
+  ('Hóa học cơ bản cho THPT', 'SACH_GIAO_KHOA', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 14, '2025-12-07 16:00:00'),
+  ('Tiếng Anh giao tiếp hàng ngày', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 15, '2025-12-08 16:00:00'),
+  ('Tài liệu luyện thi IELTS 6.5+', 'DE_THI_THAM_KHAO', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 16, '2025-12-09 16:00:00');
 

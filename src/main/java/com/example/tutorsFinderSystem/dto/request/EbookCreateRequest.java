@@ -22,7 +22,7 @@ public class EbookCreateRequest {
     @NotNull(message = "EBOOK_TYPE_REQUIRED")
     private EbookType type;
 
-    @NotBlank(message = "EBOOK_FILE_PATH_REQUIRED")
-    @Size(max = 255, message = "EBOOK_FILE_PATH_TOO_LONG")
-    private String filePath;
+    // @NotBlank(message = "EBOOK_FILE_PATH_REQUIRED")
+    // @Size(max = 255, message = "EBOOK_FILE_PATH_TOO_LONG")
+    // private String filePath;
 }
