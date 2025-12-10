@@ -1,10 +1,12 @@
 package com.example.tutorsFinderSystem.services;
 
+import com.example.tutorsFinderSystem.dto.response.TutorRequestClassResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorRequestStatusUpdateResponse;
-import com.example.tutorsFinderSystem.dto.response.tutorRequestClassResponse;
 import com.example.tutorsFinderSystem.entities.CalendarClass;
 import com.example.tutorsFinderSystem.entities.ClassEntity;
 import com.example.tutorsFinderSystem.entities.ClassRequest;
+import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.entities.User;
 import com.example.tutorsFinderSystem.enums.ClassRequestStatus;
 import com.example.tutorsFinderSystem.enums.ClassRequestType;
 import com.example.tutorsFinderSystem.enums.ClassStatus;
@@ -14,6 +16,8 @@ import com.example.tutorsFinderSystem.mapper.TutorClassRequestMapper;
 import com.example.tutorsFinderSystem.repositories.CalendarClassRepository;
 import com.example.tutorsFinderSystem.repositories.ClassRepository;
 import com.example.tutorsFinderSystem.repositories.ClassRequestRepository;
+import com.example.tutorsFinderSystem.repositories.TutorRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -31,17 +35,33 @@ public class TutorClassRequestService {
     private final CalendarClassRepository calendarClassRepository;
     private final TutorClassRequestMapper mapper;
 
+    private final UserService userService;
+    private final TutorRepository tutorRepository;
+
     /**
-     * Lấy danh sách yêu cầu của 1 tutor với filter.
+     * Lấy tutor hiện tại từ SecurityContext (qua UserService),
+     * sau đó tìm Tutor tương ứng với User đó.
+     */
+    private Tutor getCurrentTutor() {
+        User currentUser = userService.getCurrentUser();
+        return tutorRepository.findByUserUserId(currentUser.getUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+    }
+
+    /**
+     * Lấy danh sách yêu cầu của tutor hiện tại với filter.
      */
     @Transactional(readOnly = true)
-    public Page<tutorRequestClassResponse> getRequestsForTutor(
-            Long tutorId,
+    public Page<TutorRequestClassResponse> getRequestsForCurrentTutor(
             ClassRequestStatus status,
             ClassRequestType type,
             String keyword,
             int page,
             int size) {
+
+        Tutor tutor = getCurrentTutor();
+        Long tutorId = tutor.getTutorId();
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         Page<ClassRequest> requestPage;
@@ -60,8 +80,8 @@ public class TutorClassRequestService {
                     .findByTutor_TutorId(tutorId, pageable);
         }
 
-        // Keyword filter (tên học viên hoặc tên môn học)
-        List<tutorRequestClassResponse> content = requestPage.getContent().stream()
+        // Map sang DTO + filter theo keyword (tên học viên / tên môn học)
+        List<TutorRequestClassResponse> content = requestPage.getContent().stream()
                 .map(request -> {
                     ClassEntity classEntity = classRepository
                             .findByClassRequest_RequestId(request.getRequestId())
@@ -75,10 +95,11 @@ public class TutorClassRequestService {
                 .filter(dto -> matchesKeyword(dto, keyword))
                 .collect(Collectors.toList());
 
+        // totalElements vẫn dùng theo page gốc để không làm lệch phân trang
         return new PageImpl<>(content, pageable, requestPage.getTotalElements());
     }
 
-    private boolean matchesKeyword(tutorRequestClassResponse dto, String keyword) {
+    private boolean matchesKeyword(TutorRequestClassResponse dto, String keyword) {
         if (keyword == null || keyword.isBlank())
             return true;
         String kw = keyword.toLowerCase();
@@ -87,35 +108,15 @@ public class TutorClassRequestService {
     }
 
     /**
-     * Xem chi tiết 1 yêu cầu – đảm bảo thuộc về tutor.
-     */
-    // @Transactional(readOnly = true)
-    // public TutorRequestDetailResponse getRequestDetail(Long tutorId, Long
-    // requestId) {
-    // ClassRequest request = classRequestRepository.findById(requestId)
-    // .orElseThrow(() -> new AppException(ErrorCode.CLASS_REQUEST_NOT_FOUND));
-
-    // if (!request.getTutor().getTutorId().equals(tutorId)) {
-    // throw new AppException(ErrorCode.ACCESS_DENIED);
-    // }
-
-    // ClassEntity classEntity =
-    // classRepository.findByClassRequest_RequestId(requestId)
-    // .orElseThrow(() -> new AppException(ErrorCode.CLASS_NOT_FOUND));
-
-    // List<CalendarClass> slots = calendarClassRepository
-    // .findByClassRequest_RequestId(requestId);
-
-    // return mapper.toDetail(request, classEntity, slots);
-    // }
-
-    /**
-     * Tutor chấp nhận yêu cầu
-     * - class_requests.status = CONFIRMED
-     * - classes.status = ONGOING
+     * Tutor hiện tại chấp nhận yêu cầu:
+     *  - class_requests.status = CONFIRMED
+     *  - classes.status        = ONGOING
      */
     @Transactional
-    public TutorRequestStatusUpdateResponse acceptRequest(Long tutorId, Long requestId) {
+    public TutorRequestStatusUpdateResponse acceptRequestForCurrentTutor(Long requestId) {
+        Tutor tutor = getCurrentTutor();
+        Long tutorId = tutor.getTutorId();
+
         ClassRequest request = classRequestRepository.findById(requestId)
                 .orElseThrow(() -> new AppException(ErrorCode.CLASS_REQUEST_NOT_FOUND));
 
@@ -146,12 +147,15 @@ public class TutorClassRequestService {
     }
 
     /**
-     * Tutor từ chối yêu cầu
-     * - class_requests.status = CANCELLED
-     * - classes.status = CANCELLED
+     * Tutor hiện tại từ chối yêu cầu:
+     *  - class_requests.status = CANCELLED
+     *  - classes.status        = CANCELLED
      */
     @Transactional
-    public TutorRequestStatusUpdateResponse rejectRequest(Long tutorId, Long requestId) {
+    public TutorRequestStatusUpdateResponse rejectRequestForCurrentTutor(Long requestId) {
+        Tutor tutor = getCurrentTutor();
+        Long tutorId = tutor.getTutorId();
+
         ClassRequest request = classRequestRepository.findById(requestId)
                 .orElseThrow(() -> new AppException(ErrorCode.CLASS_REQUEST_NOT_FOUND));
 
@@ -179,4 +183,28 @@ public class TutorClassRequestService {
                 .classStatus(classEntity.getStatus())
                 .build();
     }
+
+    // Nếu sau này cần xem chi tiết, bạn có thể bật lại và đổi sang dùng getCurrentTutor():
+
+    // @Transactional(readOnly = true)
+    // public TutorRequestDetailResponse getRequestDetailForCurrentTutor(Long requestId) {
+    //     Tutor tutor = getCurrentTutor();
+    //     Long tutorId = tutor.getTutorId();
+    //
+    //     ClassRequest request = classRequestRepository.findById(requestId)
+    //             .orElseThrow(() -> new AppException(ErrorCode.CLASS_REQUEST_NOT_FOUND));
+    //
+    //     if (!request.getTutor().getTutorId().equals(tutorId)) {
+    //         throw new AppException(ErrorCode.ACCESS_DENIED);
+    //     }
+    //
+    //     ClassEntity classEntity =
+    //             classRepository.findByClassRequest_RequestId(requestId)
+    //                     .orElseThrow(() -> new AppException(ErrorCode.CLASS_NOT_FOUND));
+    //
+    //     List<CalendarClass> slots =
+    //             calendarClassRepository.findByClassRequest_RequestId(requestId);
+    //
+    //     return mapper.toDetail(request, classEntity, slots);
+    // }
 }

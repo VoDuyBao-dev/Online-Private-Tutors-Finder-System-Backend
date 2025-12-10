@@ -1,6 +1,6 @@
 package com.example.tutorsFinderSystem.mapper;
 
-import com.example.tutorsFinderSystem.dto.response.tutorRequestClassResponse;
+import com.example.tutorsFinderSystem.dto.response.TutorRequestClassResponse;
 import com.example.tutorsFinderSystem.entities.CalendarClass;
 import com.example.tutorsFinderSystem.entities.ClassEntity;
 import com.example.tutorsFinderSystem.entities.ClassRequest;
@@ -38,7 +38,7 @@ public interface TutorClassRequestMapper  {
     @Mapping(target = "createdAt", source = "request.createdAt")
 
     @Mapping(target = "scheduleDescription", expression = "java(buildScheduleDescription(calendar))")
-    tutorRequestClassResponse toSummary(ClassRequest request, ClassEntity classEntity, List<CalendarClass> calendar);
+    TutorRequestClassResponse toSummary(ClassRequest request, ClassEntity classEntity, List<CalendarClass> calendar);
 
     default String buildScheduleDescription(List<CalendarClass> slots) {
         if (slots == null || slots.isEmpty())
