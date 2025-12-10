@@ -1,19 +1,34 @@
 -- USE tutors_finder_system;
 
 -- mật khẩu 12345678 
-INSERT INTO users (full_name, email, password_hash, role, phone_number, status, updated_at, avatar_image)
+INSERT INTO users (full_name, email, password_hash, phone_number, status, updated_at, avatar_image, created_at, enabled)
 VALUES
-('Nguyễn Văn Admin', 'admin1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'ADMIN', '0901111222', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Trần Thị B', 'tutor1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0903333444', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Lê Văn C', 'tutor2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0905555666', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Phạm Thị D', 'tutor3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907777888', 'inActive', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Ngô Minh E', 'parent1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911111222', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Trần Anh F', 'parent2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0913333444', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Hoàng Văn G', 'parent3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0915555666', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Vũ Thị H', 'tutor4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908888999','Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Nguyễn Minh I', 'tutor5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0902222333', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Lâm Thị K', 'parent4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917777888', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-('Lâm Văn H', 'parent5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917777999', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp");
+('Nguyễn Văn Admin', 'admin1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901111222', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Trần Thị B', 'tutor1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0903333444', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Lê Văn C', 'tutor2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0905555666', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Phạm Thị D', 'tutor3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0907777888', 'inActive', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Ngô Minh E', 'parent1@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911111222', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Trần Anh F', 'parent2@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0913333444', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Hoàng Văn G', 'parent3@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0915555666', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Vũ Thị H', 'tutor4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0908888999','Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Nguyễn Minh I', 'tutor5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0902222333', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Lâm Thị K', 'parent4@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0917777888', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true),
+('Lâm Văn H', 'parent5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0917777999', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true);
+
+
+INSERT INTO user_roles (user_id, role) VALUES
+                                           (1,  'ADMIN'),
+                                           (2,  'TUTOR'),
+                                           (3,  'TUTOR'),
+                                           (4,  'TUTOR'),
+                                           (5,  'LEARNER'),
+                                           (6,  'LEARNER'),
+                                           (7,  'LEARNER'),
+                                           (8,  'TUTOR'),
+                                           (9,  'TUTOR'),
+                                           (10, 'LEARNER'),
+                                           (11, 'LEARNER');
+
 
 
 INSERT INTO subjects (subject_name) VALUES
