@@ -30,6 +30,12 @@ public class SecurityConfig {
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    private final String[] COMMON_URLS = {
+            "/tutors/tutorDetail/**",
+
+
+    };
+
     // Cho phép API công khai
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,9 +48,13 @@ public class SecurityConfig {
                     "/error",              // tránh lỗi 401 khi gặp /error
                     "/drive/view/**"
                 ).permitAll()
+                .requestMatchers(COMMON_URLS).hasAnyAuthority("SCOPE_TUTOR", "SCOPE_LEARNER")
                 .requestMatchers("/tutors/**").hasAuthority("SCOPE_TUTOR")
                 .requestMatchers("/admin/**").hasAuthority("SCOPE_ADMIN")
-                // tất cả request khác phải đăng nhập
+                .requestMatchers("/learner/**").hasAuthority("SCOPE_LEARNER")
+
+
+                    // tất cả request khác phải đăng nhập
                 .anyRequest().authenticated()
             )
 //                xử lý xác thực jwt
