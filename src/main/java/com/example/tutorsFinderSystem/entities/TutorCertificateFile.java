@@ -3,9 +3,6 @@ package com.example.tutorsFinderSystem.entities;
 import java.time.LocalDateTime;
 
 import com.example.tutorsFinderSystem.enums.CertificateStatus;
-import com.example.tutorsFinderSystem.enums.TutorStatus;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

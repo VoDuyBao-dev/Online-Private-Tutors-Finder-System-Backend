@@ -18,8 +18,7 @@ public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<?> upload(
             @RequestPart("file") MultipartFile file,
-            @RequestParam("folder") String folderKey
-    ) {
+            @RequestParam("folder") String folderKey) {
         try {
             String url = driveService.upload(file, folderKey);
             return ResponseEntity.ok(url);
@@ -49,4 +48,20 @@ public class FileController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // View file (public)
+    @GetMapping("/view/{fileId}")
+    public ResponseEntity<byte[]> view(@PathVariable String fileId) {
+        try {
+            byte[] bytes = driveService.getFileBytes(fileId);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(bytes);
+
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

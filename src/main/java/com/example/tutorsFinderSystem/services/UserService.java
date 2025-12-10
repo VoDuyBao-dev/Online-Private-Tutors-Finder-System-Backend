@@ -1,6 +1,5 @@
 package com.example.tutorsFinderSystem.services;
 
-import com.example.tutorsFinderSystem.dto.response.UserResponse;
 import com.example.tutorsFinderSystem.entities.User;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;

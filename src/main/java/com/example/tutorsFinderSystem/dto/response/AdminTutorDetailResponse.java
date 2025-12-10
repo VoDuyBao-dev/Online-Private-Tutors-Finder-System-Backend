@@ -2,6 +2,7 @@ package com.example.tutorsFinderSystem.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.CertificateDTO;
 import com.example.tutorsFinderSystem.enums.Gender;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 import lombok.*;
@@ -34,6 +35,8 @@ public class AdminTutorDetailResponse {
 
     // Thông tin phụ
     private List<String> subjects;      // tên môn
-    private List<String> certificates;  // từ bảng tutor_certificates.certificate
     private Double average_rating;
+
+    private List<CertificateDTO> certificates;
+
 }
