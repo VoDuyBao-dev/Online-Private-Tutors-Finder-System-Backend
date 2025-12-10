@@ -108,7 +108,7 @@ VALUES
 (3, 3, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
 -- Tutor 2
-(4, 4, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(4, 4, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'PENDING', TRUE, NOW()),
 (5, 5, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 (6, 6, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
@@ -118,9 +118,9 @@ VALUES
 (9, 9, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
 
 -- Tutor 4
-(10, 10, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
-(11, 11, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
-(12, 12, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
+(10, 10, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'PENDING', TRUE, NOW()),
+(11, 11, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'PENDING', TRUE, NOW()),
+(12, 12, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'PENDING', TRUE, NOW()),
 
 -- Tutor 5
 (13, 13, 'https://drive.google.com/uc?id=1aeQacmvYQMq3cEYj0f4mZoeYUN7mkoXuRhZzXmev3u0', 'APPROVED', TRUE, NOW()),
@@ -739,3 +739,4 @@ VALUES
   ('Tiếng Anh giao tiếp hàng ngày', 'TAI_LIEU', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 15, '2025-12-08 16:00:00'),
   ('Tài liệu luyện thi IELTS 6.5+', 'DE_THI_THAM_KHAO', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 16, '2025-12-09 16:00:00');
 
+UPDATE `tutors_finder_system`.`tutors` SET `verification_status` = 'PENDING' WHERE (`tutor_id` = '4');
