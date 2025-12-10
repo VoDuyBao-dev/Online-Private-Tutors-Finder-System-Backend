@@ -73,9 +73,12 @@ public class TutorRegisterService {
                 .passwordHash(passwordEncoder.encode(req.getPassword()))
                 .phoneNumber(req.getPhoneNumber())
                 .avatarImage(avatarUrl)
-                .role(Role.TUTOR)
                 .status(UserStatus.INACTIVE)
                 .build();
+
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.TUTOR.name());
+        user.setRoles(roles);
 
         userRepository.save(user);
 

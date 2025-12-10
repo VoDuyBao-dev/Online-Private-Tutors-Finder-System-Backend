@@ -1,16 +1,16 @@
 package com.example.tutorsFinderSystem.controller.auth;
 
 import com.example.tutorsFinderSystem.dto.ApiResponse;
-import com.example.tutorsFinderSystem.dto.request.AuthenticationRequest;
-import com.example.tutorsFinderSystem.dto.request.IntrospectRequest;
-import com.example.tutorsFinderSystem.dto.request.LogoutRequest;
-import com.example.tutorsFinderSystem.dto.request.RefreshTokenRequest;
+import com.example.tutorsFinderSystem.dto.request.*;
 import com.example.tutorsFinderSystem.dto.response.AuthenticationResponse;
 import com.example.tutorsFinderSystem.dto.response.IntrospectResponse;
+import com.example.tutorsFinderSystem.dto.response.LearnerResponse;
+import com.example.tutorsFinderSystem.dto.response.UserResponse;
 import com.example.tutorsFinderSystem.services.AuthenticationService;
 import com.example.tutorsFinderSystem.services.OtpService;
 import com.example.tutorsFinderSystem.services.UserService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,10 +29,45 @@ public class AuthController {
     OtpService otpService;
     AuthenticationService authenticationService;
 
-//    TOÀN BỘ HÀM Ở CLASS NÀY ĐỀU LÀ TEST API CÓ THỂ GIỮ CODE VÀ TRIỂN KHAI CHI TIẾT HOẶC XÓA ĐI CŨNG ĐƯỢC
-//    Đây là test đăng nhập rồi trả token chứ chưa có triển khai rõ ràng nha Lan
+//    register leaner
+    @PostMapping("/register/learner")
+    public ApiResponse<LearnerResponse> registerUser(@Valid @RequestBody LearnerRequest learnerRequest) {
+        log.info("userRequest: {}", learnerRequest);
+
+        LearnerResponse learnerResponse = userService.createLearner(learnerRequest);
+        otpService.generateAndSendOtp(learnerRequest.getEmail());
+        return ApiResponse.<LearnerResponse>builder()
+                .code(200)
+                .message("Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản.")
+                .result(learnerResponse)
+                .build();
+
+
+    }
+
+//    forgot password
+    @PostMapping("/forgot-password")
+    public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        userService.checkUserExist(request.getEmail());
+        otpService.generateAndSendOtp(request.getEmail());
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Đã gửi mã OTP đến email của bạn.")
+                .build();
+    }
+
+//    new password
+    @PostMapping("/reset-password")
+    public ApiResponse<Void> resetPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+       userService.resetPassword(request);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Đổi mật khẩu thành công.")
+                .build();
+    }
+
     @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+    public ApiResponse<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .code(200)

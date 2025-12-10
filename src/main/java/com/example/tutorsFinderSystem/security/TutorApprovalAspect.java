@@ -1,6 +1,7 @@
 package com.example.tutorsFinderSystem.security;
 
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.enums.Role;
 import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
@@ -36,7 +37,7 @@ public class TutorApprovalAspect {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        if (!user.getRole().name().equals("TUTOR")) {
+        if (!user.getRoles().contains(Role.TUTOR)) {
             throw new AppException(ErrorCode.ACCESS_DENIED);
         }
         Tutor tutor = tutorRepository.findByUserUserId(user.getUserId())

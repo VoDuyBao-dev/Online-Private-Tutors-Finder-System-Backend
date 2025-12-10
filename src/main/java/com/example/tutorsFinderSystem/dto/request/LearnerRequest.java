@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationRequest {
+public class LearnerRequest {
+    @NotBlank(message = "FULLNAME_REQUIRED")
+    @Size(min = 2, max = 50, message = "FULLNAME_LENGTH_INVALID")
+    private String fullName;
     @Pattern(
             regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "EMAIL_INVALID"
@@ -18,5 +21,7 @@ public class AuthenticationRequest {
     private String email;
     @NotBlank(message = "PASSWORD_REQUIRED")
     @Size(min = 6, max = 30, message = "PASSWORD_TOO_SHORT")
-    private String password;
+    private String passwordHash;
+    @NotBlank(message = "CONFIRM_PASSWORD_REQUIRED")
+    private String confirmPassword;
 }

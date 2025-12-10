@@ -25,11 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 @Service
@@ -41,6 +43,7 @@ public class AuthenticationService {
     PasswordEncoder passwordEncoder;
     InvalidatedTokenRepository invalidatedTokenRepository;
     TokenValidator tokenValidator;
+    UserService userService;
 
     @NonFinal
     @Value("${jwt.secret}")
@@ -53,6 +56,13 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         User user = userRepository.findByEmail(authenticationRequest.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        try{
+            userService.validateUserStatus(user);
+        }catch (AppException e){
+            throw new AppException(e.getErrorCode());
+        }
+
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPasswordHash());
 
         if(!authenticated) {
@@ -71,8 +81,6 @@ public class AuthenticationService {
                 .token(token)
                 .authenticated(true)
                 .build();
-
-
 
     }
 
@@ -164,10 +172,11 @@ public class AuthenticationService {
     }
 
     private String buildScopeClaim(User user) {
-        if (user.getRole() != null) {
-            return user.getRole().name(); // Trả về "ADMIN", "TUTOR" hoặc "PARENT"
+        StringJoiner scopeBuilder = new StringJoiner(" ");
+        if(!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(scopeBuilder::add);
         }
-        return "";
+        return scopeBuilder.toString();
     }
 
 }
