@@ -46,7 +46,8 @@ public class SecurityConfig {
                     "/auth/**",    // cho phép tất cả API auth (đăng ký, đăng nhập)
                     "/files/**",          // cho phép truy cập file ảnh/pdf
                     "/error",              // tránh lỗi 401 khi gặp /error
-                    "/drive/view/**"
+                    "/drive/view/**",
+                    "/classes/**"
                 ).permitAll()
                 .requestMatchers(COMMON_URLS).hasAnyAuthority("SCOPE_TUTOR", "SCOPE_LEARNER")
                 .requestMatchers("/tutors/**").hasAuthority("SCOPE_TUTOR")
