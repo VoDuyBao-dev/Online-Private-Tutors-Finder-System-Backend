@@ -91,6 +91,8 @@ public enum ErrorCode {
     TUTOR_NOT_FOUND(2300, "Tutor not found", HttpStatus.NOT_FOUND),
     INVALID_REQUEST(2303, "Invalid request", HttpStatus.BAD_REQUEST),
     INTERNAL_ERROR(2304, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+    METHOD_INVALID(2305, "Method is not supported", HttpStatus.BAD_REQUEST),
+
 
     // E_bool admin
     EBOOK_TITLE_REQUIRED(3001, "Title is required", HttpStatus.BAD_REQUEST),
@@ -147,6 +149,10 @@ public enum ErrorCode {
     INVALID_OTP_TYPE(4006, "Invalid OTP type", HttpStatus.BAD_REQUEST),
     OTP_TYPE_REQUIRED(4007, "OTP type required", HttpStatus.BAD_REQUEST),
     OTP_CODE_REQUIRED(4008, "OTP code required", HttpStatus.BAD_REQUEST),
+    MISSING_PARAMETER(4009, "Missing required parameter", HttpStatus.BAD_REQUEST),
+
+//    Rating and Review
+    RATING_VALUE_INVALID(5001, "Rating value must be between 1 and 5", HttpStatus.BAD_REQUEST)
     ;
 
     private int code;

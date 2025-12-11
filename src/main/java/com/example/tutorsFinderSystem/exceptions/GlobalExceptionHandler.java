@@ -4,7 +4,9 @@ import com.example.tutorsFinderSystem.dto.ApiResponse;
 import jakarta.servlet.ServletException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -67,6 +69,28 @@ public class GlobalExceptionHandler {
                         .build()
         );
 
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiResponse<?>> handleMissingParam(MissingServletRequestParameterException ex) {
+        ErrorCode error = ErrorCode.MISSING_PARAMETER;
+        return ResponseEntity.status(error.getHttpStatusCode()).body(
+                ApiResponse.builder()
+                        .code(error.getCode())
+                        .message(error.getMessage())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiResponse<?>> handleMissingParam(HttpRequestMethodNotSupportedException ex) {
+        ErrorCode error = ErrorCode.METHOD_INVALID;
+        return ResponseEntity.status(error.getHttpStatusCode()).body(
+                ApiResponse.builder()
+                        .code(error.getCode())
+                        .message(error.getMessage())
+                        .build()
+        );
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
