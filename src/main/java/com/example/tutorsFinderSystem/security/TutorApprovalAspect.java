@@ -37,9 +37,10 @@ public class TutorApprovalAspect {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        if (!user.getRoles().contains(Role.TUTOR)) {
+        if (!user.getRoles().contains(Role.TUTOR.name())) {
             throw new AppException(ErrorCode.ACCESS_DENIED);
         }
+
         Tutor tutor = tutorRepository.findByUserUserId(user.getUserId())
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
 

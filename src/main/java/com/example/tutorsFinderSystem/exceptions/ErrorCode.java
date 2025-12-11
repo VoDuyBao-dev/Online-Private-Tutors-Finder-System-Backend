@@ -138,7 +138,7 @@ public enum ErrorCode {
     INVALID_REQUEST_STATUS(4010, "Invalid request status for this operation", HttpStatus.BAD_REQUEST),
     CLASS_NOT_FOUND(4011, "Class not found", HttpStatus.NOT_FOUND),
 
-//    ACCOUNT
+    // ACCOUNT
     ACCOUNT_NOT_ACTIVATED(4001, "account not activated", HttpStatus.BAD_REQUEST),
     ACCOUNT_DISABLED(4002, "account disabled", HttpStatus.BAD_REQUEST),
     ACCOUNT_LOCKED(4003, "account locked", HttpStatus.BAD_REQUEST),
@@ -147,6 +147,21 @@ public enum ErrorCode {
     INVALID_OTP_TYPE(4006, "Invalid OTP type", HttpStatus.BAD_REQUEST),
     OTP_TYPE_REQUIRED(4007, "OTP type required", HttpStatus.BAD_REQUEST),
     OTP_CODE_REQUIRED(4008, "OTP code required", HttpStatus.BAD_REQUEST),
+
+    // tutor schedule
+    DAY_OF_WEEK_REQUIRED(4300, "Day of week is required", HttpStatus.BAD_REQUEST),
+    START_TIME_REQUIRED(4301, "Start time is required", HttpStatus.BAD_REQUEST),
+    END_TIME_REQUIRED(4302, "End time is required", HttpStatus.BAD_REQUEST),
+    AVAILABILITY_STATUS_REQUIRED(4303, "Availability status is required", HttpStatus.BAD_REQUEST),
+
+    INVALID_TIME_RANGE(4304, "End time must be after start time", HttpStatus.BAD_REQUEST),
+    TUTOR_AVAILABILITY_NOT_FOUND(4305, "Tutor availability not found", HttpStatus.NOT_FOUND),
+    DUPLICATED_AVAILABILITY_SLOT(4307, "Availability with same day and time already exists", HttpStatus.BAD_REQUEST),
+    INVALID_AVAILABILITY_STATUS(4308, "Invalid availability status", HttpStatus.BAD_REQUEST),
+
+    DATE_REQUIRED(4400, "Date is required", HttpStatus.BAD_REQUEST),
+    AVAILABILITY_CONFLICT(4402, "This time slot already exists", HttpStatus.BAD_REQUEST),
+
     ;
 
     private int code;

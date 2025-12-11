@@ -16,18 +16,15 @@ VALUES
 ('Lâm Văn H', 'parent5@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0917777999', 'Active', NOW(), "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp", NOW(), true);
 
 
-INSERT INTO user_roles (user_id, role) VALUES
-                                           (1,  'ADMIN'),
-                                           (2,  'TUTOR'),
-                                           (3,  'TUTOR'),
-                                           (4,  'TUTOR'),
-                                           (5,  'LEARNER'),
-                                           (6,  'LEARNER'),
-                                           (7,  'LEARNER'),
-                                           (8,  'TUTOR'),
-                                           (9,  'TUTOR'),
-                                           (10, 'LEARNER'),
-                                           (11, 'LEARNER');
+INSERT INTO user_roles (user_id, role) 
+VALUES  (1,  'ADMIN'), (2,  'TUTOR'), (3,  'TUTOR'),(4,  'TUTOR'),
+          (5,  'LEARNER'),
+          (6,  'LEARNER'),
+          (7,  'LEARNER'),
+          (8,  'TUTOR'),
+          (9,  'TUTOR'),
+          (10, 'LEARNER'),
+          (11, 'LEARNER');
 
 
 
@@ -464,28 +461,56 @@ VALUES
 
 
 -- === 1. Thêm 20 users (10 tutor, 10 learner) ===
-INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, status, created_at, updated_at, avatar_image)
+INSERT INTO users (user_id, full_name, email, password_hash, phone_number, status, created_at, updated_at, avatar_image)
 VALUES
-  (12, 'Nguyễn Gia Tutor 1', 'tutor6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0906000001', 'ACTIVE', '2025-12-01 09:00:00', '2025-12-01 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (13, 'Trần Minh Tutor 2', 'tutor7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0907000002', 'ACTIVE', '2025-12-02 09:00:00', '2025-12-02 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (14, 'Lê Hoài Tutor 3', 'tutor8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0908000003', 'ACTIVE', '2025-12-03 09:00:00', '2025-12-03 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (15, 'Phạm Hải Tutor 4', 'tutor9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0909000004', 'ACTIVE', '2025-12-04 09:00:00', '2025-12-04 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (16, 'Võ Thái Tutor 5', 'tutor10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901000005', 'ACTIVE', '2025-12-05 09:00:00', '2025-12-05 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (17, 'Đỗ Quang Tutor 6', 'tutor11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901100006', 'ACTIVE', '2025-12-06 09:00:00', '2025-12-06 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (18, 'Hoàng Yến Tutor 7', 'tutor12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901200007', 'ACTIVE', '2025-12-07 09:00:00', '2025-12-07 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (19, 'Bùi Phúc Tutor 8', 'tutor13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901300008', 'ACTIVE', '2025-12-08 09:00:00', '2025-12-08 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (20, 'Đinh Trang Tutor 9', 'tutor14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901400009', 'ACTIVE', '2025-12-09 09:00:00', '2025-12-09 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (21, 'Cao Nhã Tutor 10', 'tutor15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'TUTOR', '0901500010', 'ACTIVE', '2025-12-10 09:00:00', '2025-12-10 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (22, 'Lê Học Learner 1', 'learner6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0916000001', 'ACTIVE', '2025-12-06 10:00:00', '2025-12-06 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (23, 'Nguyễn Học Learner 2', 'learner7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0917000002', 'ACTIVE', '2025-12-07 10:00:00', '2025-12-07 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (24, 'Trần Học Learner 3', 'learner8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0918000003', 'ACTIVE', '2025-12-08 10:00:00', '2025-12-08 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (25, 'Phạm Học Learner 4', 'learner9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0919000004', 'ACTIVE', '2025-12-09 10:00:00', '2025-12-09 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (26, 'Huỳnh Học Learner 5', 'learner10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911000005', 'ACTIVE', '2025-12-10 10:00:00', '2025-12-10 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (27, 'Vũ Học Learner 6', 'learner11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911100006', 'ACTIVE', '2025-12-11 10:00:00', '2025-12-11 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (28, 'Đoàn Học Learner 7', 'learner12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911200007', 'ACTIVE', '2025-12-12 10:00:00', '2025-12-12 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (29, 'Lâm Học Learner 8', 'learner13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911300008', 'ACTIVE', '2025-12-13 10:00:00', '2025-12-13 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (30, 'Đặng Học Learner 9', 'learner14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911400009', 'ACTIVE', '2025-12-14 10:00:00', '2025-12-14 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
-  (31, 'Ngô Học Learner 10', 'learner15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', 'LEARNER', '0911500010', 'ACTIVE', '2025-12-15 10:00:00', '2025-12-15 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp");
+  (12, 'Nguyễn Gia Tutor 1', 'tutor6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0906000001', 'ACTIVE', '2025-12-01 09:00:00', '2025-12-01 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (13, 'Trần Minh Tutor 2', 'tutor7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0907000002', 'ACTIVE', '2025-12-02 09:00:00', '2025-12-02 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (14, 'Lê Hoài Tutor 3', 'tutor8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0908000003', 'ACTIVE', '2025-12-03 09:00:00', '2025-12-03 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (15, 'Phạm Hải Tutor 4', 'tutor9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0909000004', 'ACTIVE', '2025-12-04 09:00:00', '2025-12-04 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (16, 'Võ Thái Tutor 5', 'tutor10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901000005', 'ACTIVE', '2025-12-05 09:00:00', '2025-12-05 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (17, 'Đỗ Quang Tutor 6', 'tutor11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901100006', 'ACTIVE', '2025-12-06 09:00:00', '2025-12-06 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (18, 'Hoàng Yến Tutor 7', 'tutor12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901200007', 'ACTIVE', '2025-12-07 09:00:00', '2025-12-07 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (19, 'Bùi Phúc Tutor 8', 'tutor13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901300008', 'ACTIVE', '2025-12-08 09:00:00', '2025-12-08 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (20, 'Đinh Trang Tutor 9', 'tutor14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901400009', 'ACTIVE', '2025-12-09 09:00:00', '2025-12-09 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (21, 'Cao Nhã Tutor 10', 'tutor15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0901500010', 'ACTIVE', '2025-12-10 09:00:00', '2025-12-10 09:15:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (22, 'Lê Học Learner 1', 'learner6@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0916000001', 'ACTIVE', '2025-12-06 10:00:00', '2025-12-06 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (23, 'Nguyễn Học Learner 2', 'learner7@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0917000002', 'ACTIVE', '2025-12-07 10:00:00', '2025-12-07 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (24, 'Trần Học Learner 3', 'learner8@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0918000003', 'ACTIVE', '2025-12-08 10:00:00', '2025-12-08 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (25, 'Phạm Học Learner 4', 'learner9@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0919000004', 'ACTIVE', '2025-12-09 10:00:00', '2025-12-09 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (26, 'Huỳnh Học Learner 5', 'learner10@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911000005', 'ACTIVE', '2025-12-10 10:00:00', '2025-12-10 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (27, 'Vũ Học Learner 6', 'learner11@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911100006', 'ACTIVE', '2025-12-11 10:00:00', '2025-12-11 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (28, 'Đoàn Học Learner 7', 'learner12@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911200007', 'ACTIVE', '2025-12-12 10:00:00', '2025-12-12 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (29, 'Lâm Học Learner 8', 'learner13@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911300008', 'ACTIVE', '2025-12-13 10:00:00', '2025-12-13 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (30, 'Đặng Học Learner 9', 'learner14@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911400009', 'ACTIVE', '2025-12-14 10:00:00', '2025-12-14 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp"),
+  (31, 'Ngô Học Learner 10', 'learner15@example.com', '$2a$10$jVKlCQXGAu1AGMBXaM5iJe90dADLpcbTnFw9IiWiNbmfrUz045fsO', '0911500010', 'ACTIVE', '2025-12-15 10:00:00', '2025-12-15 10:10:00', "https://drive.google.com/uc?id=1vPbK0Bk8_TdF4Us0Bo7-PVofUk3SVRrp");
+
+INSERT INTO user_roles (user_id, role) VALUES
+(12, 'TUTOR'),
+(13, 'TUTOR'),
+(14, 'TUTOR'),
+(15, 'TUTOR'),
+(16, 'TUTOR'),
+(17, 'TUTOR'),
+(18, 'TUTOR'),
+(19, 'TUTOR'),
+(20, 'TUTOR'),
+(21, 'TUTOR');
+
+
+INSERT INTO user_roles (user_id, role) VALUES
+(22, 'LEARNER'),
+(23, 'LEARNER'),
+(24, 'LEARNER'),
+(25, 'LEARNER'),
+(26, 'LEARNER'),
+(27, 'LEARNER'),
+(28, 'LEARNER'),
+(29, 'LEARNER'),
+(30, 'LEARNER'),
+(31, 'LEARNER');
+
+
+
 
 -- === 2. Thêm 10 tutors mới (tutor_id 6–15) ===
 INSERT INTO tutors (tutor_id, address, educational_level, gender, introduction, price_per_hour, university, verification_status, user_id)

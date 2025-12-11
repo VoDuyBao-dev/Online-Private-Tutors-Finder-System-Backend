@@ -1,6 +1,11 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.TutorAvailability;
+import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +27,18 @@ public interface TutorAvailabilityRepository extends JpaRepository<TutorAvailabi
                   AND FUNCTION('YEARWEEK', a.startTime, 1) = FUNCTION('YEARWEEK', CURRENT_DATE(), 1)
             """)
     int countWeeklySchedules(Long tutorId);
+
+    List<TutorAvailability> findByTutor_TutorIdOrderByStartTimeAsc(Long tutorId);
+
+    boolean existsByTutor_TutorIdAndStartTimeAndEndTimeAndStatus(
+            Long tutorId,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            TutorAvailabilityStatus status);
+    List<TutorAvailability> findByTutor_TutorIdOrderByStartTime(Long tutorId);
+
+    boolean existsByTutor_TutorIdAndStartTimeAndEndTime(Long tutorId,
+                                                         LocalDateTime startTime,
+                                                         LocalDateTime endTime);
 
 }
