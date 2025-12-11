@@ -4,6 +4,8 @@ import com.example.tutorsFinderSystem.enums.ClassRequestStatus;
 import com.example.tutorsFinderSystem.enums.ClassRequestType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -66,5 +68,6 @@ public class ClassRequest {
 
     @Builder.Default
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt = LocalDateTime.now();
 }

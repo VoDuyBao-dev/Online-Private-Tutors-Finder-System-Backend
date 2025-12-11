@@ -2,16 +2,15 @@ package com.example.tutorsFinderSystem.controller.learner;
 
 import com.example.tutorsFinderSystem.dto.ApiResponse;
 import com.example.tutorsFinderSystem.dto.common.ClassRequestDTO;
+import com.example.tutorsFinderSystem.dto.request.TrialRequest;
 import com.example.tutorsFinderSystem.services.ClassRequestService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/learner/class-requests")
@@ -29,6 +28,17 @@ public class ClassRequestController {
                 .code(200)
                 .message("Lấy danh sách yêu cầu lớp học thành công")
                 .result(classRequests)
+                .build();
+    }
+
+
+
+    @PostMapping("/create-trial-request")
+    public ApiResponse<Void> createClassRequest(@Valid @RequestBody TrialRequest trialRequest ) {
+        classRequestService.createTrialRequest(trialRequest);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("sent trial class request successfully")
                 .build();
     }
 }

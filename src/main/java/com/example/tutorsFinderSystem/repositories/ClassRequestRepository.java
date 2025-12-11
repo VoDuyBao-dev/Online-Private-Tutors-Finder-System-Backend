@@ -1,6 +1,8 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.ClassRequest;
+import com.example.tutorsFinderSystem.entities.Learner;
+import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.enums.ClassRequestStatus;
 import com.example.tutorsFinderSystem.enums.ClassRequestType;
 
@@ -50,6 +52,12 @@ public interface ClassRequestRepository extends JpaRepository<ClassRequest, Long
 
     Page<ClassRequest> findByLearner_User_Email(String email, Pageable pageable);
 
+    boolean existsByLearnerAndTutorAndTypeAndStatusIn(
+            Learner learner,
+            Tutor tutor,
+            ClassRequestType type,
+            List<ClassRequestStatus> statuses
+    );
 
 
 }
