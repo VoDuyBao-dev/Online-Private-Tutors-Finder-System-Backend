@@ -150,6 +150,7 @@ public enum ErrorCode {
 
     // tutor schedule
     DAY_OF_WEEK_REQUIRED(4300, "Day of week is required", HttpStatus.BAD_REQUEST),
+    TIME_RANGE_REQUIRED(4301, " time range is required", HttpStatus.BAD_REQUEST),
     START_TIME_REQUIRED(4301, "Start time is required", HttpStatus.BAD_REQUEST),
     END_TIME_REQUIRED(4302, "End time is required", HttpStatus.BAD_REQUEST),
     AVAILABILITY_STATUS_REQUIRED(4303, "Availability status is required", HttpStatus.BAD_REQUEST),
