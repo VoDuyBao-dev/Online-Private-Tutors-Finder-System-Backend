@@ -48,5 +48,8 @@ public interface ClassRequestRepository extends JpaRepository<ClassRequest, Long
             Pageable pageable
     );
 
+    Page<ClassRequest> findByLearner_User_Email(String email, Pageable pageable);
+
+
 
 }
