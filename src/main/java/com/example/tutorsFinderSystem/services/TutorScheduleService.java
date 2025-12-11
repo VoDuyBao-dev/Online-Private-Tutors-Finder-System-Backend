@@ -5,8 +5,9 @@ import com.example.tutorsFinderSystem.dto.request.TutorAvailabilityUpdateRequest
 import com.example.tutorsFinderSystem.dto.response.TutorAvailabilityResponse;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.entities.TutorAvailability;
-import com.example.tutorsFinderSystem.enums.DayOfWeek;
 import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
+// import com.example.tutorsFinderSystem.enums.DayOfWeek;
+// import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.TutorAvailabilityMapper;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
+// import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -30,8 +31,8 @@ public class TutorScheduleService {
     private final TutorAvailabilityRepository availabilityRepository;
     private final TutorAvailabilityMapper availabilityMapper;
 
-    private static final DateTimeFormatter TIME_FORMAT =
-            DateTimeFormatter.ofPattern("HH:mm");
+    // private static final DateTimeFormatter TIME_FORMAT =
+    // DateTimeFormatter.ofPattern("HH:mm");
 
     private Tutor getCurrentTutor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -51,61 +52,65 @@ public class TutorScheduleService {
 
     @Transactional
     public TutorAvailabilityResponse createAvailability(TutorAvailabilityCreateRequest request) {
+
         Tutor tutor = getCurrentTutor();
 
-        LocalTime start = LocalTime.parse(request.getStartTime(), TIME_FORMAT);
-        LocalTime end = LocalTime.parse(request.getEndTime(), TIME_FORMAT);
+        LocalDate date = LocalDate.parse(request.getDate()); // yyyy-MM-dd
+        LocalTime start = LocalTime.parse(request.getStartTime());
+        LocalTime end = LocalTime.parse(request.getEndTime());
+
         if (!end.isAfter(start)) {
             throw new AppException(ErrorCode.INVALID_TIME_RANGE);
+        }
+
+        LocalDateTime startDateTime = date.atTime(start);
+        LocalDateTime endDateTime = date.atTime(end);
+
+        boolean exists = availabilityRepository
+                .existsByTutor_TutorIdAndStartTimeAndEndTime(
+                        tutor.getTutorId(), startDateTime, endDateTime);
+
+        if (exists) {
+            throw new AppException(ErrorCode.AVAILABILITY_CONFLICT);
         }
 
         if (request.getStatus() == TutorAvailabilityStatus.BOOKED) {
             throw new AppException(ErrorCode.INVALID_AVAILABILITY_STATUS);
         }
 
-        LocalDate dateForSlot = getNextDateOfWeek(request.getDayOfWeek());
-        LocalDateTime startDateTime = dateForSlot.atTime(start);
-        LocalDateTime endDateTime = dateForSlot.atTime(end);
-
-        boolean exists = availabilityRepository
-                .existsByTutor_TutorIdAndStartTimeAndEndTimeAndStatus(
-                        tutor.getTutorId(), startDateTime, endDateTime, request.getStatus()
-                );
-
-        if (exists) {
-            throw new AppException(ErrorCode.DUPLICATED_AVAILABILITY_SLOT);
-        }
-
         LocalDateTime now = LocalDateTime.now();
 
-        TutorAvailability availability = TutorAvailability.builder()
+        TutorAvailability entity = TutorAvailability.builder()
                 .tutor(tutor)
                 .startTime(startDateTime)
                 .endTime(endDateTime)
                 .status(request.getStatus())
-                .createdAt(now)   // ngày tạo = ngay bây giờ
+                .createdAt(now)
                 .updatedAt(now)
                 .build();
 
-        availability = availabilityRepository.save(availability);
-        return availabilityMapper.toResponse(availability);
+        availabilityRepository.save(entity);
+
+        return availabilityMapper.toResponse(entity);
     }
 
     @Transactional
     public TutorAvailabilityResponse updateAvailability(Long id,
-                                                        TutorAvailabilityUpdateRequest request) {
+            TutorAvailabilityUpdateRequest request) {
+
         Tutor tutor = getCurrentTutor();
 
         TutorAvailability availability = availabilityRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_AVAILABILITY_NOT_FOUND));
 
         if (!availability.getTutor().getTutorId().equals(tutor.getTutorId())) {
-            // Không cho sửa lịch của người khác
             throw new AppException(ErrorCode.TUTOR_AVAILABILITY_NOT_FOUND);
         }
 
-        LocalTime start = LocalTime.parse(request.getStartTime(), TIME_FORMAT);
-        LocalTime end = LocalTime.parse(request.getEndTime(), TIME_FORMAT);
+        LocalDate date = LocalDate.parse(request.getDate());
+        LocalTime start = LocalTime.parse(request.getStartTime());
+        LocalTime end = LocalTime.parse(request.getEndTime());
+
         if (!end.isAfter(start)) {
             throw new AppException(ErrorCode.INVALID_TIME_RANGE);
         }
@@ -114,16 +119,26 @@ public class TutorScheduleService {
             throw new AppException(ErrorCode.INVALID_AVAILABILITY_STATUS);
         }
 
-        LocalDate dateForSlot = getNextDateOfWeek(request.getDayOfWeek());
-        LocalDateTime startDateTime = dateForSlot.atTime(start);
-        LocalDateTime endDateTime = dateForSlot.atTime(end);
+        LocalDateTime startDateTime = date.atTime(start);
+        LocalDateTime endDateTime = date.atTime(end);
+
+        boolean exists = availabilityRepository
+                .existsByTutor_TutorIdAndStartTimeAndEndTime(
+                        tutor.getTutorId(), startDateTime, endDateTime);
+
+        if (exists && (!startDateTime.equals(availability.getStartTime())
+                || !endDateTime.equals(availability.getEndTime()))) {
+
+            throw new AppException(ErrorCode.AVAILABILITY_CONFLICT);
+        }
 
         availability.setStartTime(startDateTime);
         availability.setEndTime(endDateTime);
         availability.setStatus(request.getStatus());
         availability.setUpdatedAt(LocalDateTime.now());
 
-        availability = availabilityRepository.save(availability);
+        availabilityRepository.save(availability);
+
         return availabilityMapper.toResponse(availability);
     }
 
@@ -141,11 +156,12 @@ public class TutorScheduleService {
         availabilityRepository.delete(availability);
     }
 
-    private LocalDate getNextDateOfWeek(DayOfWeek dayOfWeek) {
-        LocalDate today = LocalDate.now();
-        java.time.DayOfWeek target = java.time.DayOfWeek.valueOf(dayOfWeek.name());
-        int diff = target.getValue() - today.getDayOfWeek().getValue();
-        if (diff < 0) diff += 7;
-        return today.plusDays(diff);
-    }
+    // private LocalDate getNextDateOfWeek(DayOfWeek dayOfWeek) {
+    // LocalDate today = LocalDate.now();
+    // java.time.DayOfWeek target = java.time.DayOfWeek.valueOf(dayOfWeek.name());
+    // int diff = target.getValue() - today.getDayOfWeek().getValue();
+    // if (diff < 0)
+    // diff += 7;
+    // return today.plusDays(diff);
+    // }
 }

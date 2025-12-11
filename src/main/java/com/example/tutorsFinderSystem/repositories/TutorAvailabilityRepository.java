@@ -35,5 +35,10 @@ public interface TutorAvailabilityRepository extends JpaRepository<TutorAvailabi
             LocalDateTime startTime,
             LocalDateTime endTime,
             TutorAvailabilityStatus status);
+    List<TutorAvailability> findByTutor_TutorIdOrderByStartTime(Long tutorId);
+
+    boolean existsByTutor_TutorIdAndStartTimeAndEndTime(Long tutorId,
+                                                         LocalDateTime startTime,
+                                                         LocalDateTime endTime);
 
 }

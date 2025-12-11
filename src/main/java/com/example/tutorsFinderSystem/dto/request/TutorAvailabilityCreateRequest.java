@@ -1,6 +1,6 @@
 package com.example.tutorsFinderSystem.dto.request;
 
-import com.example.tutorsFinderSystem.enums.DayOfWeek;
+// import com.example.tutorsFinderSystem.enums.DayOfWeek;
 import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,8 +11,11 @@ import lombok.Setter;
 @Setter
 public class TutorAvailabilityCreateRequest {
 
-    @NotNull(message = "DAY_OF_WEEK_REQUIRED")
-    private DayOfWeek dayOfWeek;        // Thứ trong tuần (MONDAY,...)
+    // @NotNull(message = "DAY_OF_WEEK_REQUIRED")
+    // private DayOfWeek dayOfWeek;        // Thứ trong tuần (MONDAY,...)
+
+    @NotBlank(message = "DATE_REQUIRED")
+    private String date; 
 
     @NotBlank(message = "START_TIME_REQUIRED")
     private String startTime;           // "08:00"

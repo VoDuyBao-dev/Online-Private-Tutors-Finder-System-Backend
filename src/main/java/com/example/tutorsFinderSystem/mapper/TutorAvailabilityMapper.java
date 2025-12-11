@@ -11,15 +11,14 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface TutorAvailabilityMapper {
 
-    DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
+    DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Mapping(target = "availabilityId", source = "availabilityId")
-    @Mapping(target = "dayOfWeek",
-             expression = "java(availability.getStartTime().getDayOfWeek().name())")
-    @Mapping(target = "startTime",
-             expression = "java(availability.getStartTime().toLocalTime().format(TIME_FORMATTER))")
-    @Mapping(target = "endTime",
-             expression = "java(availability.getEndTime().toLocalTime().format(TIME_FORMATTER))")
+    @Mapping(target = "dayOfWeek", expression = "java(availability.getStartTime().getDayOfWeek().name())")
+    @Mapping(target = "startTime", expression = "java(availability.getStartTime().toLocalTime().format(TIME_FORMAT))")
+    @Mapping(target = "endTime", expression = "java(availability.getEndTime().toLocalTime().format(TIME_FORMAT))")
+    @Mapping(target = "date", expression = "java(availability.getStartTime().toLocalDate().format(DATE_FORMAT))")
     TutorAvailabilityResponse toResponse(TutorAvailability availability);
 
     List<TutorAvailabilityResponse> toResponses(List<TutorAvailability> availabilities);

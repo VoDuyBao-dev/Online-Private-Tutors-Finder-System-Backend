@@ -159,6 +159,9 @@ public enum ErrorCode {
     DUPLICATED_AVAILABILITY_SLOT(4307, "Availability with same day and time already exists", HttpStatus.BAD_REQUEST),
     INVALID_AVAILABILITY_STATUS(4308, "Invalid availability status", HttpStatus.BAD_REQUEST),
 
+    DATE_REQUIRED(4400, "Date is required", HttpStatus.BAD_REQUEST),
+    AVAILABILITY_CONFLICT(4402, "This time slot already exists", HttpStatus.BAD_REQUEST),
+
     ;
 
     private int code;

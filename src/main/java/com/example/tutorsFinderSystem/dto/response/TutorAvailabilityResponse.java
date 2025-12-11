@@ -14,5 +14,7 @@ public class TutorAvailabilityResponse {
     private String dayOfWeek;    // MONDAY, TUESDAY,...
     private String startTime;    // "08:00"
     private String endTime;      // "09:30"
+    private String date;         // "2024-07-15"
     private TutorAvailabilityStatus status;
 }
+    
