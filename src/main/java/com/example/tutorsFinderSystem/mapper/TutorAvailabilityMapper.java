@@ -23,3 +23,4 @@ public interface TutorAvailabilityMapper {
 
     List<TutorAvailabilityResponse> toResponses(List<TutorAvailability> availabilities);
 }
+    
