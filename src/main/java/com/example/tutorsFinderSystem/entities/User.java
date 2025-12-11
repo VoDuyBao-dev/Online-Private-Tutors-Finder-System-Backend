@@ -1,6 +1,5 @@
 package com.example.tutorsFinderSystem.entities;
 
-import com.example.tutorsFinderSystem.enums.Role;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
