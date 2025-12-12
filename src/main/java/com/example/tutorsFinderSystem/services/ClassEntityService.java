@@ -4,6 +4,8 @@ import com.example.tutorsFinderSystem.dto.common.RelatedClassDTO;
 import com.example.tutorsFinderSystem.entities.ClassEntity;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.entities.User;
+import com.example.tutorsFinderSystem.exceptions.AppException;
+import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.ClassesMapper;
 import com.example.tutorsFinderSystem.repositories.ClassRepository;
 import lombok.AccessLevel;
@@ -29,6 +31,10 @@ public class ClassEntityService {
 //    Lấy danh sách lớp học liên quan dựa trên môn học và gia sư
     @Transactional(readOnly = true)
     public List<RelatedClassDTO> getRelatedClasses(Long classId, Long subjectId, Long tutorId, int limit) {
+
+        if(classId == null || subjectId == null || tutorId == null){
+            throw new AppException(ErrorCode.INVALID_REQUEST);
+        }
         Pageable pageable = PageRequest.of(0, limit);
 
         return classRepository.findRelatedClasses(subjectId, tutorId, classId, pageable)

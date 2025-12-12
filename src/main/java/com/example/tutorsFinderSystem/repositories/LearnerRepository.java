@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.tutorsFinderSystem.entities.Learner;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface LearnerRepository extends JpaRepository<Learner, Long> {
     @Query("""
                 SELECT l
@@ -44,5 +46,7 @@ public interface LearnerRepository extends JpaRepository<Learner, Long> {
             AND u.status = com.example.tutorsFinderSystem.enums.UserStatus.INACTIVE
             """)
     long countInactiveLearners(@Param("role") Role role);
+
+    Optional<Learner> findByUser_Email(String email);
 
 }
