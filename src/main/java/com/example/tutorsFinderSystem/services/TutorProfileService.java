@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.services;
 
+import com.example.tutorsFinderSystem.dto.request.ChangePasswordRequest;
 import com.example.tutorsFinderSystem.dto.request.TutorEducationUpdateRequest;
 import com.example.tutorsFinderSystem.dto.request.TutorPersonalInfoUpdateRequest;
 import com.example.tutorsFinderSystem.dto.request.TutorSubjectsUpdateRequest;
@@ -29,6 +30,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +50,7 @@ public class TutorProfileService {
     private final GoogleDriveService googleDriveService;
     private final TutorCertificateRepository tutorCertificateRepository;
     private final TutorCertificateFileRepository tutorCertificateFileRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     // private static final String UPLOAD_ROOT = System.getProperty("user.dir") +
     // "/uploads/tutors/";
@@ -213,7 +216,7 @@ public class TutorProfileService {
             throw new AppException(ErrorCode.AVATAR_INVALID_TYPE);
         }
 
-        // UPLOAD GOOGLE DRIVE 
+        // UPLOAD GOOGLE DRIVE
         String avatarUrl;
         try {
             avatarUrl = googleDriveService.upload(avatarFile, "avatars");
@@ -235,6 +238,36 @@ public class TutorProfileService {
                 (contentType.equals("image/png")
                         || contentType.equals("image/jpeg")
                         || contentType.equals("image/jpg"));
+    }
+
+    public void changePassword(ChangePasswordRequest request) {
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        // 1. Check mật khẩu hiện tại
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        // 2. Check confirm
+        if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_CONFIRM_MISMATCH);
+        }
+
+        // 3. Không cho trùng mật khẩu cũ
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPasswordHash())) {
+            throw new AppException(ErrorCode.NEW_PASSWORD_SAME_AS_OLD);
+        }
+
+        // 4. Update
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 
 }

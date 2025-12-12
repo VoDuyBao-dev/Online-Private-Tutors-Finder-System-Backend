@@ -185,8 +185,10 @@ public enum ErrorCode {
     TUTOR_TIME_CONFLICT(5111, "Tutor is not available at this time slot", HttpStatus.BAD_REQUEST),
     DUPLICATE_TRIAL_REQUEST(5112, "You already have a pending or confirmed trial request with this tutor", HttpStatus.BAD_REQUEST),
 
-
-
+// tutor change password
+    NEW_PASSWORD_SAME_AS_OLD(6002, "New password must be different from the current password", HttpStatus.BAD_REQUEST),
+    PASSWORD_CONFIRM_MISMATCH(6003, "New password and confirm password do not match", HttpStatus.BAD_REQUEST),
+INVALID_PASSWORD(6004, "Current password is incorrect", HttpStatus.BAD_REQUEST),
 
 
 
