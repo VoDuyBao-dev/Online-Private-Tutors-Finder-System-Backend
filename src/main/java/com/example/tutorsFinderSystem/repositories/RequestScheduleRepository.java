@@ -47,6 +47,44 @@ WHERE cr.learner = :learner
 
     List<RequestSchedule> findByClassRequest_RequestId(Long requestId);
 
+    // tìm tất cả request schedules của 1 tutor theo dayOfWeek (dùng để check conflicts)
+    @Query("""
+        SELECT rs FROM RequestSchedule rs
+        JOIN rs.classRequest cr
+        WHERE cr.tutor.tutorId = :tutorId
+          AND rs.dayOfWeek = :dayOfWeek
+          AND (
+              cr.status = com.example.tutorsFinderSystem.enums.ClassRequestStatus.PENDING
+              OR (
+                   cr.status = com.example.tutorsFinderSystem.enums.ClassRequestStatus.CONFIRMED
+                   AND EXISTS(
+                       SELECT ce FROM ClassEntity ce WHERE ce.classRequest = cr AND ce.status <> com.example.tutorsFinderSystem.enums.ClassStatus.COMPLETED
+                   )
+              )
+          )
+    """)
+    List<RequestSchedule> findActiveTutorSchedulesByDay(@Param("tutorId") Long tutorId,
+                                                        @Param("dayOfWeek") DayOfWeek dayOfWeek);
+
+
+    @Query("""
+        SELECT rs FROM RequestSchedule rs
+        JOIN rs.classRequest cr
+        WHERE cr.learner.learnerId = :learnerId
+          AND rs.dayOfWeek = :dayOfWeek
+          AND (
+              cr.status = com.example.tutorsFinderSystem.enums.ClassRequestStatus.PENDING
+              OR (
+                   cr.status = com.example.tutorsFinderSystem.enums.ClassRequestStatus.CONFIRMED
+                   AND EXISTS(
+                       SELECT ce FROM ClassEntity ce WHERE ce.classRequest = cr AND ce.status <> com.example.tutorsFinderSystem.enums.ClassStatus.COMPLETED
+                   )
+              )
+          )
+    """)
+    List<RequestSchedule> findActiveLearnerSchedulesByDay(@Param("learnerId") Long learnerId,
+                                                          @Param("dayOfWeek") DayOfWeek dayOfWeek);
+
 
 
 }

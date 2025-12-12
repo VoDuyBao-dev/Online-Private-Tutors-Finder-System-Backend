@@ -25,7 +25,7 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
       AND c.startTime < :endTime
       AND c.endTime > :startTime
 """)
-    boolean hasTimeConflict(
+    boolean hasTimeConflictForTutorOnDate(
             @Param("tutor") Tutor tutor,
             @Param("dayOfWeek") DayOfWeek dayOfWeek,
             @Param("date") LocalDate date,
@@ -33,6 +33,20 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
             @Param("endTime") LocalTime endTime
     );
 
+    @Query("""
+        SELECT COUNT(c) > 0
+        FROM CalendarClass c
+        WHERE c.classRequest.learner = :learner
+          AND c.dayOfWeek = :dayOfWeek
+          AND :date BETWEEN c.classRequest.startDate AND c.classRequest.endDate
+          AND c.startTime < :endTime
+          AND c.endTime > :startTime
+    """)
+    boolean hasTimeConflictForLearnerOnDate(@Param("learner") Learner learner,
+                                            @Param("dayOfWeek") DayOfWeek dayOfWeek,
+                                            @Param("date") LocalDate date,
+                                            @Param("startTime") LocalTime startTime,
+                                            @Param("endTime") LocalTime endTime);
 
 
 

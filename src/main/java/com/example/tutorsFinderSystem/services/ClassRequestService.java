@@ -1,6 +1,8 @@
 package com.example.tutorsFinderSystem.services;
 
 import com.example.tutorsFinderSystem.dto.common.ClassRequestDTO;
+import com.example.tutorsFinderSystem.dto.common.WeeklyScheduleDTO;
+import com.example.tutorsFinderSystem.dto.request.OfficialClassRequest;
 import com.example.tutorsFinderSystem.dto.request.TrialRequest;
 import com.example.tutorsFinderSystem.entities.*;
 import com.example.tutorsFinderSystem.enums.ClassRequestStatus;
@@ -25,7 +27,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +85,6 @@ public class ClassRequestService {
 //        Check learner conflict (học viên có bận hay không)
         ValidateHasLearnerTimeConflict(learner, trialRequest);
 
-
         ClassRequest classRequest = ClassRequest.builder()
                 .learner(learner)
                 .tutor(tutor)
@@ -125,6 +127,186 @@ public class ClassRequestService {
 
     }
 
+//    Learner gửi yêu cầu học chính thức
+    public void createOfficialRequest(OfficialClassRequest officialClassRequest) {
+
+        String learnerEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Learner learner = learnerRepository.findByUser_Email(learnerEmail)
+                .orElseThrow(() -> new AppException(ErrorCode.LEARNER_USER_NOT_FOUND));
+
+        Tutor tutor = tutorRepository.findById(officialClassRequest.getTutorId())
+                .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+
+        Subject subject = subjectRepository.findById(officialClassRequest.getSubjectId())
+                .orElseThrow(() -> new AppException(ErrorCode.SUBJECT_NOT_EXISTED));
+
+        // kiểm tra tutor có dạy môn học này hay không
+        if (!tutor.getSubjects().contains(subject)) {
+            throw new AppException(ErrorCode.TUTOR_NOT_TEACH_SUBJECT);
+        }
+
+        // kiểm tra ngày bắt đầu – kết thúc hợp lệ
+        if (officialClassRequest.getEndDate().isBefore(officialClassRequest.getStartDate())) {
+            throw new AppException(ErrorCode.END_DATE_BEFORE_START_DATE);
+        }
+
+        // kiểm tra từng khung giờ hợp lệ (thời lượng tối thiểu, tối đa,…)
+        for (WeeklyScheduleDTO s : officialClassRequest.getSchedules()) {
+            validateTimeSlot(s.getStartTime(), s.getEndTime());
+        }
+
+        // Sinh toàn bộ ngày học thực tế trong khoảng startDate – endDate
+        List<LocalDate> sessionDates = generateAllSessionDates(
+                officialClassRequest.getStartDate(),
+                officialClassRequest.getEndDate(),
+                officialClassRequest.getSchedules()
+        );
+
+        if (sessionDates.isEmpty()) {
+            throw new AppException(ErrorCode.NO_SESSION_GENERATED);
+        }
+
+        // Kiểm tra trùng giờ cho từng ngày học (trùng với tutor hoặc learner)
+        for (WeeklyScheduleDTO sched : officialClassRequest.getSchedules()) {
+
+            // Lấy tất cả các ngày tương ứng với từng lịch theo thứ trong tuần
+            List<LocalDate> datesForThisDay = generateDatesForSingleSchedule(
+                    officialClassRequest.getStartDate(),
+                    officialClassRequest.getEndDate(),
+                    sched
+            );
+
+            for (LocalDate d : datesForThisDay) {
+
+                // Kiểm tra trùng với lịch đã được xác nhận (calendar) của tutor
+                boolean tutorConflictInCalendar = calendarClassRepository.hasTimeConflictForTutorOnDate(
+                        tutor, sched.getDayOfWeek(), d, sched.getStartTime(), sched.getEndTime()
+                );
+                if (tutorConflictInCalendar) {
+                    throw new AppException(ErrorCode.TUTOR_TIME_CONFLICT);
+                }
+
+                // Kiểm tra trùng lịch đã xác nhận trong calendar của learner
+                boolean learnerConflictInCalendar = calendarClassRepository.hasTimeConflictForLearnerOnDate(
+                        learner, sched.getDayOfWeek(), d, sched.getStartTime(), sched.getEndTime()
+                );
+                if (learnerConflictInCalendar) {
+                    throw new AppException(ErrorCode.LEARNER_TIME_CONFLICT);
+                }
+
+                // Kiểm tra trùng với các request đang hoạt động (PENDING hoặc CONFIRMED chưa completed) của tutor
+                List<RequestSchedule> tutorActiveReqSchedules =
+                        requestScheduleRepository.findActiveTutorSchedulesByDay(
+                                tutor.getTutorId(),
+                                sched.getDayOfWeek()
+                        );
+
+                for (RequestSchedule existing : tutorActiveReqSchedules) {
+
+                    ClassRequest existingCr = existing.getClassRequest();
+
+                    // kiểm tra ngày thuộc trong khoảng date range của request hiện tại
+                    if (!d.isBefore(existingCr.getStartDate()) && !d.isAfter(existingCr.getEndDate())) {
+
+                        // kiểm tra trùng giờ
+                        if (timeOverlap(existing.getStartTime(), existing.getEndTime(),
+                                sched.getStartTime(), sched.getEndTime())) {
+
+                            // nếu request cũ đang PENDING → trùng lịch
+                            if (existingCr.getStatus() == ClassRequestStatus.PENDING) {
+                                throw new AppException(ErrorCode.TIME_CONFLICT);
+                            }
+
+                            // nếu CONFIRMED và class chưa completed → trùng lịch
+                            if (existingCr.getStatus() == ClassRequestStatus.CONFIRMED) {
+                                ClassEntity ce = classRepository.findByClassRequest_RequestId(existingCr.getRequestId())
+                                        .orElseThrow(() -> new AppException(ErrorCode.CLASS_NOT_FOUND));
+
+                                if (ce.getStatus() != ClassStatus.COMPLETED) {
+                                    throw new AppException(ErrorCode.TIME_CONFLICT);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Kiểm tra trùng với các request đang hoạt động của learner
+                List<RequestSchedule> learnerActiveReqSchedules =
+                        requestScheduleRepository.findActiveLearnerSchedulesByDay(
+                                learner.getLearnerId(),
+                                sched.getDayOfWeek()
+                        );
+
+                for (RequestSchedule existing : learnerActiveReqSchedules) {
+
+                    ClassRequest existingCr = existing.getClassRequest();
+
+                    if (!d.isBefore(existingCr.getStartDate()) && !d.isAfter(existingCr.getEndDate())) {
+
+                        if (timeOverlap(existing.getStartTime(), existing.getEndTime(),
+                                sched.getStartTime(), sched.getEndTime())) {
+
+                            if (existingCr.getStatus() == ClassRequestStatus.PENDING) {
+                                throw new AppException(ErrorCode.TIME_CONFLICT);
+                            }
+
+                            if (existingCr.getStatus() == ClassRequestStatus.CONFIRMED) {
+                                ClassEntity ce = classRepository.findByClassRequest_RequestId(existingCr.getRequestId())
+                                        .orElseThrow(() -> new AppException(ErrorCode.CLASS_NOT_FOUND));
+
+                                if (ce.getStatus() != ClassStatus.COMPLETED) {
+                                    throw new AppException(ErrorCode.TIME_CONFLICT);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //tạo ClassRequest
+        ClassRequest request = ClassRequest.builder()
+                .learner(learner)
+                .tutor(tutor)
+                .subject(subject)
+                .type(ClassRequestType.OFFICIAL)
+                .status(ClassRequestStatus.PENDING)
+                .startDate(officialClassRequest.getStartDate())
+                .endDate(officialClassRequest.getEndDate())
+                .sessionsPerWeek(officialClassRequest.getSchedules().size())
+                .totalSessions(sessionDates.size())
+                .additionalNotes(officialClassRequest.getAdditionalNotes())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        request = classRequestRepository.save(request);
+
+        // tạo danh sách request_schedules cho từng buổi học trong tuần
+        for (WeeklyScheduleDTO s : officialClassRequest.getSchedules()) {
+            RequestSchedule rs = RequestSchedule.builder()
+                    .classRequest(request)
+                    .dayOfWeek(s.getDayOfWeek())
+                    .startTime(s.getStartTime())
+                    .endTime(s.getEndTime())
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            requestScheduleRepository.save(rs);
+        }
+
+        // tạo ClassEntity
+        ClassEntity classEntity = ClassEntity.builder()
+                .classRequest(request)
+                .status(ClassStatus.PENDING)
+                .completedSessions(0)
+                .build();
+
+        classRepository.save(classEntity);
+    }
+
+
+
     private void validateTutorTeachesSubject(Tutor tutor, Subject subject) {
         if (!tutor.getSubjects().contains(subject)) {
             throw new AppException(ErrorCode.TUTOR_NOT_TEACH_SUBJECT);
@@ -162,7 +344,7 @@ public class ClassRequestService {
     }
 
     private void validateHasTimeConflictTutor(Tutor tutor, TrialRequest trialRequest) {
-        boolean hasConflict = calendarClassRepository.hasTimeConflict(
+        boolean hasConflict = calendarClassRepository.hasTimeConflictForTutorOnDate(
                 tutor,
                 trialRequest.getDayOfWeek(),
                 trialRequest.getTrialDate(),
@@ -187,6 +369,33 @@ public class ClassRequestService {
         if (learnerConflict) {
             throw new AppException(ErrorCode.LEARNER_TIME_CONFLICT);
         }
+    }
+
+    private boolean timeOverlap(LocalTime existingStart, LocalTime existingEnd, LocalTime newStart, LocalTime newEnd) {
+        return existingStart.isBefore(newEnd) && newStart.isBefore(existingEnd);
+    }
+
+    // tạo ngày cho một Lịch hàng tuần (ví dụ: mỗi thứ Hai giữa ngày bắt đầu và kết thúc)
+    private List<LocalDate> generateDatesForSingleSchedule(LocalDate start, LocalDate end, WeeklyScheduleDTO sched) {
+        java.time.DayOfWeek target = sched.getDayOfWeek().toJavaDayOfWeek();
+        LocalDate first = start.with(TemporalAdjusters.nextOrSame(target));
+
+        List<LocalDate> res = new ArrayList<>();
+        for (LocalDate d = first; !d.isAfter(end); d = d.plusWeeks(1)) {
+            res.add(d);
+        }
+        return res;
+    }
+
+    // tạo tất cả các ngày buổi học theo nhiều lịch hàng tuần, gộp và loại bỏ trùng lặp, sắp xếp
+    private List<LocalDate> generateAllSessionDates(LocalDate start, LocalDate end, List<WeeklyScheduleDTO> schedules) {
+        Set<LocalDate> set = new HashSet<>();
+        for (WeeklyScheduleDTO s : schedules) {
+            set.addAll(generateDatesForSingleSchedule(start, end, s));
+        }
+        List<LocalDate> list = new ArrayList<>(set);
+        Collections.sort(list);
+        return list;
     }
 
 
