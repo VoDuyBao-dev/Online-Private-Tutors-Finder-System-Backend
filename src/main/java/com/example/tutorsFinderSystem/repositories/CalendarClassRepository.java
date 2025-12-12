@@ -1,12 +1,14 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.CalendarClass;
+import com.example.tutorsFinderSystem.entities.Learner;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.enums.DayOfWeek;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -15,18 +17,23 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
     List<CalendarClass> findByClassRequest_RequestId(Long requestId);
 
     @Query("""
-        SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END
-        FROM CalendarClass c
-        WHERE c.classRequest.tutor = :tutor
-          AND c.dayOfWeek = :day
-          AND (
-                (c.startTime < :end AND c.endTime > :start)
-          )
-    """)
+    SELECT COUNT(c) > 0
+    FROM CalendarClass c
+    WHERE c.classRequest.tutor = :tutor
+      AND c.dayOfWeek = :dayOfWeek
+      AND :date BETWEEN c.classRequest.startDate AND c.classRequest.endDate
+      AND c.startTime < :endTime
+      AND c.endTime > :startTime
+""")
     boolean hasTimeConflict(
             @Param("tutor") Tutor tutor,
-            @Param("day") DayOfWeek day,
-            @Param("start") LocalTime start,
-            @Param("end") LocalTime end
+            @Param("dayOfWeek") DayOfWeek dayOfWeek,
+            @Param("date") LocalDate date,
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime
     );
+
+
+
+
 }

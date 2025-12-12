@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -66,22 +67,20 @@ public class ClassRequestService {
         Subject subject = subjectRepository.findById(trialRequest.getSubjectId())
                 .orElseThrow(() -> new AppException(ErrorCode.SUBJECT_NOT_EXISTED));
 
-
+        //Check tutor có dạy môn này không
         validateTutorTeachesSubject(tutor, subject);
+
+        //Check time hợp lệ
         validateTimeSlot(trialRequest.getStartTime(), trialRequest.getEndTime());
-        validateNoDuplicateTrialRequest(learner, tutor);
+
+        //Check duplicate TRIAL cùng môn cùng tutor (chỉ PENDING)
+        validateNoDuplicateTrialRequest(learner, tutor, subject);
 
         //Check time conflict với lịch tutor
-        boolean hasConflict = calendarClassRepository.hasTimeConflict(
-                tutor,
-                trialRequest.getDayOfWeek(),
-                trialRequest.getStartTime(),
-                trialRequest.getEndTime()
-        );
+        validateHasTimeConflictTutor(tutor, trialRequest);
 
-        if (hasConflict) {
-            throw new AppException(ErrorCode.TUTOR_TIME_CONFLICT);
-        }
+//        Check learner conflict (học viên có bận hay không)
+        ValidateHasLearnerTimeConflict(learner, trialRequest);
 
 
         ClassRequest classRequest = ClassRequest.builder()
@@ -146,19 +145,51 @@ public class ClassRequestService {
         }
     }
 
-    private void validateNoDuplicateTrialRequest(Learner learner, Tutor tutor) {
+    private void validateNoDuplicateTrialRequest(Learner learner, Tutor tutor, Subject subject) {
         boolean hasPendingTrial = classRequestRepository
-                .existsByLearnerAndTutorAndTypeAndStatusIn(
+                .existsDuplicateTrial(
                         learner,
                         tutor,
+                        subject,
                         ClassRequestType.TRIAL,
-                        List.of(ClassRequestStatus.PENDING, ClassRequestStatus.CONFIRMED)
+                        List.of(ClassRequestStatus.PENDING)
                 );
+
 
         if (hasPendingTrial) {
             throw new AppException(ErrorCode.DUPLICATE_TRIAL_REQUEST);
         }
     }
+
+    private void validateHasTimeConflictTutor(Tutor tutor, TrialRequest trialRequest) {
+        boolean hasConflict = calendarClassRepository.hasTimeConflict(
+                tutor,
+                trialRequest.getDayOfWeek(),
+                trialRequest.getTrialDate(),
+                trialRequest.getStartTime(),
+                trialRequest.getEndTime()
+        );
+
+        if (hasConflict) {
+            throw new AppException(ErrorCode.TUTOR_TIME_CONFLICT);
+        }
+    }
+
+    private void ValidateHasLearnerTimeConflict(Learner learner, TrialRequest trialRequest) {
+        // Check learner conflict (học viên có bận hay không)
+        boolean learnerConflict = requestScheduleRepository.hasLearnerTrialConflict(
+                learner,
+                trialRequest.getDayOfWeek(),
+                trialRequest.getTrialDate(),
+                trialRequest.getStartTime(),
+                trialRequest.getEndTime()
+        );
+        if (learnerConflict) {
+            throw new AppException(ErrorCode.LEARNER_TIME_CONFLICT);
+        }
+    }
+
+
 
 //    private void validateDateRange(LocalDate start, LocalDate end) {
 //        if (end.isBefore(start)) {

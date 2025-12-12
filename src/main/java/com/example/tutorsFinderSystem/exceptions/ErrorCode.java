@@ -184,11 +184,7 @@ public enum ErrorCode {
     CLASS_DURATION_EXCEEDS_MAX(5110, "Class duration cannot exceed 1 hour 30 minutes", HttpStatus.BAD_REQUEST),
     TUTOR_TIME_CONFLICT(5111, "Tutor is not available at this time slot", HttpStatus.BAD_REQUEST),
     DUPLICATE_TRIAL_REQUEST(5112, "You already have a pending or confirmed trial request with this tutor", HttpStatus.BAD_REQUEST),
-
-
-
-
-
+    LEARNER_TIME_CONFLICT(5113, "Learner time conflict", HttpStatus.BAD_REQUEST),
 
     ;
 
