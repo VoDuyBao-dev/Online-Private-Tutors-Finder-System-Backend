@@ -45,6 +45,8 @@ WHERE cr.learner = :learner
             @Param("endTime") LocalTime endTime
     );
 
+    List<RequestSchedule> findByClassRequest_RequestId(Long requestId);
+
 
 
 }
