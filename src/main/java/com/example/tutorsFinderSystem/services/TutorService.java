@@ -32,20 +32,20 @@ public class TutorService {
 
     @Transactional(readOnly = true)
     public TutorDetailDTO getTutorDetail(Long tutorId) {
-        // 1. Lấy thông tin tutor
+        //Lấy thông tin tutor
         Tutor tutor = tutorRepository.findById(tutorId)
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
 
-        // 2. Tính thống kê đánh giá
+        // Tính thống kê đánh giá
         RatingStatisticsDTO statistics = calculateRatingStatistics(tutorId);
 
-        // 3. Lấy 5 đánh giá gần nhất
+        // Lấy 5 đánh giá gần nhất
         List<Ratings> recentReviews = ratingsRepository.findRecentByTutorId(
                 tutorId,
                 PageRequest.of(0, 10)
         );
 
-        // 4. Map sang DTO
+        //Map sang DTO
         return tutorMapper.toTutorDetailDTO(tutor, statistics, recentReviews);
     }
 

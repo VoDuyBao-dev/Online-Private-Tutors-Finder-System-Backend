@@ -60,4 +60,6 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
               """)
   Page<ClassEntity> findAllActiveClasses(Pageable pageable);
 
+  Optional<ClassEntity> findById(Long id);
+
 }

@@ -10,6 +10,8 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR), // exception chưa được đinhj
                                                                                             // nghĩa hoặc loại ex chưa
                                                                                             // bắt
+
+    INVALID_TOKEN(9998, "Token invalid", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_EXISTED(1002, "user existed", HttpStatus.BAD_REQUEST),
     USER_NOT_EXISTED(1005, "user not existed", HttpStatus.NOT_FOUND),
     SAVE_USER_FAILED(1014, "save user failed", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -65,7 +67,7 @@ public enum ErrorCode {
     PRICE_TOO_HIGH(2021, "Maximum price per hour is 1,000,000 VND", HttpStatus.BAD_REQUEST),
     // THÔNG TIN DẠY HỌC
     SUBJECTS_REQUIRED(2022, "At least one subject must be selected", HttpStatus.BAD_REQUEST),
-    SUBJECT_ID_REQUIRED(2023, "Subject ID cannot be null", HttpStatus.BAD_REQUEST),
+    SUBJECT_ID_REQUIRED(2023, "Subject ID required", HttpStatus.BAD_REQUEST),
     // UPLOAD FILE
     AVATAR_URL_REQUIRED(2024, "Avatar URL is required", HttpStatus.BAD_REQUEST),
     PROOF_URL_REQUIRED(2025, "Proof file URL is required", HttpStatus.BAD_REQUEST),
@@ -91,6 +93,8 @@ public enum ErrorCode {
     TUTOR_NOT_FOUND(2300, "Tutor not found", HttpStatus.NOT_FOUND),
     INVALID_REQUEST(2303, "Invalid request", HttpStatus.BAD_REQUEST),
     INTERNAL_ERROR(2304, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+    METHOD_INVALID(2305, "Method is not supported", HttpStatus.BAD_REQUEST),
+
 
     // E_bool admin
     EBOOK_TITLE_REQUIRED(3001, "Title is required", HttpStatus.BAD_REQUEST),
@@ -162,6 +166,29 @@ public enum ErrorCode {
 
     DATE_REQUIRED(4400, "Date is required", HttpStatus.BAD_REQUEST),
     AVAILABILITY_CONFLICT(4402, "This time slot already exists", HttpStatus.BAD_REQUEST),
+
+    MISSING_PARAMETER(4009, "Missing required parameter", HttpStatus.BAD_REQUEST),
+
+//    Rating and Review
+    RATING_VALUE_INVALID(5001, "Rating value must be between 1 and 5", HttpStatus.BAD_REQUEST),
+
+// Trial request
+    TUTOR_ID_REQUIRE(5100, "Tutor ID is required", HttpStatus.BAD_REQUEST),
+    TRIAL_DATE_REQUIRE(5101, "Trial date is required", HttpStatus.BAD_REQUEST),
+    TRIAL_DATE_FUTURE(5102, "Trial date must be in the future", HttpStatus.BAD_REQUEST),
+    ADDITIONAL_NOTES_TOO_LONG(5105, "Notes cannot exceed 500 characters", HttpStatus.BAD_REQUEST),
+    SUBJECT_NOT_EXISTED(5106, "Subject not existed", HttpStatus.BAD_REQUEST),
+    TUTOR_NOT_TEACH_SUBJECT(5107, "Tutor does not teach this subject", HttpStatus.BAD_REQUEST),
+    END_TIME_BEFORE_START_TIME(5108, "End time must be after start time", HttpStatus.BAD_REQUEST),
+    CLASS_DURATION_TOO_SHORT(5109, "Class duration must be at least 30 minutes", HttpStatus.BAD_REQUEST),
+    CLASS_DURATION_EXCEEDS_MAX(5110, "Class duration cannot exceed 1 hour 30 minutes", HttpStatus.BAD_REQUEST),
+    TUTOR_TIME_CONFLICT(5111, "Tutor is not available at this time slot", HttpStatus.BAD_REQUEST),
+    DUPLICATE_TRIAL_REQUEST(5112, "You already have a pending or confirmed trial request with this tutor", HttpStatus.BAD_REQUEST),
+
+
+
+
+
 
     ;
 
