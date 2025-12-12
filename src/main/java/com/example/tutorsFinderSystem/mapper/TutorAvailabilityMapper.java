@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TutorAvailabilityMapper {
@@ -14,13 +13,26 @@ public interface TutorAvailabilityMapper {
     DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
     DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @Mapping(target = "availabilityId", source = "availabilityId")
-    @Mapping(target = "dayOfWeek", expression = "java(availability.getStartTime().getDayOfWeek().name())")
-    @Mapping(target = "startTime", expression = "java(availability.getStartTime().toLocalTime().format(TIME_FORMAT))")
-    @Mapping(target = "endTime", expression = "java(availability.getEndTime().toLocalTime().format(TIME_FORMAT))")
-    @Mapping(target = "date", expression = "java(availability.getStartTime().toLocalDate().format(DATE_FORMAT))")
-    TutorAvailabilityResponse toResponse(TutorAvailability availability);
+    @Mapping(target = "availabilityId", source = "availability.availabilityId")
+    @Mapping(target = "status", source = "availability.status")
 
-    List<TutorAvailabilityResponse> toResponses(List<TutorAvailability> availabilities);
+    @Mapping(
+        target = "dayOfWeek",
+        expression = "java(availability.getStartTime().getDayOfWeek().name())"
+    )
+    @Mapping(
+        target = "startTime",
+        expression = "java(availability.getStartTime().toLocalTime().format(TIME_FORMAT))"
+    )
+    @Mapping(
+        target = "endTime",
+        expression = "java(availability.getEndTime().toLocalTime().format(TIME_FORMAT))"
+    )
+    @Mapping(
+        target = "startDate",
+        expression = "java(availability.getStartTime().toLocalDate().format(DATE_FORMAT))"
+    )
+    // endDate KHÔNG map ở đây
+    @Mapping(target = "endDate", ignore = true)
+    TutorAvailabilityResponse toResponse(TutorAvailability availability);
 }
-    

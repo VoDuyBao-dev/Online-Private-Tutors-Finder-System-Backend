@@ -20,8 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
+import java.util.ArrayList;
 // import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,10 +47,52 @@ public class TutorScheduleService {
 
     @Transactional(readOnly = true)
     public List<TutorAvailabilityResponse> getMyAvailability() {
+
         Tutor tutor = getCurrentTutor();
-        List<TutorAvailability> list = availabilityRepository
-                .findByTutor_TutorIdOrderByStartTimeAsc(tutor.getTutorId());
-        return availabilityMapper.toResponses(list);
+
+        // 1. Lấy tất cả lịch của tutor
+        List<TutorAvailability> all = availabilityRepository.findByTutor_TutorIdOrderByStartTimeAsc(tutor.getTutorId());
+
+        // 2. Chỉ giữ AVAILABLE + CANCELLED
+        List<TutorAvailability> filtered = all.stream()
+                .filter(a -> a.getStatus() == TutorAvailabilityStatus.AVAILABLE
+                        || a.getStatus() == TutorAvailabilityStatus.CANCELLED)
+                .toList();
+
+        // 3. Gom nhóm theo "chu kỳ 3 tháng"
+        Map<String, List<TutorAvailability>> grouped = filtered.stream()
+                .collect(Collectors.groupingBy(a -> buildGroupKey(a)));
+
+        List<TutorAvailabilityResponse> result = new ArrayList<>();
+
+        // 4. Mỗi group -> 1 bản ghi đại diện
+        for (List<TutorAvailability> group : grouped.values()) {
+
+            // group đã sort theo startTime
+            TutorAvailability first = group.get(0);
+            TutorAvailability last = group.get(group.size() - 1);
+
+            // String dayOfWeek = first.getStartTime().getDayOfWeek().name();
+
+            TutorAvailabilityResponse response = availabilityMapper.toResponse(first);
+
+            // thêm startDate & endDate của chu kỳ 3 tháng
+            // response.setStartDate(
+            // first.getStartTime().toLocalDate().toString());
+            response.setEndDate(
+                    last.getStartTime().toLocalDate().toString());
+
+            result.add(response);
+        }
+
+        return result;
+    }
+
+    private String buildGroupKey(TutorAvailability a) {
+        return a.getTutor().getTutorId() + "|"
+                + a.getStartTime().getDayOfWeek().name() + "|"
+                + a.getStartTime().toLocalTime() + "|"
+                + a.getEndTime().toLocalTime();
     }
 
     // TẠO LỊCH RẢNH CHO 3 THÁNG
@@ -109,7 +154,19 @@ public class TutorScheduleService {
         }
 
         // String dayOfWeek = targetDOW.name();
-        return availabilityMapper.toResponse(firstSlot);
+        // return availabilityMapper.toResponse(firstSlot);
+        TutorAvailabilityResponse response = availabilityMapper.toResponse(firstSlot);
+
+        // endDate = ngày cuối cùng trong chu kỳ 3 tháng
+        LocalDate endDate = firstSlot.getStartTime()
+                .toLocalDate()
+                .plusMonths(3)
+                .minusDays(1);
+
+        response.setEndDate(endDate.toString());
+
+        return response;
+
     }
 
     // SỬA LỊCH — SỬA TOÀN BỘ 3 THÁNG
@@ -177,7 +234,18 @@ public class TutorScheduleService {
             throw new AppException(ErrorCode.TUTOR_AVAILABILITY_NOT_FOUND);
         }
 
-        return availabilityMapper.toResponse(firstUpdated);
+        TutorAvailabilityResponse response = availabilityMapper.toResponse(firstUpdated);
+
+        // endDate = ngày cuối cùng trong chu kỳ 3 tháng
+        LocalDate endDate = firstUpdated.getStartTime()
+                .toLocalDate()
+                .plusMonths(3)
+                .minusDays(1);
+
+        response.setEndDate(endDate.toString());
+
+        return response;
+
     }
 
     // TÌM THỨ TIẾP THEO DỰA VÀO DOW
