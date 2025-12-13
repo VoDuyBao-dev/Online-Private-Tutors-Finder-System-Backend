@@ -1,10 +1,12 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +19,8 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Optional<Tutor> findByUserUserId(Long userId);
 
     Optional<Tutor> findByUser_Email(String email);
+
+    List<Tutor> findByVerificationStatus(TutorStatus status);
 
     // ===================== ROLE =====================
 
@@ -68,4 +72,6 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             WHERE t.verification_status = 'PENDING'
             """, nativeQuery = true)
     long countPendingTutors();
+
+    List<Tutor> findAll(Specification<Tutor> spec);
 }
