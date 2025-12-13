@@ -1,9 +1,13 @@
 package com.example.tutorsFinderSystem.services;
 
-import com.example.tutorsFinderSystem.entities.CalendarClass;
-import com.example.tutorsFinderSystem.entities.ClassRequest;
-import com.example.tutorsFinderSystem.entities.RequestSchedule;
+import com.example.tutorsFinderSystem.dto.response.LearnerCalendarResponse;
+import com.example.tutorsFinderSystem.entities.*;
+import com.example.tutorsFinderSystem.exceptions.AppException;
+import com.example.tutorsFinderSystem.exceptions.ErrorCode;
+import com.example.tutorsFinderSystem.mapper.CalendarClassMapper;
 import com.example.tutorsFinderSystem.repositories.CalendarClassRepository;
+import com.example.tutorsFinderSystem.repositories.LearnerRepository;
+import com.example.tutorsFinderSystem.repositories.RequestScheduleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +28,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CalendarClassService {
     CalendarClassRepository calendarClassRepository;
+    RequestScheduleRepository requestScheduleRepository;
+    UserService userService;
+    LearnerRepository learnerRepository;
+    CalendarClassMapper calendarClassMapper;
 
     public void createTrialCalendar(ClassRequest request, RequestSchedule schedule) {
         CalendarClass calendar = CalendarClass.builder()
@@ -31,6 +39,7 @@ public class CalendarClassService {
                 .dayOfWeek(schedule.getDayOfWeek())
                 .startTime(schedule.getStartTime())
                 .endTime(schedule.getEndTime())
+                .studyDate(request.getStartDate())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
@@ -38,40 +47,61 @@ public class CalendarClassService {
         calendarClassRepository.save(calendar);
     }
 
-    public void createOfficialCalendar(ClassRequest request, RequestSchedule schedule) {
+    public void createOfficialCalendar(ClassRequest request) {
 
-        int totalSessions = request.getTotalSessions();
-
-        // Chuyển enum custom DayOfWeek sang java.time.DayOfWeek
-        DayOfWeek targetDay = schedule.getDayOfWeek().toJavaDayOfWeek();
+        List<RequestSchedule> schedules =
+                requestScheduleRepository.findByClassRequest_RequestId(
+                        request.getRequestId()
+                );
 
         LocalDate start = request.getStartDate();
-        LocalDate end = request.getEndDate();
+        LocalDate end   = request.getEndDate();
 
-        // Tìm ngày đầu tiên trùng thứ (MONDAY / TUESDAY / ...)
-        LocalDate first = start.with(TemporalAdjusters.nextOrSame(targetDay));
+        List<CalendarClass> calendars = new ArrayList<>();
 
-        List<CalendarClass> list = new ArrayList<>();
+        for (RequestSchedule schedule : schedules) {
 
-        // Nhảy theo tuần
-        for (LocalDate d = first;
-             !d.isAfter(end) && list.size() < totalSessions;
-             d = d.plusWeeks(1)) {
+            DayOfWeek targetDay = schedule.getDayOfWeek().toJavaDayOfWeek();
 
-            list.add(CalendarClass.builder()
-                    .classRequest(request)
-                    .dayOfWeek(schedule.getDayOfWeek())
-                    .startTime(schedule.getStartTime())
-                    .endTime(schedule.getEndTime())
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build());
+            LocalDate firstDate = start.with(
+                    TemporalAdjusters.nextOrSame(targetDay)
+            );
 
+            for (LocalDate d = firstDate;
+                 !d.isAfter(end);
+                 d = d.plusWeeks(1)) {
 
+                calendars.add(CalendarClass.builder()
+                        .classRequest(request)
+                        .studyDate(d)
+                        .dayOfWeek(schedule.getDayOfWeek())
+                        .startTime(schedule.getStartTime())
+                        .endTime(schedule.getEndTime())
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build());
+            }
         }
 
-        calendarClassRepository.saveAll(list);
+        calendarClassRepository.saveAll(calendars);
     }
+
+    public List<LearnerCalendarResponse> getLearnerCalendar(LocalDate from, LocalDate to) {
+
+        User user = userService.getCurrentUser();
+        Learner learner = learnerRepository.findByUser_Email(user.getEmail()).orElseThrow(()->
+                new AppException(ErrorCode.LEARNER_USER_NOT_FOUND));
+
+        List<CalendarClass> calendars =
+                calendarClassRepository
+                        .findByClassRequest_LearnerAndStudyDateBetween(learner, from, to);
+
+        return calendars.stream()
+                .map(calendarClassMapper::toResponse)
+                .toList();
+    }
+
+
 
 
 

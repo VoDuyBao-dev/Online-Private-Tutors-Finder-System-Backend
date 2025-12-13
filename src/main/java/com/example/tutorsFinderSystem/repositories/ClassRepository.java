@@ -3,6 +3,8 @@ package com.example.tutorsFinderSystem.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.tutorsFinderSystem.entities.Learner;
+import com.example.tutorsFinderSystem.enums.ClassStatus;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -61,5 +63,10 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
   Page<ClassEntity> findAllActiveClasses(Pageable pageable);
 
   Optional<ClassEntity> findById(Long id);
+
+  List<ClassEntity> findByStatusAndClassRequest_Learner(
+          ClassStatus status,
+          Learner learner
+  );
 
 }
