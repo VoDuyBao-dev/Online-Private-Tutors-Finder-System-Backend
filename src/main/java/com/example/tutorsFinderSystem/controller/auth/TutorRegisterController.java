@@ -4,12 +4,12 @@ import com.example.tutorsFinderSystem.dto.ApiResponse;
 import com.example.tutorsFinderSystem.dto.request.TutorRegisterRequest;
 import com.example.tutorsFinderSystem.dto.response.TutorRegisterResponse;
 import com.example.tutorsFinderSystem.exceptions.AppException;
-import com.example.tutorsFinderSystem.exceptions.ErrorCode;
+// import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.services.TutorRegisterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
+// import jakarta.validation.ConstraintViolation;
+// import jakarta.validation.Validation;
+// import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Set;
+// import java.util.Set;
 
 @RestController
 @RequestMapping("/auth/tutors")
@@ -52,12 +52,12 @@ public class TutorRegisterController {
             request.setCertificateFiles(certificateFiles);
 
             // Validate dữ liệu
-            Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-            Set<ConstraintViolation<TutorRegisterRequest>> violations = validator.validate(request);
+            // Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+            // Set<ConstraintViolation<TutorRegisterRequest>> violations = validator.validate(request);
 
-            if (!violations.isEmpty()) {
-                throw new AppException(ErrorCode.INVALID_FIELD);
-            }
+            // if (!violations.isEmpty()) {
+            //     throw new AppException(ErrorCode.INVALID_FIELD);
+            // }
 
             TutorRegisterResponse result = tutorRegisterService.registerTutor(request);
 

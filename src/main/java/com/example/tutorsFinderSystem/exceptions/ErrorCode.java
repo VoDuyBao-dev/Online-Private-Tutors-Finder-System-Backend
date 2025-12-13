@@ -208,7 +208,7 @@ public enum ErrorCode {
     PASSWORD_CONFIRM_MISMATCH(6003, "New password and confirm password do not match", HttpStatus.BAD_REQUEST),
 INVALID_PASSWORD(6004, "Current password is incorrect", HttpStatus.BAD_REQUEST),
 LEARNER_NOT_FOUND(7001, "Learner not found", HttpStatus.NOT_FOUND),
-
+CERTIFICATE_NOT_FOUND(8001, "Certificate not found", HttpStatus.NOT_FOUND),
 
 
     ;

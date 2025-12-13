@@ -2,9 +2,7 @@ package com.example.tutorsFinderSystem.services;
 
 import com.example.tutorsFinderSystem.dto.request.AdminUpdateProfileRequest;
 import com.example.tutorsFinderSystem.dto.response.AdminProfileResponse;
-import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.entities.User;
-import com.example.tutorsFinderSystem.enums.Role;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.repositories.UserRepository;
