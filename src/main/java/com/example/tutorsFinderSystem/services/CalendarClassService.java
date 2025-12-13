@@ -1,9 +1,12 @@
 package com.example.tutorsFinderSystem.services;
 
-import com.example.tutorsFinderSystem.entities.CalendarClass;
-import com.example.tutorsFinderSystem.entities.ClassRequest;
-import com.example.tutorsFinderSystem.entities.RequestSchedule;
+import com.example.tutorsFinderSystem.dto.response.LearnerCalendarResponse;
+import com.example.tutorsFinderSystem.entities.*;
+import com.example.tutorsFinderSystem.exceptions.AppException;
+import com.example.tutorsFinderSystem.exceptions.ErrorCode;
+import com.example.tutorsFinderSystem.mapper.CalendarClassMapper;
 import com.example.tutorsFinderSystem.repositories.CalendarClassRepository;
+import com.example.tutorsFinderSystem.repositories.LearnerRepository;
 import com.example.tutorsFinderSystem.repositories.RequestScheduleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,9 @@ import java.util.List;
 public class CalendarClassService {
     CalendarClassRepository calendarClassRepository;
     RequestScheduleRepository requestScheduleRepository;
+    UserService userService;
+    LearnerRepository learnerRepository;
+    CalendarClassMapper calendarClassMapper;
 
     public void createTrialCalendar(ClassRequest request, RequestSchedule schedule) {
         CalendarClass calendar = CalendarClass.builder()
@@ -79,6 +85,22 @@ public class CalendarClassService {
 
         calendarClassRepository.saveAll(calendars);
     }
+
+    public List<LearnerCalendarResponse> getLearnerCalendar(LocalDate from, LocalDate to) {
+
+        User user = userService.getCurrentUser();
+        Learner learner = learnerRepository.findByUser_Email(user.getEmail()).orElseThrow(()->
+                new AppException(ErrorCode.LEARNER_USER_NOT_FOUND));
+
+        List<CalendarClass> calendars =
+                calendarClassRepository
+                        .findByClassRequest_LearnerAndStudyDateBetween(learner, from, to);
+
+        return calendars.stream()
+                .map(calendarClassMapper::toResponse)
+                .toList();
+    }
+
 
 
 

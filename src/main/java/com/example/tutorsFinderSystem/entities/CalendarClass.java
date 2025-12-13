@@ -36,7 +36,7 @@ public class CalendarClass {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @Column(name = "study_date", nullable = true)
+    @Column(name = "study_date", nullable = false)
     private LocalDate studyDate;
 
     @Builder.Default
