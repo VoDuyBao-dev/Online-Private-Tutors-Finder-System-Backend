@@ -201,6 +201,13 @@ public enum ErrorCode {
     START_DATE_MUST_BE_FUTURE(5124, "Start date must be future", HttpStatus.BAD_REQUEST),
     SCHEDULE_REQUIRED(5125, "Schedule required", HttpStatus.BAD_REQUEST),
 
+// tutor change password
+    NEW_PASSWORD_SAME_AS_OLD(6002, "New password must be different from the current password", HttpStatus.BAD_REQUEST),
+    PASSWORD_CONFIRM_MISMATCH(6003, "New password and confirm password do not match", HttpStatus.BAD_REQUEST),
+INVALID_PASSWORD(6004, "Current password is incorrect", HttpStatus.BAD_REQUEST),
+
+
+
     ;
 
     private int code;

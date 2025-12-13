@@ -9,6 +9,7 @@ import com.example.tutorsFinderSystem.dto.response.TutorPersonalInfoResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorRatingsSummaryResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorSubjectsResponse;
 import com.example.tutorsFinderSystem.security.RequireApprovedTutor;
+import com.example.tutorsFinderSystem.dto.request.ChangePasswordRequest;
 import com.example.tutorsFinderSystem.dto.request.TutorEducationUpdateRequest;
 import com.example.tutorsFinderSystem.services.TutorProfileService;
 import jakarta.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -123,6 +125,19 @@ public class TutorProfileController {
                 .message("Cập nhật avatar thành công")
                 .result(tutorProfileService.updateAvatar(file))
                 .build();
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request
+    ) {
+        tutorProfileService.changePassword(request);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .code(200)
+                        .message("Đổi mật khẩu thành công")
+                        .build()
+        );
     }
 
 }

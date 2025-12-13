@@ -9,5 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tutors/profile")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('SCOPE_LEARNER')")
 public class DashboardUserController {
 }

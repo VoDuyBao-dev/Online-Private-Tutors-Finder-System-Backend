@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -103,7 +104,8 @@ public class EbookService {
         if (fileId != null) {
             try {
                 googleDriveService.delete(fileId);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
 
         ebookRepository.delete(ebook);
@@ -156,10 +158,36 @@ public class EbookService {
     // HELPER – Tách fileId từ Google Drive URL
     // ========================================================
     private String extractDriveId(String url) {
-        if (url == null) return null;
-        if (!url.contains("id=")) return null;
+        if (url == null)
+            return null;
+        if (!url.contains("id="))
+            return null;
 
         return url.substring(url.indexOf("id=") + 3);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<EbookResponse> searchEbooks(
+            Long subjectId,
+            EbookType type,
+            LocalDate createdDate,
+            int page,
+            int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Ebook> ebookPage = ebookRepository.searchEbooks(
+                subjectId,
+                type,
+                createdDate,
+                pageable);
+
+        return PageResponse.<EbookResponse>builder()
+                .items(ebookMapper.toEbookResponses(ebookPage.getContent()))
+                .page(page)
+                .size(size)
+                .totalItems(ebookPage.getTotalElements())
+                .totalPages(ebookPage.getTotalPages())
+                .build();
     }
 
 }
