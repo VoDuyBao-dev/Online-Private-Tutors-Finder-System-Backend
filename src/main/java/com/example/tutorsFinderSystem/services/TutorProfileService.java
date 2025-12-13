@@ -52,23 +52,12 @@ public class TutorProfileService {
     private final TutorCertificateFileRepository tutorCertificateFileRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // private static final String UPLOAD_ROOT = System.getProperty("user.dir") +
-    // "/uploads/tutors/";
-
-    // private User getCurrentUser() {
-    // var email = SecurityContextHolder.getContext().getAuthentication().getName();
-    // return userRepository.findByEmail(email)
-    // .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-    // }
-
     private Tutor getTutor(User user) {
         return tutorRepository.findByUserUserId(user.getUserId())
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
     }
 
-    // ------------------------------
     // 1. PERSONAL INFO
-    // ------------------------------
 
     public TutorPersonalInfoResponse getPersonalInfo() {
         User user = userService.getCurrentUser();
@@ -91,9 +80,7 @@ public class TutorProfileService {
         return mapper.toPersonalInfo(userRepository.save(user), tutorRepository.save(tutor));
     }
 
-    // ------------------------------
     // 2. EDUCATION INFO
-    // ------------------------------
 
     public TutorEducationResponse getEducation() {
         Tutor tutor = getTutor(userService.getCurrentUser());
@@ -159,9 +146,7 @@ public class TutorProfileService {
         return mapper.toEducation(tutor);
     }
 
-    // ------------------------------
     // 3. SUBJECTS
-    // ------------------------------
 
     public TutorSubjectsResponse getSubjects() {
         Tutor tutor = getTutor(userService.getCurrentUser());

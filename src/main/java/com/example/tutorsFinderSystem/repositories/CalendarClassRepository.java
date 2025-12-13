@@ -49,6 +49,8 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
                                             @Param("endTime") LocalTime endTime);
 
 
+                                            
+
 
     List<CalendarClass> findByClassRequest_LearnerAndStudyDateBetween(
             Learner learner,
