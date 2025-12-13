@@ -205,6 +205,7 @@ public enum ErrorCode {
     NEW_PASSWORD_SAME_AS_OLD(6002, "New password must be different from the current password", HttpStatus.BAD_REQUEST),
     PASSWORD_CONFIRM_MISMATCH(6003, "New password and confirm password do not match", HttpStatus.BAD_REQUEST),
 INVALID_PASSWORD(6004, "Current password is incorrect", HttpStatus.BAD_REQUEST),
+LEARNER_NOT_FOUND(7001, "Learner not found", HttpStatus.NOT_FOUND),
 
 
 
