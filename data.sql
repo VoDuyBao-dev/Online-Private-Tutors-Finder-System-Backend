@@ -211,7 +211,7 @@ VALUES (1, 1, 1, 10, 2, '2025-11-03', '2025-12-10', 'Học tối thứ 2 và 4',
 (1, 2, 18, 5, 2, '2025-12-01', '2025-12-20', 'Học tin học cơ bản', 'CONFIRMED', 'OFFICIAL'),
 (2, 3, 4, 8, 2, '2025-11-09', '2025-12-08', 'Ôn thi học kỳ', 'PENDING', 'TRIAL'),
 (3, 5, 29, 10, 2, '2025-11-13', '2026-01-10', 'Luyện thi TOEIC 700+', 'CONFIRMED', 'OFFICIAL'),
-(4, 1, 9, 6, 2, '2025-12-02', '2025-12-20', 'Học tiếng Anh giao tiếp', 'CONFIRMED', 'OFFICIAL'),
+(4, 1, 9, 6, 2, '2025-12-02', '2025-12-20', 'Học tiếng Anh giao tiếp', 'PENDING', 'OFFICIAL'),
 (5, 4, 1, 12, 3, '2025-11-12', '2026-01-14', 'Học Toán nâng cao', 'PENDING', 'TRIAL'),
 (3, 1, 1, 8, 2, '2025-12-02', '2026-01-05', 'Ôn tập học kỳ', 'PENDING', 'TRIAL'),
 (4, 1, 9, 12, 3, '2025-12-04', '2026-03-10', 'Cải thiện phát âm', 'CONFIRMED', 'OFFICIAL'),
@@ -247,6 +247,34 @@ VALUES
 (14, 'SATURDAY',  '14:30:00', '16:00:00'),
 (14, 'SUNDAY',    '14:30:00', '16:00:00');
 
+INSERT INTO request_schedules (request_id, day_of_week, start_time, end_time)
+VALUES (1, 'MONDAY',    '18:30:00', '20:00:00'),
+(1, 'WEDNESDAY', '18:30:00', '20:00:00'),
+(2, 'TUESDAY',   '17:00:00', '18:30:00'),
+(3, 'THURSDAY',  '14:30:00', '16:00:00'),
+(4, 'FRIDAY',    '18:30:00', '20:00:00'),
+(5, 'SATURDAY',  '09:30:00', '11:00:00'),
+(6, 'SUNDAY',    '14:30:00', '16:00:00'),
+(7, 'MONDAY',    '08:00:00', '09:30:00'),
+(8, 'WEDNESDAY', '18:30:00', '20:00:00'),
+(9, 'FRIDAY',    '08:00:00', '09:30:00');
+
+-- Tutor 1 – các request 11, 12 (tối)
+INSERT INTO request_schedules (request_id, day_of_week, start_time, end_time)
+VALUES
+(11, 'MONDAY',   '18:30:00', '20:00:00'),
+(11, 'THURSDAY', '18:30:00', '20:00:00'),
+(12, 'TUESDAY',  '18:30:00', '20:00:00'),
+(12, 'FRIDAY',   '18:30:00', '20:00:00');
+
+-- Tutor 2 – các request 13, 14 (sáng & chiều)
+INSERT INTO request_schedules (request_id, day_of_week, start_time, end_time)
+VALUES
+(13, 'WEDNESDAY', '09:30:00', '11:00:00'),
+(13, 'FRIDAY',    '09:30:00', '11:00:00'),
+(14, 'SATURDAY',  '14:30:00', '16:00:00'),
+(14, 'SUNDAY',    '14:30:00', '16:00:00');
+
 
 
   INSERT INTO classes (request_id, status, completed_sessions)
@@ -259,7 +287,7 @@ VALUES
   (6, 'ONGOING', 2),
   (7, 'CANCELLED', 0),
   (8, 'COMPLETED', 10),
-  (9, 'ONGOING', 4),
+  (9, 'PENDING', 4),
   (10, 'PENDING', 0),
   (11, 'PENDING', 0),
   (12, 'ONGOING', 1),
@@ -751,6 +779,39 @@ VALUES
   (1018, '2025-12-10 06:00:00', 'WEDNESDAY','18:30:00', '17:00:00', '2025-12-10 06:10:00', 109),
   (1019, '2025-12-11 06:00:00', 'THURSDAY', '20:00:00', '18:30:00', '2025-12-11 06:10:00', 109);
 
+INSERT INTO request_schedules (request_schedules_id, created_at, day_of_week, end_time, start_time, request_id)
+VALUES
+  -- Request 100 (tutor 6): MON, TUE
+  (1000, '2025-12-01 06:00:00', 'MONDAY',   '18:30:00', '17:00:00',  100),
+  (1001, '2025-12-02 06:00:00', 'TUESDAY',  '20:00:00', '18:30:00',  100),
+  -- Request 101 (tutor 7): TUE, WE
+  (1002, '2025-12-02 06:00:00', 'TUESDAY',  '18:30:00', '17:00:00',  101),
+  (1003, '2025-12-03 06:00:00', 'WEDNESDAY','20:00:00', '18:30:00',  101),
+  -- Request 102 (tutor 8): WED, TH
+  (1004, '2025-12-03 06:00:00', 'WEDNESDAY','18:30:00', '17:00:00',  102),
+  (1005, '2025-12-04 06:00:00', 'THURSDAY', '20:00:00', '18:30:00',  102),
+  -- Request 103 (tutor 9): THU, FR
+  (1006, '2025-12-04 06:00:00', 'THURSDAY', '18:30:00', '17:00:00',  103),
+  (1007, '2025-12-05 06:00:00', 'FRIDAY',   '20:00:00', '18:30:00',  103),
+  -- Request 104 (tutor 10): FRI, SA
+  (1008, '2025-12-05 06:00:00', 'FRIDAY',   '18:30:00', '17:00:00',  104),
+  (1009, '2025-12-06 06:00:00', 'SATURDAY', '20:00:00', '18:30:00',  104),
+  -- Request 105 (tutor 11): SAT, SU
+  (1010, '2025-12-06 06:00:00', 'SATURDAY', '18:30:00', '17:00:00',  105),
+  (1011, '2025-12-07 06:00:00', 'SUNDAY',   '20:00:00', '18:30:00',  105),
+  -- Request 106 (tutor 12): SUN, MO
+  (1012, '2025-12-07 06:00:00', 'SUNDAY',   '18:30:00', '17:00:00',  106),
+  (1013, '2025-12-08 06:00:00', 'MONDAY',   '20:00:00', '18:30:00',  106),
+  -- Request 107 (tutor 13): MON, TU
+  (1014, '2025-12-08 06:00:00', 'MONDAY',   '18:30:00', '17:00:00',  107),
+  (1015, '2025-12-09 06:00:00', 'TUESDAY',  '20:00:00', '18:30:00',  107),
+  -- Request 108 (tutor 14): TUE, WE
+  (1016, '2025-12-09 06:00:00', 'TUESDAY',  '18:30:00', '17:00:00',  108),
+  (1017, '2025-12-10 06:00:00', 'WEDNESDAY','20:00:00', '18:30:00',  108),
+  -- Request 109 (tutor 15): WED, TH
+  (1018, '2025-12-10 06:00:00', 'WEDNESDAY','18:30:00', '17:00:00',  109),
+  (1019, '2025-12-11 06:00:00', 'THURSDAY', '20:00:00', '18:30:00',  109);
+
 -- === 10. Bản ghi classes cho các request mới ===
 INSERT INTO classes (class_id, completed_sessions, status, request_id)
 VALUES
@@ -832,3 +893,42 @@ VALUES
   ('Tài liệu luyện thi IELTS 6.5+', 'DE_THI_THAM_KHAO', 'https://drive.google.com/uc?id=1xSAlqzBTv7BQ4drOuCG56IxHWYyxCblg9yXs7eC8Pzo', 16, '2025-12-09 16:00:00');
 
 UPDATE `tutors_finder_system`.`tutors` SET `verification_status` = 'PENDING' WHERE (`tutor_id` = '4');
+
+
+
+INSERT INTO notifications (user_id, type, title, content, is_read, created_at) VALUES
+(1, 'SYSTEM', 'Hệ thống khởi tạo thành công',
+ 'Hệ thống Online Private Tutors Finder System đã được khởi tạo và sẵn sàng hoạt động.',
+ FALSE, '2025-12-01 08:00:00'),
+
+(1, 'ACCOUNT_VERIFIED', 'Tài khoản quản trị được xác minh',
+ 'Tài khoản ADMIN đã được xác minh toàn quyền quản lý hệ thống.',
+ TRUE, '2025-12-02 09:00:00');
+
+
+INSERT INTO notifications (user_id, type, title, content, is_read, created_at) VALUES
+(2, 'NEW_REQUEST', 'Bạn có yêu cầu học mới',
+ 'Một học viên vừa gửi yêu cầu học Toán. Vui lòng kiểm tra và phản hồi.',
+ FALSE, '2025-12-03 18:00:00'),
+
+(2, 'REQUEST_ACCEPTED', 'Yêu cầu học đã được xác nhận',
+ 'Bạn đã chấp nhận yêu cầu học. Lịch học đã được cập nhật.',
+ TRUE, '2025-12-04 19:00:00'),
+
+(2, 'SESSION_REMINDER', 'Nhắc lịch học hôm nay',
+ 'Bạn có buổi học từ 18:30 đến 20:00 hôm nay.',
+ FALSE, '2025-12-05 12:00:00');
+
+
+INSERT INTO notifications (user_id, type, title, content, is_read, created_at) VALUES
+(5, 'CLASS_CONFIRMED', 'Lớp học đã được xác nhận',
+ 'Gia sư đã xác nhận yêu cầu học của bạn. Lịch học bắt đầu từ tuần này.',
+ FALSE, '2025-12-03 20:00:00'),
+
+(5, 'SESSION_REMINDER', 'Nhắc lịch học',
+ 'Bạn có buổi học từ 18:30 đến 20:00 hôm nay. Vui lòng chuẩn bị trước.',
+ FALSE, '2025-12-05 12:00:00'),
+
+(5, 'RATING_REQUEST', 'Đánh giá buổi học',
+ 'Vui lòng đánh giá chất lượng buổi học để giúp cải thiện hệ thống.',
+ TRUE, '2025-12-06 21:00:00');

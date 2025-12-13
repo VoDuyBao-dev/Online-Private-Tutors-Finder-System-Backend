@@ -49,5 +49,7 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
                                             @Param("endTime") LocalTime endTime);
 
 
+                                            
+
 
 }
