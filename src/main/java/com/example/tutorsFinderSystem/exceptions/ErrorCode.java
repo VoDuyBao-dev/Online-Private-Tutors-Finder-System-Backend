@@ -184,6 +184,22 @@ public enum ErrorCode {
     CLASS_DURATION_EXCEEDS_MAX(5110, "Class duration cannot exceed 1 hour 30 minutes", HttpStatus.BAD_REQUEST),
     TUTOR_TIME_CONFLICT(5111, "Tutor is not available at this time slot", HttpStatus.BAD_REQUEST),
     DUPLICATE_TRIAL_REQUEST(5112, "You already have a pending or confirmed trial request with this tutor", HttpStatus.BAD_REQUEST),
+    LEARNER_TIME_CONFLICT(5113, "Learner time conflict", HttpStatus.BAD_REQUEST),
+    SCHEDULE_NOT_FOUND(5114, "Schedule not found", HttpStatus.BAD_REQUEST),
+
+//    official request
+    SESSIONS_PER_WEEK_MAX_3(5115, "Sessions per week max 3", HttpStatus.BAD_REQUEST),
+    SESSIONS_PER_WEEK_MIN_1(5116, "Sessions per week min 1", HttpStatus.BAD_REQUEST),
+    SESSIONS_PER_WEEK_REQUIRED(5117, "Sessions per week required", HttpStatus.BAD_REQUEST),
+    SCHEDULE_SIZE_INVALID(5118, "Schedule size invalid", HttpStatus.BAD_REQUEST),
+
+    END_DATE_BEFORE_START_DATE(5119, "The end date cannot be earlier than the start date", HttpStatus.BAD_REQUEST),
+    NO_SESSION_GENERATED(5120, "No valid study sessions could be generated from the selected date range and weekly schedules", HttpStatus.BAD_REQUEST),
+    TIME_CONFLICT(5121, "The selected schedule conflicts with an existing class. Please choose a different day or time", HttpStatus.BAD_REQUEST),
+    START_DATE_REQUIRED(5122, "Start date required", HttpStatus.BAD_REQUEST),
+    END_DATE_REQUIRED(5123, "End date required", HttpStatus.BAD_REQUEST),
+    START_DATE_MUST_BE_FUTURE(5124, "Start date must be future", HttpStatus.BAD_REQUEST),
+    SCHEDULE_REQUIRED(5125, "Schedule required", HttpStatus.BAD_REQUEST),
 
 // tutor change password
     NEW_PASSWORD_SAME_AS_OLD(6002, "New password must be different from the current password", HttpStatus.BAD_REQUEST),

@@ -2,6 +2,7 @@ package com.example.tutorsFinderSystem.controller.learner;
 
 import com.example.tutorsFinderSystem.dto.ApiResponse;
 import com.example.tutorsFinderSystem.dto.common.ClassRequestDTO;
+import com.example.tutorsFinderSystem.dto.request.OfficialClassRequest;
 import com.example.tutorsFinderSystem.dto.request.TrialRequest;
 import com.example.tutorsFinderSystem.services.ClassRequestService;
 import jakarta.validation.Valid;
@@ -31,11 +32,18 @@ public class ClassRequestController {
                 .build();
     }
 
-
-
     @PostMapping("/create-trial-request")
     public ApiResponse<Void> createClassRequest(@Valid @RequestBody TrialRequest trialRequest ) {
         classRequestService.createTrialRequest(trialRequest);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("sent trial class request successfully")
+                .build();
+    }
+
+    @PostMapping("/create-official-request")
+    public ApiResponse<Void> createOfficialRequest(@Valid @RequestBody OfficialClassRequest officialClassRequest) {
+        classRequestService.createOfficialRequest(officialClassRequest);
         return ApiResponse.<Void>builder()
                 .code(200)
                 .message("sent trial class request successfully")

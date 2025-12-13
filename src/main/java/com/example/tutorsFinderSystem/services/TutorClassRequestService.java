@@ -2,21 +2,14 @@ package com.example.tutorsFinderSystem.services;
 
 import com.example.tutorsFinderSystem.dto.response.TutorRequestClassResponse;
 import com.example.tutorsFinderSystem.dto.response.TutorRequestStatusUpdateResponse;
-import com.example.tutorsFinderSystem.entities.CalendarClass;
-import com.example.tutorsFinderSystem.entities.ClassEntity;
-import com.example.tutorsFinderSystem.entities.ClassRequest;
-import com.example.tutorsFinderSystem.entities.Tutor;
-import com.example.tutorsFinderSystem.entities.User;
+import com.example.tutorsFinderSystem.entities.*;
 import com.example.tutorsFinderSystem.enums.ClassRequestStatus;
 import com.example.tutorsFinderSystem.enums.ClassRequestType;
 import com.example.tutorsFinderSystem.enums.ClassStatus;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.TutorClassRequestMapper;
-import com.example.tutorsFinderSystem.repositories.CalendarClassRepository;
-import com.example.tutorsFinderSystem.repositories.ClassRepository;
-import com.example.tutorsFinderSystem.repositories.ClassRequestRepository;
-import com.example.tutorsFinderSystem.repositories.TutorRepository;
+import com.example.tutorsFinderSystem.repositories.*;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -37,6 +30,11 @@ public class TutorClassRequestService {
 
     private final UserService userService;
     private final TutorRepository tutorRepository;
+
+    private final CalendarClassService calendarClassService;
+    private final RequestScheduleRepository requestScheduleRepository;
+
+
 
     /**
      * Lấy tutor hiện tại từ SecurityContext (qua UserService),
@@ -137,6 +135,18 @@ public class TutorClassRequestService {
 
         classEntity.setStatus(ClassStatus.ONGOING);
         classRepository.save(classEntity);
+
+        RequestSchedule schedule = requestScheduleRepository
+                .findByClassRequest_RequestId(requestId)
+                .stream().findFirst()
+                .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
+
+        //Tạo calendar học thử/ chính thức
+        if (request.getType() == ClassRequestType.TRIAL) {
+            calendarClassService.createTrialCalendar(request, schedule);
+        } else {
+            calendarClassService.createOfficialCalendar(request, schedule);
+        }
 
         return TutorRequestStatusUpdateResponse.builder()
                 .requestId(request.getRequestId())
