@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class RelatedClassDTO {
     private Long classId;
+    private Long tutorId;
     private String avatarImage;
     private String subjectName;
     private String teacherName;
