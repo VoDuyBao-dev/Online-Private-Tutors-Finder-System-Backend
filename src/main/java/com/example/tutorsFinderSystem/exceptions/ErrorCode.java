@@ -171,6 +171,8 @@ public enum ErrorCode {
 
 //    Rating and Review
     RATING_VALUE_INVALID(5001, "Rating value must be between 1 and 5", HttpStatus.BAD_REQUEST),
+    CLASS_NOT_COMPLETED(5002, "Class not completed", HttpStatus.BAD_REQUEST),
+    CLASS_ALREADY_RATED(5003, "Class already rated", HttpStatus.BAD_REQUEST),
 
 // Trial request
     TUTOR_ID_REQUIRE(5100, "Tutor ID is required", HttpStatus.BAD_REQUEST),

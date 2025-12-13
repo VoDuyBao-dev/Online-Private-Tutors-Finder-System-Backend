@@ -63,4 +63,6 @@ public interface RatingsRepository extends JpaRepository<Ratings, Long> {
             @Param("minScore") Float minScore,
             @Param("maxScore") Float maxScore
     );
+
+    boolean existsByClassEntity_ClassId(Long classId);
 }
