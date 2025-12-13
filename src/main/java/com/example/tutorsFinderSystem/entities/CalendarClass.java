@@ -3,6 +3,8 @@ package com.example.tutorsFinderSystem.entities;
 import com.example.tutorsFinderSystem.enums.DayOfWeek;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 
@@ -33,6 +35,9 @@ public class CalendarClass {
 
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
+
+    @Column(name = "study_date", nullable = true)
+    private LocalDate studyDate;
 
     @Builder.Default
     @Column(name = "created_at")

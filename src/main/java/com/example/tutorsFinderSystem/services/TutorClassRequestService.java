@@ -145,7 +145,7 @@ public class TutorClassRequestService {
         if (request.getType() == ClassRequestType.TRIAL) {
             calendarClassService.createTrialCalendar(request, schedule);
         } else {
-            calendarClassService.createOfficialCalendar(request, schedule);
+            calendarClassService.createOfficialCalendar(request);
         }
 
         return TutorRequestStatusUpdateResponse.builder()
