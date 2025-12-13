@@ -28,7 +28,7 @@ import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/tutors/profile")
+@RequestMapping("/tutors/profile")      
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('SCOPE_TUTOR')")
 @RequireApprovedTutor
@@ -38,7 +38,7 @@ public class TutorProfileController {
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         // 1. PERSONAL INFO
-        @GetMapping("/personal-info")
+        @GetMapping("/personal-info")   
         public ApiResponse<TutorPersonalInfoResponse> getPersonalInfo() {
                 return ApiResponse.<TutorPersonalInfoResponse>builder()
                                 .code(200)
