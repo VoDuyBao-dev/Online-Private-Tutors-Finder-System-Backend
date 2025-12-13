@@ -47,7 +47,8 @@ public class SecurityConfig {
                     "/files/**",          // cho phép truy cập file ảnh/pdf
                     "/error",              // tránh lỗi 401 khi gặp /error
                     "/drive/view/**",
-                    "/classes/**"
+                    "/classes/**",
+                    "/public/**"
                 ).permitAll()
                 .requestMatchers(COMMON_URLS).hasAnyAuthority("SCOPE_TUTOR", "SCOPE_LEARNER")
                 .requestMatchers("/tutors/**").hasAuthority("SCOPE_TUTOR")

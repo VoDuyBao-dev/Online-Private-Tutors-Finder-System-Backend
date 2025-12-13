@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.repositories;
 
+import com.example.tutorsFinderSystem.dto.response.FeaturedTutorResponse;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
@@ -40,8 +41,7 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             """)
     Page<Tutor> findAllTutorsPageable(
             @Param("role") String role,
-            Pageable pageable
-    );
+            Pageable pageable);
 
     // ===================== ROLE + STATUS =====================
 
@@ -54,8 +54,7 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             """)
     List<Tutor> findByUserStatus(
             @Param("role") String role,
-            @Param("status") UserStatus status
-    );
+            @Param("status") UserStatus status);
 
     // ===================== PENDING TUTORS =====================
 
@@ -74,4 +73,31 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     long countPendingTutors();
 
     List<Tutor> findAll(Specification<Tutor> spec);
+
+    @Query(value = """
+            SELECT
+                t.tutor_id,
+                u.full_name,
+                u.avatar_image,
+                MIN(s.subject_name) AS subject_name,
+                t.address,
+                t.price_per_hour,
+                AVG(r.score) AS avg_rating,
+                COUNT(r.rating_id) AS total_ratings
+            FROM tutors t
+            JOIN users u ON u.user_id = t.user_id
+            LEFT JOIN tutor_subjects ts ON ts.tutor_id = t.tutor_id
+            LEFT JOIN subjects s ON s.subject_id = ts.subject_id
+            LEFT JOIN class_requests cr ON cr.tutor_id = t.tutor_id
+            LEFT JOIN classes c ON c.request_id = cr.request_id
+            LEFT JOIN ratings r ON r.class_id = c.class_id
+            WHERE t.verification_status = 'APPROVED'
+              AND u.status = 'ACTIVE'
+            GROUP BY t.tutor_id, u.full_name, u.avatar_image, t.address, t.price_per_hour
+            HAVING COUNT(r.rating_id) > 0
+            ORDER BY avg_rating DESC, total_ratings DESC
+            LIMIT 4
+            """, nativeQuery = true)
+    List<Object[]> findFeaturedTutorsRaw();
+
 }
