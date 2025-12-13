@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LearnerRepository extends JpaRepository<Learner, Long> {
@@ -57,4 +58,7 @@ public interface LearnerRepository extends JpaRepository<Learner, Long> {
     Optional<Learner> findByUser_Email(String email);
 
     Optional<Learner> findByUserUserId(Long userId);
+    
+    @Query("select distinct l.grade from Learner l where l.grade is not null order by l.grade")
+    List<String> findDistinctGrades();
 }
