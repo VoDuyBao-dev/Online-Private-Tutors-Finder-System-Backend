@@ -55,14 +55,6 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
 
   List<CalendarClass> findByClassRequest_RequestIdInOrderByStudyDateAscStartTimeAsc(List<Long> requestIds);
                                             
-
-
-    // List<CalendarClass> findByClassRequest_LearnerAndStudyDateBetween(
-    //         Learner learner,
-    //         LocalDate from,
-    //         LocalDate to
-    // );
-
     List<CalendarClass> findByCompletedFalse();
 
 }
