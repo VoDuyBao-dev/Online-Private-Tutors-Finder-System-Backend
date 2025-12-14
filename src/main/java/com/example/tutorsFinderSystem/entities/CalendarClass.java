@@ -46,4 +46,8 @@ public class CalendarClass {
     @Builder.Default
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @Builder.Default
+    @Column(name = "completed", nullable = false)
+    private Boolean completed = false;
 }

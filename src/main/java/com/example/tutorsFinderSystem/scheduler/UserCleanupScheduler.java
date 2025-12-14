@@ -18,7 +18,7 @@ public class UserCleanupScheduler {
     private final UserRepository userRepository;
 
     // Chạy mỗi 5 phút để xóa tài khoản chưa kích hoạt
-    @Scheduled(fixedRate = 300000) // 5 phút = 300000 ms
+    @Scheduled(cron = "0 */5 * * * *") // 5 phút
     public void deleteExpiredAccounts() {
         List<User> expiredUsers = userRepository
                 .findByEnabledFalseAndActivationExpiryTimeBefore(LocalDateTime.now());

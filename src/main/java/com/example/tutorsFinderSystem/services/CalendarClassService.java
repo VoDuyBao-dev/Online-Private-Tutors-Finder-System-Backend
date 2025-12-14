@@ -42,6 +42,7 @@ public class CalendarClassService {
                 .studyDate(request.getStartDate())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .completed(false)
                 .build();
 
         calendarClassRepository.save(calendar);
@@ -79,6 +80,7 @@ public class CalendarClassService {
                         .endTime(schedule.getEndTime())
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
+                        .completed(false)
                         .build());
             }
         }
