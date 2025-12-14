@@ -129,6 +129,19 @@ public class AdminTutorController {
         return ResponseEntity.ok(response);
     }
 
+    // 7) Từ chối tutor (admin chỉ bấm nút)
+    @PutMapping("/{tutorId}/reject")
+    public ResponseEntity<ApiResponse<Void>> rejectTutor(
+            @PathVariable Long tutorId) {
+        adminTutorService.rejectTutor(tutorId);
+
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .code(200)
+                        .message("Tutor has been rejected successfully")
+                        .build());
+    }
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<PageResponse<AdminTutorSummaryResponse>>> searchTutors(
             @RequestParam(required = false) UserStatus status,

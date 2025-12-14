@@ -35,7 +35,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -207,20 +206,14 @@ public class AdminTutorService {
 
         User user = tutor.getUser();
 
-        // ============================
         // 1) Cập nhật trạng thái TUTOR
-        // ============================
         tutor.setVerificationStatus(TutorStatus.APPROVED);
 
-        // ============================
         // 2) Cập nhật trạng thái USER
-        // ============================
         user.setStatus(UserStatus.ACTIVE);
         user.setEnabled(true);
 
-        // ============================
         // 3) Cập nhật CERTIFICATE FILES
-        // ============================
         List<TutorCertificateFile> files = tutorCertificateFileRepository
                 .findAllByCertificate_Tutor_TutorId(tutorId);
 
@@ -257,9 +250,47 @@ public class AdminTutorService {
             }
         }
 
-        // ============================
         // 4) LƯU TUTOR & USER
-        // ============================
+        userRepository.save(user);
+        tutorRepository.save(tutor);
+    }
+
+    @Transactional
+    public void rejectTutor(Long tutorId) {
+
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+
+        User user = tutor.getUser();
+
+        // 1) Cập nhật trạng thái TUTOR
+        tutor.setVerificationStatus(TutorStatus.REJECTED);
+
+        // 2) Cập nhật trạng thái USER
+        user.setStatus(UserStatus.INACTIVE);
+        user.setEnabled(false);
+
+        // 3) Cập nhật CERTIFICATE FILES
+        List<TutorCertificateFile> files = tutorCertificateFileRepository
+                .findAllByCertificate_Tutor_TutorId(tutorId);
+
+        if (!files.isEmpty()) {
+            for (TutorCertificateFile file : files) {
+                file.setStatus(CertificateStatus.REJECTED);
+                file.setIsActive(false);
+            }
+
+            tutorCertificateFileRepository.saveAll(files);
+        }
+
+        // 4) Cập nhật CERTIFICATE
+        List<TutorCertificate> certificates = tutorCertificateRepository.findByTutor_TutorId(tutorId);
+
+        for (TutorCertificate certificate : certificates) {
+            certificate.setApproved(false);
+        }
+
+        // 5) LƯU USER & TUTOR
         userRepository.save(user);
         tutorRepository.save(tutor);
     }
