@@ -1,7 +1,9 @@
 package com.example.tutorsFinderSystem.repositories;
 
 import com.example.tutorsFinderSystem.dto.response.FeaturedTutorResponse;
+import com.example.tutorsFinderSystem.entities.Learner;
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.entities.TutorCertificate;
 import com.example.tutorsFinderSystem.enums.TutorStatus;
 import com.example.tutorsFinderSystem.enums.UserStatus;
 
@@ -12,6 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,4 +103,35 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
             """, nativeQuery = true)
     List<Object[]> findFeaturedTutorsRaw();
 
+    @Query("""
+                SELECT c
+                FROM TutorCertificate c
+                LEFT JOIN FETCH c.files
+                WHERE c.tutor.tutorId = :tutorId
+            """)
+    List<TutorCertificate> findCertificatesWithFiles(Long tutorId);
+
+    @Query("""
+                SELECT DISTINCT t
+                FROM Tutor t
+                LEFT JOIN FETCH t.certificates
+                WHERE t.tutorId = :tutorId
+            """)
+    Optional<Tutor> findTutorWithCertificates(Long tutorId);
+
+    @Query("""
+                SELECT l
+                FROM Tutor l
+                JOIN l.user u
+                WHERE (:role IS NULL OR :role MEMBER OF u.roles)
+                  AND (:status IS NULL OR u.status = :status)
+                  AND (:from IS NULL OR u.createdAt >= :from)
+                  AND (:to IS NULL OR u.createdAt <= :to)
+            """)
+    Page<Tutor> search(
+            UserStatus status,
+            LocalDateTime from,
+            LocalDateTime to,
+            String role,
+            Pageable pageable);
 }

@@ -48,8 +48,10 @@ public class TutorService {
     @Transactional(readOnly = true)
     public TutorDetailDTO getTutorDetail(Long tutorId) {
         // Lấy thông tin tutor
-        Tutor tutor = tutorRepository.findById(tutorId)
+        Tutor tutor = tutorRepository.findTutorWithCertificates(tutorId)
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
+
+        tutorRepository.findCertificatesWithFiles(tutorId);
 
         // Tính thống kê đánh giá
         RatingStatisticsDTO statistics = calculateRatingStatistics(tutorId);

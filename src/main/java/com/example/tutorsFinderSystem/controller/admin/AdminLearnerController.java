@@ -3,8 +3,13 @@ package com.example.tutorsFinderSystem.controller.admin;
 import com.example.tutorsFinderSystem.dto.ApiResponse;
 import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.response.*;
+import com.example.tutorsFinderSystem.enums.UserStatus;
 import com.example.tutorsFinderSystem.services.AdminLearnerService;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,6 +75,23 @@ public class AdminLearnerController {
                 .build();
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<PageResponse<AdminLearnerSummaryResponse>>> searchLearners(
+            @RequestParam(required = false) UserStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var result = learnerService.searchLearners(status, fromDate, toDate, page, size);
+
+        return ResponseEntity.ok(
+                ApiResponse.<PageResponse<AdminLearnerSummaryResponse>>builder()
+                        .code(200)
+                        .message("Search learners successfully")
+                        .result(result)
+                        .build());
     }
 
 }
