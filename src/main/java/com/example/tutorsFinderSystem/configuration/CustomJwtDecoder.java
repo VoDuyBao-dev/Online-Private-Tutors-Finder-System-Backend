@@ -5,6 +5,7 @@ import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -29,24 +30,24 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) {
         try {
-            // Xác minh token hợp lệ, chưa bị thu hồi, chưa hết hạn
-            tokenValidator.verifyToken(token, false);
+                // Xác minh token hợp lệ, chưa bị thu hồi, chưa hết hạn
+                tokenValidator.verifyToken(token, false);
 
-            if (Objects.isNull(nimbusJwtDecoder)) {
-                SecretKeySpec secretKey = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA512");
-                nimbusJwtDecoder = NimbusJwtDecoder
-                        .withSecretKey(secretKey)
-                        .macAlgorithm(MacAlgorithm.HS512)
-                        .build();
-            }
-            return nimbusJwtDecoder.decode(token);
+                if (Objects.isNull(nimbusJwtDecoder)) {
+                    SecretKeySpec secretKey = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA512");
+                    nimbusJwtDecoder = NimbusJwtDecoder
+                            .withSecretKey(secretKey)
+                            .macAlgorithm(MacAlgorithm.HS512)
+                            .build();
+                }
+                return nimbusJwtDecoder.decode(token);
 
-        } catch (ParseException | JOSEException e) {
-            throw new JwtException("Invalid JWT: " + e.getMessage());
-        }catch (AppException e) {
-            log.warn("Token bị thu hồi hoặc hết hạn: {}", e.getErrorCode().getMessage());
-            throw new JwtException("Invalid or revoked JWT: " + e.getErrorCode().getMessage());
+        } catch (AppException e) {
+            throw new BadCredentialsException("Invalid or revoked JWT: " + e.getErrorCode().getMessage());
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid JWT " + e.getMessage());
         }
+
 
     }
 

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -53,4 +54,15 @@ public interface CalendarClassRepository extends JpaRepository<CalendarClass, Lo
       LocalDate to);
 
   List<CalendarClass> findByClassRequest_RequestIdInOrderByStudyDateAscStartTimeAsc(List<Long> requestIds);
+                                            
+
+
+    // List<CalendarClass> findByClassRequest_LearnerAndStudyDateBetween(
+    //         Learner learner,
+    //         LocalDate from,
+    //         LocalDate to
+    // );
+
+    List<CalendarClass> findByCompletedFalse();
+
 }

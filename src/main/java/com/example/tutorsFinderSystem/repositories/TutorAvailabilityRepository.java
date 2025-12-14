@@ -5,6 +5,7 @@ import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
@@ -54,6 +55,20 @@ public interface TutorAvailabilityRepository extends JpaRepository<TutorAvailabi
             @Param("tutorId") Long tutorId,
             @Param("from") LocalDateTime from,
             @Param("to") LocalDateTime to
+    );
+
+    @Query("""
+        SELECT ta
+        FROM TutorAvailability ta
+        WHERE ta.tutor.tutorId = :tutorId
+          AND ta.startTime = :start
+          AND ta.endTime = :end
+          AND ta.status = 'AVAILABLE'
+    """)
+    Optional<TutorAvailability> findAvailableSlot(
+            Long tutorId,
+            LocalDateTime start,
+            LocalDateTime end
     );
 
 }
