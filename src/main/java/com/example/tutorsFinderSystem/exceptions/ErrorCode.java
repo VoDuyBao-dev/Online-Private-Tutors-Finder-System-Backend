@@ -213,6 +213,7 @@ public enum ErrorCode {
     LEARNER_NOT_FOUND(7001, "Learner not found", HttpStatus.NOT_FOUND),
     CERTIFICATE_NOT_FOUND(8001, "Certificate not found", HttpStatus.NOT_FOUND),
     STICKER_NOT_FOUND(9001, "Sticker not found", HttpStatus.NOT_FOUND),
+    INVALID_CHAT_MESSAGE(9002, "Invalid chat message", HttpStatus.BAD_REQUEST),
 
     ;
 

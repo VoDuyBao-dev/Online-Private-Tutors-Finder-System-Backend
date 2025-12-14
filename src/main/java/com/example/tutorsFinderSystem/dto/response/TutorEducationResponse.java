@@ -49,7 +49,9 @@ public class TutorEducationResponse {
     @Builder
     public static class TutorCertificateUpdateDTO {
 
-        private Long certificateId; // ID chứng chỉ
-        private String certificateName; // Tên mới (có thể sửa)
+        private Long certificateId; // null → thêm mới
+        private String certificateName; // tên chứng chỉ
+        private Boolean deleted; // true → xóa
     }
+
 }

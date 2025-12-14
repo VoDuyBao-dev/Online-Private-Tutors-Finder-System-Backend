@@ -4,6 +4,7 @@ import com.example.tutorsFinderSystem.dto.ApiResponse;
 import com.example.tutorsFinderSystem.dto.request.TutorAvailabilityCreateRequest;
 import com.example.tutorsFinderSystem.dto.request.TutorAvailabilityUpdateRequest;
 import com.example.tutorsFinderSystem.dto.response.TutorAvailabilityResponse;
+import com.example.tutorsFinderSystem.dto.response.TutorTeachingScheduleResponse;
 import com.example.tutorsFinderSystem.services.TutorScheduleService;
 import com.example.tutorsFinderSystem.security.RequireApprovedTutor;
 import jakarta.validation.Valid;
@@ -77,12 +78,27 @@ public class TutorScheduleController {
         tutorScheduleService.deleteAvailability(id);
 
         ApiResponse<Void> response = ApiResponse.<Void>builder()
-            .code(HttpStatus.OK.value())
-            .message("xóa thành công")
-            .result(null)
-            .build();
+                .code(HttpStatus.OK.value())
+                .message("xóa thành công")
+                .result(null)
+                .build();
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @GetMapping("/teaching")
+    public ResponseEntity<ApiResponse<List<TutorTeachingScheduleResponse>>> getTeachingSchedule() {
+
+        List<TutorTeachingScheduleResponse> result = tutorScheduleService.getTeachingSchedule();
+
+        ApiResponse<List<TutorTeachingScheduleResponse>> response = ApiResponse
+                .<List<TutorTeachingScheduleResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Success")
+                .result(result)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 }

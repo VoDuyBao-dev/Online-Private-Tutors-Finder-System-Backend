@@ -86,6 +86,7 @@ public class TutorProfileController {
                                         .build();
 
                 } catch (Exception e) {
+                        e.printStackTrace(); 
                         throw new AppException(ErrorCode.INVALID_REQUEST);
                 }
         }
