@@ -290,4 +290,29 @@ public class TutorScheduleService {
         }
     }
 
+//    lịch của tutor hiển thị bên learner
+    public List<TutorAvailabilityResponse> getAvailableScheduleForLearner(
+            Long tutorId,
+            LocalDate fromDate,
+            LocalDate toDate
+    ) {
+
+        LocalDateTime from = fromDate.atStartOfDay();
+        LocalDateTime to = toDate
+                .plusDays(1)
+                .atStartOfDay()
+                .minusNanos(1);
+
+        List<TutorAvailability> availabilities =
+                availabilityRepository.findAvailableByTutorAndTimeRange(
+                        tutorId,
+                        from,
+                        to
+                );
+
+        return availabilities.stream()
+                .map(availabilityMapper::toLearnerResponse)
+                .toList();
+    }
+
 }
