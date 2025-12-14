@@ -35,4 +35,31 @@ public interface TutorAvailabilityMapper {
     // endDate KHÔNG map ở đây
     @Mapping(target = "endDate", ignore = true)
     TutorAvailabilityResponse toResponse(TutorAvailability availability);
+
+//    mapper trả avails cho learner
+    @Mapping(target = "availabilityId", source = "availabilityId")
+    @Mapping(target = "status", source = "status")
+
+    @Mapping(
+            target = "dayOfWeek",
+            expression = "java(availability.getStartTime().getDayOfWeek().name())"
+    )
+    @Mapping(
+            target = "startTime",
+            expression = "java(availability.getStartTime().toLocalTime().format(TIME_FORMAT))"
+    )
+    @Mapping(
+            target = "endTime",
+            expression = "java(availability.getEndTime().toLocalTime().format(TIME_FORMAT))"
+    )
+    @Mapping(
+            target = "startDate",
+            expression = "java(availability.getStartTime().toLocalDate().format(DATE_FORMAT))"
+    )
+    @Mapping(
+            target = "endDate",
+            expression = "java(availability.getEndTime().toLocalDate().format(DATE_FORMAT))"
+    )
+    TutorAvailabilityResponse toLearnerResponse(TutorAvailability availability);
+
 }

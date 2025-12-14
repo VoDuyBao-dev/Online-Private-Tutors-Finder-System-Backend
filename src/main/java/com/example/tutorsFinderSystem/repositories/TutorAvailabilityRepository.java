@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,5 +41,19 @@ public interface TutorAvailabilityRepository extends JpaRepository<TutorAvailabi
     boolean existsByTutor_TutorIdAndStartTimeAndEndTime(Long tutorId,
                                                          LocalDateTime startTime,
                                                          LocalDateTime endTime);
+
+    @Query("""
+        SELECT ta
+        FROM TutorAvailability ta
+        WHERE ta.tutor.tutorId = :tutorId
+          AND ta.startTime >= :from
+          AND ta.endTime <= :to
+        ORDER BY ta.startTime
+    """)
+    List<TutorAvailability> findAvailableByTutorAndTimeRange(
+            @Param("tutorId") Long tutorId,
+            @Param("from") LocalDateTime from,
+            @Param("to") LocalDateTime to
+    );
 
 }
