@@ -1,5 +1,6 @@
 package com.example.tutorsFinderSystem.services;
 
+import com.example.tutorsFinderSystem.entities.User;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
@@ -99,7 +100,7 @@ public class GoogleDriveService {
         try {
             drive.files()
                     .delete(fileId)
-                    .setSupportsAllDrives(true) 
+                    .setSupportsAllDrives(true)
                     .execute();
         } catch (Exception e) {
             throw new IOException("Failed to delete file from Google Drive: " + e.getMessage(), e);
@@ -132,6 +133,26 @@ public class GoogleDriveService {
         } catch (Exception e) {
             throw new RuntimeException("Không đọc được file từ Google Drive: " + fileId, e);
         }
+    }
+
+    public String buildAvatarUrl(String avatar) {
+        if (avatar == null)
+            return null;
+
+        if (!avatar.contains("http")) {
+            return "http://localhost:8080/tutorsFinder/drive/view/" + avatar;
+        }
+
+        if (avatar.contains("id=")) {
+            String id = avatar.substring(avatar.indexOf("id=") + 3);
+            int idx = id.indexOf("&");
+            if (idx != -1)
+                id = id.substring(0, idx);
+
+            return "http://localhost:8080/tutorsFinder/drive/view/" + id;
+        }
+
+        return avatar;
     }
 
 }

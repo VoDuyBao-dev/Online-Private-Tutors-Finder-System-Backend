@@ -95,7 +95,6 @@ public enum ErrorCode {
     INTERNAL_ERROR(2304, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
     METHOD_INVALID(2305, "Method is not supported", HttpStatus.BAD_REQUEST),
 
-
     // E_bool admin
     EBOOK_TITLE_REQUIRED(3001, "Title is required", HttpStatus.BAD_REQUEST),
     EBOOK_TITLE_TOO_LONG(3002, "Title must be at most 255 characters", HttpStatus.BAD_REQUEST),
@@ -169,12 +168,12 @@ public enum ErrorCode {
 
     MISSING_PARAMETER(4009, "Missing required parameter", HttpStatus.BAD_REQUEST),
 
-//    Rating and Review
+    // Rating and Review
     RATING_VALUE_INVALID(5001, "Rating value must be between 1 and 5", HttpStatus.BAD_REQUEST),
     CLASS_NOT_COMPLETED(5002, "Class not completed", HttpStatus.BAD_REQUEST),
     CLASS_ALREADY_RATED(5003, "Class already rated", HttpStatus.BAD_REQUEST),
 
-// Trial request
+    // Trial request
     TUTOR_ID_REQUIRE(5100, "Tutor ID is required", HttpStatus.BAD_REQUEST),
     TRIAL_DATE_REQUIRE(5101, "Trial date is required", HttpStatus.BAD_REQUEST),
     TRIAL_DATE_FUTURE(5102, "Trial date must be in the future", HttpStatus.BAD_REQUEST),
@@ -185,31 +184,35 @@ public enum ErrorCode {
     CLASS_DURATION_TOO_SHORT(5109, "Class duration must be at least 30 minutes", HttpStatus.BAD_REQUEST),
     CLASS_DURATION_EXCEEDS_MAX(5110, "Class duration cannot exceed 1 hour 30 minutes", HttpStatus.BAD_REQUEST),
     TUTOR_TIME_CONFLICT(5111, "Tutor is not available at this time slot", HttpStatus.BAD_REQUEST),
-    DUPLICATE_TRIAL_REQUEST(5112, "You already have a pending or confirmed trial request with this tutor", HttpStatus.BAD_REQUEST),
+    DUPLICATE_TRIAL_REQUEST(5112, "You already have a pending or confirmed trial request with this tutor",
+            HttpStatus.BAD_REQUEST),
     LEARNER_TIME_CONFLICT(5113, "Learner time conflict", HttpStatus.BAD_REQUEST),
     SCHEDULE_NOT_FOUND(5114, "Schedule not found", HttpStatus.BAD_REQUEST),
 
-//    official request
+    // official request
     SESSIONS_PER_WEEK_MAX_3(5115, "Sessions per week max 3", HttpStatus.BAD_REQUEST),
     SESSIONS_PER_WEEK_MIN_1(5116, "Sessions per week min 1", HttpStatus.BAD_REQUEST),
     SESSIONS_PER_WEEK_REQUIRED(5117, "Sessions per week required", HttpStatus.BAD_REQUEST),
     SCHEDULE_SIZE_INVALID(5118, "Schedule size invalid", HttpStatus.BAD_REQUEST),
 
     END_DATE_BEFORE_START_DATE(5119, "The end date cannot be earlier than the start date", HttpStatus.BAD_REQUEST),
-    NO_SESSION_GENERATED(5120, "No valid study sessions could be generated from the selected date range and weekly schedules", HttpStatus.BAD_REQUEST),
-    TIME_CONFLICT(5121, "The selected schedule conflicts with an existing class. Please choose a different day or time", HttpStatus.BAD_REQUEST),
+    NO_SESSION_GENERATED(5120,
+            "No valid study sessions could be generated from the selected date range and weekly schedules",
+            HttpStatus.BAD_REQUEST),
+    TIME_CONFLICT(5121, "The selected schedule conflicts with an existing class. Please choose a different day or time",
+            HttpStatus.BAD_REQUEST),
     START_DATE_REQUIRED(5122, "Start date required", HttpStatus.BAD_REQUEST),
     END_DATE_REQUIRED(5123, "End date required", HttpStatus.BAD_REQUEST),
     START_DATE_MUST_BE_FUTURE(5124, "Start date must be future", HttpStatus.BAD_REQUEST),
     SCHEDULE_REQUIRED(5125, "Schedule required", HttpStatus.BAD_REQUEST),
 
-// tutor change password
+    // tutor change password
     NEW_PASSWORD_SAME_AS_OLD(6002, "New password must be different from the current password", HttpStatus.BAD_REQUEST),
     PASSWORD_CONFIRM_MISMATCH(6003, "New password and confirm password do not match", HttpStatus.BAD_REQUEST),
-INVALID_PASSWORD(6004, "Current password is incorrect", HttpStatus.BAD_REQUEST),
-LEARNER_NOT_FOUND(7001, "Learner not found", HttpStatus.NOT_FOUND),
-CERTIFICATE_NOT_FOUND(8001, "Certificate not found", HttpStatus.NOT_FOUND),
-
+    INVALID_PASSWORD(6004, "Current password is incorrect", HttpStatus.BAD_REQUEST),
+    LEARNER_NOT_FOUND(7001, "Learner not found", HttpStatus.NOT_FOUND),
+    CERTIFICATE_NOT_FOUND(8001, "Certificate not found", HttpStatus.NOT_FOUND),
+    STICKER_NOT_FOUND(9001, "Sticker not found", HttpStatus.NOT_FOUND),
 
     ;
 

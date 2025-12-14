@@ -14,6 +14,10 @@ import com.example.tutorsFinderSystem.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,21 +32,18 @@ public class AdminLearnerService {
     private final UserRepository userRepository;
 
     private User getCurrentAdmin() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String email = authentication.getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
 
-    User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-    
+        if (!user.getRoles().contains(Role.ADMIN.name())) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
 
-    if (!user.getRoles().contains(Role.ADMIN.name())) {
-        throw new AppException(ErrorCode.UNAUTHORIZED);
+        return user;
     }
-
-    return user;
-}
-
 
     // 1) Danh sách phân trang
     @Transactional
@@ -52,7 +53,7 @@ public class AdminLearnerService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("user.createdAt").descending());
 
-        Page<Learner> learnerPage = learnerRepository.findAllLearnerPageable("LEARNER",pageable);
+        Page<Learner> learnerPage = learnerRepository.findAllLearnerPageable("LEARNER", pageable);
 
         var items = learnerPage.getContent().stream()
                 .map(adminLearnerMapper::toSummary)
@@ -119,6 +120,36 @@ public class AdminLearnerService {
                 .total(total)
                 .active(active)
                 .inactive(inactive)
+                .build();
+    }
+
+    @Transactional
+    public PageResponse<AdminLearnerSummaryResponse> searchLearners(
+            UserStatus status,
+            LocalDate fromDate,
+            LocalDate toDate,
+            int page,
+            int size) {
+
+        getCurrentAdmin();
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("user.createdAt").descending());
+
+        LocalDateTime from = (fromDate != null) ? fromDate.atStartOfDay() : null;
+        LocalDateTime to = (toDate != null) ? toDate.atTime(23, 59, 59) : null;
+
+        Page<Learner> learners = learnerRepository.search(status, from, to, "LEARNER", pageable);
+
+        var items = learners.getContent().stream()
+                .map(adminLearnerMapper::toSummary)
+                .toList();
+
+        return PageResponse.<AdminLearnerSummaryResponse>builder()
+                .items(items)
+                .page(page)
+                .size(size)
+                .totalItems(learners.getTotalElements())
+                .totalPages(learners.getTotalPages())
                 .build();
     }
 
