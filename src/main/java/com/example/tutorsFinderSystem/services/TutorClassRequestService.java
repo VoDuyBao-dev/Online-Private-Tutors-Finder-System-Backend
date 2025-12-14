@@ -34,6 +34,9 @@ public class TutorClassRequestService {
     private final CalendarClassService calendarClassService;
     private final RequestScheduleRepository requestScheduleRepository;
 
+    private final TutorAvailabilityService TutorAvailabilityService;
+
+
 
 
     /**
@@ -141,12 +144,19 @@ public class TutorClassRequestService {
                 .stream().findFirst()
                 .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
 
+        List<CalendarClass> calendars;
+
         //Tạo calendar học thử/ chính thức
         if (request.getType() == ClassRequestType.TRIAL) {
-            calendarClassService.createTrialCalendar(request, schedule);
+            calendars = calendarClassService.createTrialCalendar(request, schedule);
         } else {
-            calendarClassService.createOfficialCalendar(request);
+            calendars = calendarClassService.createOfficialCalendar(request);
         }
+
+        TutorAvailabilityService.bookAvailabilityForCalendars(
+                request.getTutor(),
+                calendars
+        );
 
         return TutorRequestStatusUpdateResponse.builder()
                 .requestId(request.getRequestId())
