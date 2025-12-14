@@ -4,6 +4,7 @@ import com.example.tutorsFinderSystem.entities.Ebook;
 import com.example.tutorsFinderSystem.enums.EbookType;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,8 @@ public interface EbookRepository extends JpaRepository<Ebook, Long> {
     // keyword);
 
     Page<Ebook> findByType(EbookType type, Pageable pageable);
+
+    List<Ebook> findTop4ByOrderByCreatedAtDesc();
 
     Page<Ebook> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 

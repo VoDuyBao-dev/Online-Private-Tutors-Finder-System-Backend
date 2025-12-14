@@ -3,11 +3,20 @@ package com.example.tutorsFinderSystem.services;
 import com.example.tutorsFinderSystem.dto.common.RatingDTO;
 import com.example.tutorsFinderSystem.dto.common.RatingStatisticsDTO;
 import com.example.tutorsFinderSystem.dto.common.TutorDetailDTO;
+import com.example.tutorsFinderSystem.dto.response.EbookResponse;
+import com.example.tutorsFinderSystem.dto.response.NotificationResponse;
+import com.example.tutorsFinderSystem.dto.response.FeaturedTutorResponse;
 import com.example.tutorsFinderSystem.entities.Ratings;
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.entities.User;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
+import com.example.tutorsFinderSystem.mapper.EbookMapper;
+import com.example.tutorsFinderSystem.mapper.FeaturedTutorMapper;
 import com.example.tutorsFinderSystem.mapper.TutorMapper;
+import com.example.tutorsFinderSystem.mapper.NotificationMapper;
+import com.example.tutorsFinderSystem.repositories.EbookRepository;
+import com.example.tutorsFinderSystem.repositories.NotificationRepository;
 import com.example.tutorsFinderSystem.repositories.RatingsRepository;
 import com.example.tutorsFinderSystem.repositories.TutorRepository;
 import lombok.AccessLevel;
@@ -26,13 +35,19 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TutorService {
 
-     TutorRepository tutorRepository;
-     RatingsRepository ratingsRepository;
-     TutorMapper tutorMapper;
+    private final TutorRepository tutorRepository;
+    private final RatingsRepository ratingsRepository;
+    private final TutorMapper tutorMapper;
+    private final FeaturedTutorMapper featuredTutorMapper;
+    private final EbookRepository ebookRepository;
+    private final EbookMapper ebookMapper;
+    private final NotificationRepository notificationRepository;
+    private final UserService userService;
+    private final NotificationMapper notificationMapper;
 
     @Transactional(readOnly = true)
     public TutorDetailDTO getTutorDetail(Long tutorId) {
-        //Lấy thông tin tutor
+        // Lấy thông tin tutor
         Tutor tutor = tutorRepository.findById(tutorId)
                 .orElseThrow(() -> new AppException(ErrorCode.TUTOR_NOT_FOUND));
 
@@ -42,10 +57,9 @@ public class TutorService {
         // Lấy 5 đánh giá gần nhất
         List<Ratings> recentReviews = ratingsRepository.findRecentByTutorId(
                 tutorId,
-                PageRequest.of(0, 10)
-        );
+                PageRequest.of(0, 10));
 
-        //Map sang DTO
+        // Map sang DTO
         return tutorMapper.toTutorDetailDTO(tutor, statistics, recentReviews);
     }
 
@@ -69,4 +83,29 @@ public class TutorService {
         List<Ratings> ratings = ratingsRepository.findAllByTutorId(tutorId);
         return tutorMapper.mapReviews(ratings);
     }
+
+    public List<FeaturedTutorResponse> getFeaturedTutors() {
+        return tutorRepository.findFeaturedTutorsRaw()
+                .stream()
+                .map(featuredTutorMapper::toResponse)
+                .toList();
+    }
+
+    public List<EbookResponse> getFeaturedEbooks() {
+        return ebookRepository.findTop4ByOrderByCreatedAtDesc()
+                .stream()
+                .map(ebookMapper::toEbookResponse)
+                .toList();
+    }
+
+    public List<NotificationResponse> getNotifications() {
+        User user = userService.getCurrentUser();
+        Long userId = user.getUserId();
+        return notificationRepository
+                .findTop5ByUserUserIdOrderByCreatedAtDesc(userId)
+                .stream()
+                .map(notificationMapper::toResponse)
+                .toList();
+    }
+
 }

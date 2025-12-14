@@ -2,10 +2,13 @@ package com.example.tutorsFinderSystem.dto.request;
 
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 // import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 import lombok.*;
+import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.TutorCertificateUpdateDTO;
 
 @Getter
 @Setter
@@ -25,11 +28,7 @@ public class TutorEducationUpdateRequest {
     @Min(value = 10000, message = "PRICE_TOO_LOW")
     private Integer pricePerHour;
 
-    // Danh sách chứng chỉ (tên file / URL)
-    // @NotEmpty(message = "CERTIFICATES_REQUIRED")
-    // private List<@NotBlank(message = "CERTIFICATE_ITEM_REQUIRED") String> certificates;
+    private List<TutorCertificateUpdateDTO> certificates;
+    private List<MultipartFile> certificateFiles;
 
-    // File/bằng cấp chính đã upload (PDF) – map với proofFileUrl trong entity
-    @NotNull(message = "PROOF_FILE_REQUIRED")
-    private MultipartFile proofFile;
 }

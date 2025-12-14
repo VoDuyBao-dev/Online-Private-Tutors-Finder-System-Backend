@@ -21,9 +21,8 @@ import java.util.List;
 public class TutorDetailController {
     TutorService tutorService;
 
-//    mới code xong chức năng chi tiết thông tin gia sư còn api thì chưa test
 
-        @GetMapping("/{tutorId}")
+    @GetMapping("/{tutorId}")
     public ApiResponse<TutorDetailDTO> getTutorDetail(
             @PathVariable Long tutorId
     ) {

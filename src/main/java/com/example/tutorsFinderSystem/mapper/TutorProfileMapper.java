@@ -9,13 +9,20 @@ import com.example.tutorsFinderSystem.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface TutorProfileMapper {
 
+    DateTimeFormatter DATE_TIME_FMT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    // =================================================
     // 1. PERSONAL INFO
+    // =================================================
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "user.fullName", target = "fullName")
     @Mapping(source = "user.email", target = "email")
@@ -23,6 +30,9 @@ public interface TutorProfileMapper {
     @Mapping(target = "avatarUrl", expression = "java(buildAvatarUrl(user))")
     TutorPersonalInfoResponse toPersonalInfo(User user, Tutor tutor);
 
+    // =================================================
+    // 2. EDUCATION
+    // =================================================
     default TutorEducationResponse toEducation(Tutor tutor) {
         return TutorEducationResponse.builder()
                 .tutorId(tutor.getTutorId())
@@ -33,8 +43,12 @@ public interface TutorProfileMapper {
                 .build();
     }
 
-    // 2. CERTIFICATES MAPPING
-    default List<TutorEducationResponse.CertificateDTO> mapCertificates(List<TutorCertificate> certificates) {
+    // =================================================
+    // 3. CERTIFICATES
+    // =================================================
+    default List<TutorEducationResponse.CertificateDTO> mapCertificates(
+            List<TutorCertificate> certificates) {
+
         if (certificates == null || certificates.isEmpty())
             return List.of();
 
@@ -45,66 +59,98 @@ public interface TutorProfileMapper {
                         .approved(cert.getApproved())
                         .files(mapFiles(cert.getFiles()))
                         .build())
-                .toList();
+                .collect(Collectors.toList());
     }
 
-    // 3. FILES MAPPING
-    default List<TutorEducationResponse.FileDTO> mapFiles(List<TutorCertificateFile> files) {
+    // =================================================
+    // 4. FILES (SORT + FORMAT)
+    // =================================================
+    default List<TutorEducationResponse.FileDTO> mapFiles(
+            List<TutorCertificateFile> files) {
+
         if (files == null || files.isEmpty())
             return List.of();
 
         return files.stream()
+                // Ưu tiên file active trước
+                .sorted(Comparator
+                        .comparing(TutorCertificateFile::getIsActive,
+                                Comparator.nullsLast(Boolean::compareTo))
+                        .reversed()
+                        .thenComparing(TutorCertificateFile::getUploadedAt,
+                                Comparator.nullsLast(Comparator.reverseOrder()))
+                )
                 .map(f -> TutorEducationResponse.FileDTO.builder()
                         .fileId(f.getFileId())
                         .fileUrl(toPreviewUrl(f.getFileUrl()))
                         .status(f.getStatus().name())
                         .isActive(f.getIsActive())
-                        .uploadedAt(f.getUploadedAt() == null ? null : f.getUploadedAt().toString())
+                        .uploadedAt(
+                                f.getUploadedAt() == null
+                                        ? null
+                                        : f.getUploadedAt().format(DATE_TIME_FMT)
+                        )
                         .build())
                 .collect(Collectors.toList());
     }
 
+    // =================================================
+    // 5. AVATAR URL (GIỮ NGUYÊN)
+    // =================================================
     default String buildAvatarUrl(User user) {
         if (user == null || user.getAvatarImage() == null)
             return null;
 
         String avatar = user.getAvatarImage();
 
-        // Trường hợp DB lưu fileId thuần → backend xử lý
         if (!avatar.contains("http")) {
             return "http://localhost:8080/tutorsFinder/drive/view/" + avatar;
         }
 
-        // Nếu là URL Drive dạng ?id=xxxx
         if (avatar.contains("id=")) {
             String id = avatar.substring(avatar.indexOf("id=") + 3);
+            int idx = id.indexOf("&");
+            if (idx != -1) id = id.substring(0, idx);
+
             return "http://localhost:8080/tutorsFinder/drive/view/" + id;
         }
 
-        // Nếu đã là URL backend hoặc URL đúng → giữ nguyên
         return avatar;
     }
 
+    // =================================================
+    // 6. GOOGLE DRIVE → PREVIEW URL (FIX CHUẨN)
+    // =================================================
     default String toPreviewUrl(String url) {
         if (url == null)
             return null;
 
-        // Link dạng uc?id=
+        // Nếu đã là preview
+        if (url.contains("/preview")) {
+            return url;
+        }
+
+        String fileId = null;
+
+        // uc?id=
         if (url.contains("id=")) {
-            String id = url.substring(url.indexOf("id=") + 3);
-            return "https://drive.google.com/file/d/" + id + "/preview";
+            fileId = url.substring(url.indexOf("id=") + 3);
+        }
+        // /file/d/{id}/
+        else if (url.contains("/file/d/")) {
+            fileId = url.split("/file/d/")[1].split("/")[0];
+        }
+        // open?id=
+        else if (url.contains("open?id=")) {
+            fileId = url.substring(url.indexOf("open?id=") + 8);
         }
 
-        // Link dạng file/d/<id>/view
-        if (url.contains("/file/d/")) {
-            String id = url.split("/file/d/")[1].split("/")[0];
-            return "https://drive.google.com/file/d/" + id + "/preview";
-        }
-
-        // Link dạng open?id=
-        if (url.contains("open?id=")) {
-            String id = url.substring(url.indexOf("open?id=") + 8);
-            return "https://drive.google.com/file/d/" + id + "/preview";
+        if (fileId != null) {
+            int idx = fileId.indexOf("&");
+            if (idx != -1) {
+                fileId = fileId.substring(0, idx);
+            }
+            return "https://drive.google.com/file/d/" + fileId + "/preview";
         }
 
         return url;

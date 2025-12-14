@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +37,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.tutorsFinderSystem.dto.response.TutorEducationResponse.TutorCertificateUpdateDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -92,55 +94,57 @@ public class TutorProfileService {
 
         Tutor tutor = getTutor(userService.getCurrentUser());
 
-        MultipartFile proofFile = req.getProofFile();
-        if (proofFile == null || proofFile.isEmpty()) {
-            throw new AppException(ErrorCode.PROOF_FILE_REQUIRED);
-        }
+        List<TutorCertificateUpdateDTO> certUpdates = req.getCertificates();
+        List<MultipartFile> files = req.getCertificateFiles();
 
-        // Chỉ nhận PDF
-        if (!"application/pdf".equals(proofFile.getContentType())) {
-            throw new AppException(ErrorCode.INVALID_PROOF_FILE_TYPE);
-        }
+        for (int i = 0; i < certUpdates.size(); i++) {
 
-        // 1) Upload file mới lên Google Drive
-        String newUrl;
-        try {
-            newUrl = googleDriveService.upload(proofFile, "tutor_certificates");
-        } catch (Exception e) {
-            throw new AppException(ErrorCode.PROOF_FILE_UPLOAD_FAILED);
-        }
+            TutorCertificateUpdateDTO dto = certUpdates.get(i);
 
-        // 2) Tạo record chứng chỉ nếu tutor chưa có (hồ sơ học vấn chính)
-        // Ở đây bạn có thể quyết định có 1 chứng chỉ hay nhiều.
-        // Tôi giả sử mỗi tutor có 1 "proof" chính (như CV học vấn).
-        TutorCertificate certificate = tutorCertificateRepository
-                .findByTutorTutorIdAndCertificateName(tutor.getTutorId(), "EDUCATION_PROOF")
-                .orElse(null);
+            TutorCertificate certificate = tutorCertificateRepository
+                    .findById(dto.getCertificateId())
+                    .orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
-        if (certificate == null) {
-            certificate = TutorCertificate.builder()
-                    .tutor(tutor)
-                    .certificateName("EDUCATION_PROOF")
-                    .approved(false)
-                    .build();
+            // ===== 1. UPDATE TÊN CHỨNG CHỈ =====
+            certificate.setCertificateName(dto.getCertificateName());
             tutorCertificateRepository.save(certificate);
+
+            // ===== 2. XỬ LÝ FILE (NẾU CÓ) =====
+            MultipartFile newFile = (files != null && files.size() > i)
+                    ? files.get(i)
+                    : null;
+
+            if (newFile != null && !newFile.isEmpty()) {
+
+                if (!"application/pdf".equals(newFile.getContentType())) {
+                    throw new AppException(ErrorCode.INVALID_PROOF_FILE_TYPE);
+                }
+
+                String newUrl;
+                try {
+                    newUrl = googleDriveService.upload(newFile, "certificates");
+                } catch (Exception e) {
+                    throw new AppException(ErrorCode.PROOF_FILE_UPLOAD_FAILED);
+                }
+
+                // Tạo record file mới – KHÔNG ĐỤNG FILE CŨ
+                TutorCertificateFile newCertFile = TutorCertificateFile.builder()
+                        .certificate(certificate)
+                        .fileUrl(newUrl)
+                        .status(CertificateStatus.PENDING)
+                        .isActive(false)
+                        .uploadedAt(LocalDateTime.now())
+                        .build();
+
+                tutorCertificateFileRepository.save(newCertFile);
+            }
         }
 
-        // 3) Tạo record file pending (không đụng file đã duyệt)
-        TutorCertificateFile certFile = TutorCertificateFile.builder()
-                .certificate(certificate)
-                .fileUrl(newUrl)
-                .status(CertificateStatus.PENDING)
-                .isActive(false)
-                .uploadedAt(LocalDateTime.now())
-                .build();
-
-        tutorCertificateFileRepository.save(certFile);
-
-        // 4) Cập nhật thông tin khác trong hồ sơ
+        // ===== 3. UPDATE THÔNG TIN KHÁC =====
         tutor.setUniversity(req.getUniversity());
         tutor.setIntroduction(req.getIntroduction());
         tutor.setPricePerHour(req.getPricePerHour());
+
         tutorRepository.save(tutor);
 
         return mapper.toEducation(tutor);
