@@ -33,7 +33,7 @@ public class CalendarClassService {
     LearnerRepository learnerRepository;
     CalendarClassMapper calendarClassMapper;
 
-    public void createTrialCalendar(ClassRequest request, RequestSchedule schedule) {
+    public List<CalendarClass> createTrialCalendar(ClassRequest request, RequestSchedule schedule) {
         CalendarClass calendar = CalendarClass.builder()
                 .classRequest(request)
                 .dayOfWeek(schedule.getDayOfWeek())
@@ -46,9 +46,10 @@ public class CalendarClassService {
                 .build();
 
         calendarClassRepository.save(calendar);
+        return List.of(calendar);
     }
 
-    public void createOfficialCalendar(ClassRequest request) {
+    public List<CalendarClass> createOfficialCalendar(ClassRequest request) {
 
         List<RequestSchedule> schedules =
                 requestScheduleRepository.findByClassRequest_RequestId(
@@ -86,6 +87,7 @@ public class CalendarClassService {
         }
 
         calendarClassRepository.saveAll(calendars);
+        return calendars;
     }
 
     public List<LearnerCalendarResponse> getLearnerCalendar(LocalDate from, LocalDate to) {
