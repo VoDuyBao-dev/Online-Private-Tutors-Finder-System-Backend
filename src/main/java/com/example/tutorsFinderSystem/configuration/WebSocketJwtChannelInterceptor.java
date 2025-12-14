@@ -1,6 +1,5 @@
 package com.example.tutorsFinderSystem.configuration;
 
-import com.example.tutorsFinderSystem.configuration.CustomJwtDecoder;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +32,9 @@ public class WebSocketJwtChannelInterceptor implements ChannelInterceptor {
 
         if (accessor == null) return message;
 
-        // Chỉ check khi client CONNECT (đỡ tốn CPU)
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
+            // Lấy header từ STOMP CONNECT
             String authHeader = accessor.getFirstNativeHeader("Authorization");
             if (authHeader == null) authHeader = accessor.getFirstNativeHeader("authorization");
 
@@ -46,13 +45,12 @@ public class WebSocketJwtChannelInterceptor implements ChannelInterceptor {
 
             Jwt jwt;
             try {
-                // CustomJwtDecoder của bạn (đang có trong project)
                 jwt = customJwtDecoder.decode(token);
             } catch (Exception e) {
                 throw new AppException(ErrorCode.UNAUTHORIZED);
             }
 
-            String email = extractEmail(jwt); // <-- CHỖ BẠN MAP CLAIM
+            String email = extractEmail(jwt);
             if (email == null || email.isBlank()) {
                 throw new AppException(ErrorCode.UNAUTHORIZED);
             }
@@ -62,7 +60,7 @@ public class WebSocketJwtChannelInterceptor implements ChannelInterceptor {
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(email, null, authorities);
 
-            // Gắn Principal cho session WebSocket (quan trọng cho /user/queue/**)
+            // QUAN TRỌNG: set Principal cho websocket session
             accessor.setUser(authentication);
         }
 
@@ -78,34 +76,21 @@ public class WebSocketJwtChannelInterceptor implements ChannelInterceptor {
         return null;
     }
 
-    /**
-     * [Inference] Thường JWT dùng:
-     * - sub = email
-     * - hoặc claim "email"
-     * Bạn chỉnh 1 trong 2 cho đúng token của bạn.
-     */
     private String extractEmail(Jwt jwt) {
         Object email = jwt.getClaims().get("email");
         if (email instanceof String s && !s.isBlank()) return s;
 
-        // fallback phổ biến
         String sub = jwt.getSubject();
         if (sub != null && !sub.isBlank()) return sub;
 
         return null;
     }
 
-    /**
-     * [Inference] Lấy quyền từ token.
-     * Tuỳ hệ bạn có claim: "scope" (string) hoặc "roles" (list).
-     * Mình hỗ trợ cả 2 kiểu.
-     */
     private Collection<SimpleGrantedAuthority> extractAuthorities(Jwt jwt) {
         List<SimpleGrantedAuthority> out = new ArrayList<>();
 
         Object scope = jwt.getClaims().get("scope");
         if (scope instanceof String s && !s.isBlank()) {
-            // ví dụ: "ADMIN TUTOR LEARNER" hoặc "SCOPE_ADMIN SCOPE_TUTOR"
             for (String part : s.split("\\s+")) {
                 if (!part.isBlank()) out.add(new SimpleGrantedAuthority(part.trim()));
             }
@@ -119,7 +104,6 @@ public class WebSocketJwtChannelInterceptor implements ChannelInterceptor {
                 }
             }
         }
-
         return out;
     }
 }

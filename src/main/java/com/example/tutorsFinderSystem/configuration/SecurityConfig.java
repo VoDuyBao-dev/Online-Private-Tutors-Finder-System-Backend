@@ -49,7 +49,7 @@ public class SecurityConfig {
                     "/drive/view/**",
                     "/classes/**",
                     "/public/**",
-                    "/ws/**"
+                    "/chat/**"
                 ).permitAll()
                 .requestMatchers(COMMON_URLS).hasAnyAuthority("SCOPE_TUTOR", "SCOPE_LEARNER")
                 .requestMatchers("/tutors/**").hasAuthority("SCOPE_TUTOR")

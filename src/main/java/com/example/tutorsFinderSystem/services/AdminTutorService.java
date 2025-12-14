@@ -2,12 +2,15 @@ package com.example.tutorsFinderSystem.services;
 
 import com.example.tutorsFinderSystem.dto.PageResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminDetailPendingResponse;
+import com.example.tutorsFinderSystem.dto.response.AdminLearnerSummaryResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorDetailResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorPendingResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorStatusUpdateResponse;
 import com.example.tutorsFinderSystem.dto.response.AdminTutorSummaryResponse;
+import com.example.tutorsFinderSystem.entities.Learner;
 import com.example.tutorsFinderSystem.entities.Subject;
 import com.example.tutorsFinderSystem.entities.Tutor;
+import com.example.tutorsFinderSystem.entities.TutorCertificate;
 import com.example.tutorsFinderSystem.entities.TutorCertificateFile;
 import com.example.tutorsFinderSystem.entities.User;
 import com.example.tutorsFinderSystem.enums.CertificateStatus;
@@ -20,6 +23,7 @@ import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.AdminTutorMapper;
 import com.example.tutorsFinderSystem.repositories.RatingRepository;
 import com.example.tutorsFinderSystem.repositories.TutorCertificateFileRepository;
+import com.example.tutorsFinderSystem.repositories.TutorCertificateRepository;
 import com.example.tutorsFinderSystem.repositories.TutorRepository;
 import com.example.tutorsFinderSystem.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -31,8 +35,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 // import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +53,7 @@ public class AdminTutorService {
     private final RatingRepository ratingRepository;
     private final TutorCertificateFileRepository tutorCertificateFileRepository;
     private final AdminTutorMapper adminTutorMapper;
+    private final TutorCertificateRepository tutorCertificateRepository;
 
     // 1) Danh sách tutor cho admin
     @Transactional
@@ -53,7 +61,7 @@ public class AdminTutorService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("user.updatedAt").descending());
 
-        Page<Tutor> tutorPage = tutorRepository.findAllTutorsPageable("TUTOR",pageable);
+        Page<Tutor> tutorPage = tutorRepository.findAllTutorsPageable("TUTOR", pageable);
 
         List<AdminTutorSummaryResponse> items = tutorPage.getContent().stream()
                 .map(tutor -> {
@@ -238,11 +246,66 @@ public class AdminTutorService {
             tutorCertificateFileRepository.saveAll(files);
         }
 
+        List<TutorCertificate> certificates = tutorCertificateRepository.findByTutor_TutorId(tutorId);
+
+        for (TutorCertificate certificate : certificates) {
+            boolean hasApprovedFile = certificate.getFiles().stream()
+                    .anyMatch(f -> f.getStatus() == CertificateStatus.APPROVED);
+
+            if (hasApprovedFile) {
+                certificate.setApproved(true);
+            }
+        }
+
         // ============================
         // 4) LƯU TUTOR & USER
         // ============================
         userRepository.save(user);
         tutorRepository.save(tutor);
+    }
+
+    @Transactional
+    public PageResponse<AdminTutorSummaryResponse> searchTutors(
+            UserStatus status,
+            LocalDate fromDate,
+            LocalDate toDate,
+            int page,
+            int size) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("user.createdAt").descending());
+
+        LocalDateTime from = (fromDate != null) ? fromDate.atStartOfDay() : null;
+        LocalDateTime to = (toDate != null) ? toDate.atTime(23, 59, 59) : null;
+
+        Page<Tutor> tutors = tutorRepository.search(status, from, to, "TUTOR", pageable);
+
+        List<AdminTutorSummaryResponse> items = tutors.getContent().stream()
+                .map(tutor -> {
+                    List<String> subjects = tutor.getSubjects().stream()
+                            .map(Subject::getSubjectName)
+                            .sorted()
+                            .toList();
+
+                    Double avg = ratingRepository.getAverageRating(tutor.getTutorId());
+                    Double rounded = roundOneDecimal(avg);
+
+                    return adminTutorMapper.toSummaryResponse(
+                            tutor,
+                            subjects,
+                            rounded);
+                })
+                .toList();
+
+        return PageResponse.<AdminTutorSummaryResponse>builder()
+                .items(items)
+                .page(page)
+                .size(size)
+                .totalItems(tutors.getTotalElements())
+                .totalPages(tutors.getTotalPages())
+                .build();
     }
 
 }
