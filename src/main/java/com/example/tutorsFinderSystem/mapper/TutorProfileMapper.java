@@ -94,9 +94,7 @@ public interface TutorProfileMapper {
                 .collect(Collectors.toList());
     }
 
-    // =================================================
-    // 5. AVATAR URL (GIỮ NGUYÊN)
-    // =================================================
+    // 5. AVATAR URL 
     default String buildAvatarUrl(User user) {
         if (user == null || user.getAvatarImage() == null)
             return null;

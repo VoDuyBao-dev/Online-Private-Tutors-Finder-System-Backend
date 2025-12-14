@@ -2,12 +2,17 @@ package com.example.tutorsFinderSystem.controller.chat;
 
 import com.example.tutorsFinderSystem.dto.chat.ChatConversationResponse;
 import com.example.tutorsFinderSystem.dto.chat.ChatHistoryResponse;
+import com.example.tutorsFinderSystem.dto.chat.UserMeResponse;
+import com.example.tutorsFinderSystem.entities.User;
 import com.example.tutorsFinderSystem.services.ChatService;
+import com.example.tutorsFinderSystem.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
@@ -17,6 +22,7 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
+    private final UserService userService;
 
     /**
      * Sidebar – danh sách hội thoại
@@ -48,4 +54,25 @@ public class ChatController {
 
         return chatService.getChatHistory(email, userId, page, size);
     }
+
+    @GetMapping("/me")
+    public UserMeResponse me() {
+
+        User user = userService.getCurrentUser();
+
+        String role = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse(null);
+
+        return new UserMeResponse(
+                user.getUserId(),
+                user.getEmail(),
+                user.getFullName(),
+                role);
+    }
+
 }

@@ -94,24 +94,66 @@ public class TutorProfileService {
 
         Tutor tutor = getTutor(userService.getCurrentUser());
 
-        List<TutorCertificateUpdateDTO> certUpdates = req.getCertificates();
+        List<TutorEducationResponse.TutorCertificateUpdateDTO> certUpdates = req.getCertificates();
         List<MultipartFile> files = req.getCertificateFiles();
 
-        for (int i = 0; i < certUpdates.size(); i++) {
+        int fileIndex = 0;
 
-            TutorCertificateUpdateDTO dto = certUpdates.get(i);
+        for (TutorEducationResponse.TutorCertificateUpdateDTO dto : certUpdates) {
 
-            TutorCertificate certificate = tutorCertificateRepository
-                    .findById(dto.getCertificateId())
-                    .orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
+            // 1) DELETE CERTIFICATE
+            if (Boolean.TRUE.equals(dto.getDeleted())) {
 
-            // ===== 1. UPDATE TÊN CHỨNG CHỈ =====
-            certificate.setCertificateName(dto.getCertificateName());
-            tutorCertificateRepository.save(certificate);
+                TutorCertificate cert = tutorCertificateRepository
+                        .findById(dto.getCertificateId())
+                        .orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
-            // ===== 2. XỬ LÝ FILE (NẾU CÓ) =====
-            MultipartFile newFile = (files != null && files.size() > i)
-                    ? files.get(i)
+                // 1. Đánh dấu certificate
+                cert.setApproved(false);
+                // cert.setStatus(CertificateStatus.REJECTED); // hoặc DELETED
+
+                // 2. Đánh dấu file
+                for (TutorCertificateFile file : cert.getFiles()) {
+                    file.setStatus(CertificateStatus.REJECTED);
+                    file.setIsActive(false);
+                }
+
+                // 3. Remove khỏi collection để không hiển thị
+                tutor.getCertificates().remove(cert);
+
+                // 4. Save
+                tutorCertificateRepository.save(cert);
+
+                continue;
+            }
+
+            TutorCertificate certificate;
+
+            // 2) ADD NEW CERTIFICATE
+            if (dto.getCertificateId() == null) {
+
+                certificate = TutorCertificate.builder()
+                        .tutor(tutor)
+                        .certificateName(dto.getCertificateName())
+                        .approved(false)
+                        .build();
+
+                tutorCertificateRepository.save(certificate);
+
+            }
+            // 3) UPDATE CERTIFICATE NAME
+            else {
+                certificate = tutorCertificateRepository
+                        .findById(dto.getCertificateId())
+                        .orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
+
+                certificate.setCertificateName(dto.getCertificateName());
+                tutorCertificateRepository.save(certificate);
+            }
+
+            // 4) HANDLE FILE (OPTIONAL)
+            MultipartFile newFile = (files != null && fileIndex < files.size())
+                    ? files.get(fileIndex++)
                     : null;
 
             if (newFile != null && !newFile.isEmpty()) {
@@ -120,17 +162,16 @@ public class TutorProfileService {
                     throw new AppException(ErrorCode.INVALID_PROOF_FILE_TYPE);
                 }
 
-                String newUrl;
+                String url;
                 try {
-                    newUrl = googleDriveService.upload(newFile, "certificates");
+                    url = googleDriveService.upload(newFile, "certificates");
                 } catch (Exception e) {
                     throw new AppException(ErrorCode.PROOF_FILE_UPLOAD_FAILED);
                 }
 
-                // Tạo record file mới – KHÔNG ĐỤNG FILE CŨ
                 TutorCertificateFile newCertFile = TutorCertificateFile.builder()
                         .certificate(certificate)
-                        .fileUrl(newUrl)
+                        .fileUrl(url)
                         .status(CertificateStatus.PENDING)
                         .isActive(false)
                         .uploadedAt(LocalDateTime.now())
@@ -140,7 +181,7 @@ public class TutorProfileService {
             }
         }
 
-        // ===== 3. UPDATE THÔNG TIN KHÁC =====
+        // 5) UPDATE EDUCATION INFO
         tutor.setUniversity(req.getUniversity());
         tutor.setIntroduction(req.getIntroduction());
         tutor.setPricePerHour(req.getPricePerHour());

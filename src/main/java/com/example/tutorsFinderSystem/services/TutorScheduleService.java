@@ -3,6 +3,10 @@ package com.example.tutorsFinderSystem.services;
 import com.example.tutorsFinderSystem.dto.request.TutorAvailabilityCreateRequest;
 import com.example.tutorsFinderSystem.dto.request.TutorAvailabilityUpdateRequest;
 import com.example.tutorsFinderSystem.dto.response.TutorAvailabilityResponse;
+import com.example.tutorsFinderSystem.dto.response.TutorTeachingScheduleResponse;
+import com.example.tutorsFinderSystem.entities.CalendarClass;
+import com.example.tutorsFinderSystem.entities.ClassEntity;
+import com.example.tutorsFinderSystem.entities.ClassRequest;
 import com.example.tutorsFinderSystem.entities.Tutor;
 import com.example.tutorsFinderSystem.entities.TutorAvailability;
 import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
@@ -11,6 +15,8 @@ import com.example.tutorsFinderSystem.enums.TutorAvailabilityStatus;
 import com.example.tutorsFinderSystem.exceptions.AppException;
 import com.example.tutorsFinderSystem.exceptions.ErrorCode;
 import com.example.tutorsFinderSystem.mapper.TutorAvailabilityMapper;
+import com.example.tutorsFinderSystem.repositories.CalendarClassRepository;
+import com.example.tutorsFinderSystem.repositories.ClassRepository;
 import com.example.tutorsFinderSystem.repositories.TutorAvailabilityRepository;
 import com.example.tutorsFinderSystem.repositories.TutorRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +39,8 @@ public class TutorScheduleService {
     private final TutorRepository tutorRepository;
     private final TutorAvailabilityRepository availabilityRepository;
     private final TutorAvailabilityMapper availabilityMapper;
+    private final ClassRepository classRepository;
+    private final CalendarClassRepository calendarClassRepository;
 
     // private static final DateTimeFormatter TIME_FORMAT =
     // DateTimeFormatter.ofPattern("HH:mm");
@@ -290,12 +298,11 @@ public class TutorScheduleService {
         }
     }
 
-//    lịch của tutor hiển thị bên learner
+    // lịch của tutor hiển thị bên learner
     public List<TutorAvailabilityResponse> getAvailableScheduleForLearner(
             Long tutorId,
             LocalDate fromDate,
-            LocalDate toDate
-    ) {
+            LocalDate toDate) {
 
         LocalDateTime from = fromDate.atStartOfDay();
         LocalDateTime to = toDate
@@ -303,16 +310,63 @@ public class TutorScheduleService {
                 .atStartOfDay()
                 .minusNanos(1);
 
-        List<TutorAvailability> availabilities =
-                availabilityRepository.findAvailableByTutorAndTimeRange(
-                        tutorId,
-                        from,
-                        to
-                );
+        List<TutorAvailability> availabilities = availabilityRepository.findAvailableByTutorAndTimeRange(
+                tutorId,
+                from,
+                to);
 
         return availabilities.stream()
                 .map(availabilityMapper::toLearnerResponse)
                 .toList();
     }
 
+    public List<TutorTeachingScheduleResponse> getTeachingSchedule() {
+
+        Tutor tutor = getCurrentTutor();
+
+        // 1) Lấy danh sách lớp (ONGOING/COMPLETED) của tutor
+        List<ClassEntity> classes = classRepository.findTeachingClasses(tutor.getTutorId());
+
+        if (classes.isEmpty())
+            return List.of();
+
+        // 2) Gom requestIds
+        List<Long> requestIds = classes.stream()
+                .map(c -> c.getClassRequest().getRequestId())
+                .toList();
+
+        // 3) Lấy toàn bộ calendar_class theo requestIds
+        List<CalendarClass> calendars = calendarClassRepository
+                .findByClassRequest_RequestIdInOrderByStudyDateAscStartTimeAsc(requestIds);
+
+        // 4) Map requestId -> ClassEntity để lấy subject/learner/status
+        Map<Long, ClassEntity> classByRequestId = classes.stream()
+                .collect(Collectors.toMap(
+                        c -> c.getClassRequest().getRequestId(),
+                        c -> c));
+
+        // 5) Build response
+        List<TutorTeachingScheduleResponse> result = new ArrayList<>();
+
+        for (CalendarClass cc : calendars) {
+            Long requestId = cc.getClassRequest().getRequestId();
+            ClassEntity c = classByRequestId.get(requestId);
+            if (c == null)
+                continue;
+
+            ClassRequest cr = c.getClassRequest();
+
+            result.add(TutorTeachingScheduleResponse.builder()
+                    .studyDate(cc.getStudyDate())
+                    .dayOfWeek(cc.getDayOfWeek())
+                    .startTime(cc.getStartTime())
+                    .endTime(cc.getEndTime())
+                    .subjectName(cr.getSubject().getSubjectName())
+                    .learnerName(cr.getLearner().getFullName())
+                    .classStatus(c.getStatus())
+                    .build());
+        }
+
+        return result;
+    }
 }

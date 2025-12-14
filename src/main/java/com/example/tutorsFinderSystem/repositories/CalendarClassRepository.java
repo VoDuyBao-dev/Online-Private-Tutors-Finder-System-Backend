@@ -14,47 +14,43 @@ import java.util.List;
 
 public interface CalendarClassRepository extends JpaRepository<CalendarClass, Long> {
 
-    List<CalendarClass> findByClassRequest_RequestId(Long requestId);
+  List<CalendarClass> findByClassRequest_RequestId(Long requestId);
 
-    @Query("""
-    SELECT COUNT(c) > 0
-    FROM CalendarClass c
-    WHERE c.classRequest.tutor = :tutor
-      AND c.dayOfWeek = :dayOfWeek
-      AND :date BETWEEN c.classRequest.startDate AND c.classRequest.endDate
-      AND c.startTime < :endTime
-      AND c.endTime > :startTime
-""")
-    boolean hasTimeConflictForTutorOnDate(
-            @Param("tutor") Tutor tutor,
-            @Param("dayOfWeek") DayOfWeek dayOfWeek,
-            @Param("date") LocalDate date,
-            @Param("startTime") LocalTime startTime,
-            @Param("endTime") LocalTime endTime
-    );
+  @Query("""
+          SELECT COUNT(c) > 0
+          FROM CalendarClass c
+          WHERE c.classRequest.tutor = :tutor
+            AND c.dayOfWeek = :dayOfWeek
+            AND :date BETWEEN c.classRequest.startDate AND c.classRequest.endDate
+            AND c.startTime < :endTime
+            AND c.endTime > :startTime
+      """)
+  boolean hasTimeConflictForTutorOnDate(
+      @Param("tutor") Tutor tutor,
+      @Param("dayOfWeek") DayOfWeek dayOfWeek,
+      @Param("date") LocalDate date,
+      @Param("startTime") LocalTime startTime,
+      @Param("endTime") LocalTime endTime);
 
-    @Query("""
-        SELECT COUNT(c) > 0
-        FROM CalendarClass c
-        WHERE c.classRequest.learner = :learner
-          AND c.dayOfWeek = :dayOfWeek
-          AND :date BETWEEN c.classRequest.startDate AND c.classRequest.endDate
-          AND c.startTime < :endTime
-          AND c.endTime > :startTime
-    """)
-    boolean hasTimeConflictForLearnerOnDate(@Param("learner") Learner learner,
-                                            @Param("dayOfWeek") DayOfWeek dayOfWeek,
-                                            @Param("date") LocalDate date,
-                                            @Param("startTime") LocalTime startTime,
-                                            @Param("endTime") LocalTime endTime);
+  @Query("""
+          SELECT COUNT(c) > 0
+          FROM CalendarClass c
+          WHERE c.classRequest.learner = :learner
+            AND c.dayOfWeek = :dayOfWeek
+            AND :date BETWEEN c.classRequest.startDate AND c.classRequest.endDate
+            AND c.startTime < :endTime
+            AND c.endTime > :startTime
+      """)
+  boolean hasTimeConflictForLearnerOnDate(@Param("learner") Learner learner,
+      @Param("dayOfWeek") DayOfWeek dayOfWeek,
+      @Param("date") LocalDate date,
+      @Param("startTime") LocalTime startTime,
+      @Param("endTime") LocalTime endTime);
 
+  List<CalendarClass> findByClassRequest_LearnerAndStudyDateBetween(
+      Learner learner,
+      LocalDate from,
+      LocalDate to);
 
-                                            
-
-
-    List<CalendarClass> findByClassRequest_LearnerAndStudyDateBetween(
-            Learner learner,
-            LocalDate from,
-            LocalDate to
-    );
+  List<CalendarClass> findByClassRequest_RequestIdInOrderByStudyDateAscStartTimeAsc(List<Long> requestIds);
 }
